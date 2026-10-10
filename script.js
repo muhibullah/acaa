@@ -13,7 +13,7 @@ links.querySelectorAll("a").forEach((a) =>
 );
 
 // ---------- Hero mini-game ----------
-const COLORS = ["#4d8dff", "#2bb673", "#ff6b35", "#8b5cf6", "#ff5c8a", "#14b8a6"];
+const COLORS = ["#0d5c63", "#f26b4f", "#2a9d8f", "#e9a23b", "#457b9d", "#8ab17d"];
 const TOTAL = 10;
 let round = 1;
 let answer = 5;
