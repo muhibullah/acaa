@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bright Steps — Learning that keeps going</title>
+  <meta name="description" content="Offline literacy and numeracy games for children whose schooling has been interrupted." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="top">
+  <div class="container nav">
+    <a href="#top" class="logo" aria-label="Bright Steps home">
+      <span class="logo-mark">BRIGHT<br/>STEPS</span>
+    </a>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#practice">In practice</a>
+      <a href="#pathways">Partner</a>
+      <a href="#platform">The platform</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#insights">Insights</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="btn btn-primary btn-sm">Get in touch <span aria-hidden="true">→</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="pill"><span class="dot"></span> FOUNDATIONAL LEARNING PLATFORM</span>
+      <h1>Bright Steps.<br/>Learning that<br/>keeps going.</h1>
+      <p class="lead">Literacy and numeracy for children whose schooling is interrupted — designed for conflict, climate and fragile settings.</p>
+      <div class="hero-ctas">
+        <a href="#pathways" class="btn btn-primary">For governments <span aria-hidden="true">→</span></a>
+        <a href="#pathways" class="btn btn-outline">For partners <span aria-hidden="true">→</span></a>
+      </div>
+      <ul class="chips">
+        <li>✦ 100,000+ learners</li>
+        <li>◎ 6 countries</li>
+        <li>⌁ Works offline</li>
+      </ul>
+    </div>
+
+    <div class="hero-visual">
+      <div class="tablet">
+        <div class="tablet-screen">
+          <div class="game-top">
+            <span class="game-icon">★</span>
+            <div class="game-progress"><span id="gameBar"></span></div>
+            <div class="game-meta"><strong id="gameRound">Game 1/10</strong><small>Ages 6–12</small></div>
+          </div>
+          <p class="game-kicker" id="gameKicker">SIMPLE SUBTRACTION</p>
+          <p class="game-q">Which number is missing?</p>
+          <div class="equation" id="equation" aria-live="polite">
+            <span id="eqA">8</span> <span id="eqOp">−</span>
+            <span class="slot" id="slot">?</span>
+            <span>=</span> <span id="eqC">3</span>
+          </div>
+          <div class="answers" id="answers"></div>
+          <div class="guide" aria-hidden="true">
+            <div class="guide-face"><span class="eye"></span><span class="eye"></span><span class="mouth"></span></div>
+          </div>
+          <p class="game-feedback" id="feedback" aria-live="polite"></p>
+        </div>
+      </div>
+      <div class="hero-cards">
+        <div class="mini-card">
+          <p class="mini-label">🏛 GOVERNMENTS</p>
+          <p>Curriculum-aligned. Built to hand over.</p>
+        </div>
+        <div class="mini-card">
+          <p class="mini-label">🤝 PARTNERS</p>
+          <p>Drop-in learning component for programmes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AMBITION / STATS ============ -->
+<section class="section ambition">
+  <div class="container">
+    <p class="eyebrow">THE AMBITION</p>
+    <div class="ambition-head">
+      <h2>100,000 children have learnt with Bright Steps. We're building for 1 million.</h2>
+      <div class="goal">
+        <div class="goal-bar"><span style="width:10%"></span></div>
+        <div class="goal-labels"><span>100,000+</span><strong>1M+</strong></div>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong data-count="100000" data-suffix="+">0</strong><p>Children reached to date</p></div>
+      <div class="stat"><strong data-count="6">0</strong><p>Countries, across conflict and displacement</p></div>
+      <div class="stat"><strong>3</strong><p>Independent evaluations completed</p></div>
+      <div class="stat"><strong>$5–25</strong><p>Cost per child, per year</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ IN PRACTICE (TABS) ============ -->
+<section class="section practice" id="practice">
+  <div class="container">
+    <p class="eyebrow">BUILT FOR DISRUPTION</p>
+    <h2 class="section-title">Built for the hardest conditions. Works everywhere.</h2>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" role="tab" aria-selected="true" data-tab="fragile">
+        <span class="tab-kicker">FRAGILE &amp; LOW-RESOURCE</span>
+        <span class="tab-title">Underfunded systems, overcrowded classrooms</span>
+        <span class="tab-sub">Low-cost devices, offline use, light-touch rollout.</span>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" data-tab="conflict">
+        <span class="tab-kicker">CONFLICT</span>
+        <span class="tab-title">Designed for active conflict settings</span>
+        <span class="tab-sub">Schools close, teachers move, connectivity fails. It still runs.</span>
+      </button>
+    </div>
+
+    <div class="tab-panel active" data-panel="fragile">
+      <div class="panel-head">
+        <p class="eyebrow">IN PRACTICE — FRAGILE &amp; LOW-RESOURCE</p>
+        <h3>Learning that holds in systems under pressure.</h3>
+        <p>Chronic underfunding, teacher shortages and overcrowded classrooms. Built for low-cost devices, offline use and light-touch rollout.</p>
+      </div>
+      <div class="kpis">
+        <div><strong>100%</strong><span>of content runs offline</span></div>
+        <div><strong>$5–25</strong><span>cost per child, per year</span></div>
+        <div><strong>1 : 4</strong><span>learners per device, rotating</span></div>
+        <div><strong>3 h</strong><span>facilitator training to start</span></div>
+      </div>
+      <div class="cards-3">
+        <article class="card"><h4>Chronic underfunding</h4><p>Device-agnostic, so it runs on the phones and tablets families and schools already have. No servers, no per-learner licences.</p></article>
+        <article class="card"><h4>Teacher shortages</h4><p>Facilitator-led, not teacher-dependent. Community facilitators get started in hours.</p></article>
+        <article class="card"><h4>Overcrowded classrooms</h4><p>Each child works at their own level in rotating shared-device sessions.</p></article>
+      </div>
+    </div>
+
+    <div class="tab-panel" data-panel="conflict">
+      <div class="panel-head">
+        <p class="eyebrow">IN PRACTICE — CONFLICT</p>
+        <h3>Learning that continues when everything else stops.</h3>
+        <p>Displacement, school closures and broken connectivity. Bright Steps runs in shelters, community spaces and temporary classrooms.</p>
+      </div>
+      <div class="kpis">
+        <div><strong>0</strong><span>internet needed during lessons</span></div>
+        <div><strong>Any</strong><span>safe space becomes a classroom</span></div>
+        <div><strong>Self-paced</strong><span>children pick up where they left off</span></div>
+        <div><strong>Trauma-aware</strong><span>content and visuals, tested locally</span></div>
+      </div>
+      <div class="cards-3">
+        <article class="card"><h4>Schools closed</h4><p>Sessions move to wherever children are: shelters, camps, community centres.</p></article>
+        <article class="card"><h4>Mobile populations</h4><p>Progress is stored on the device, so learning follows the child and not the building.</p></article>
+        <article class="card"><h4>Psychosocial stress</h4><p>Calm, predictable game flows designed with child-protection specialists.</p></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLATFORM / KIT ============ -->
+<section class="section kit" id="platform">
+  <div class="container">
+    <p class="eyebrow">INSIDE THE LEARNING SYSTEM</p>
+    <h2 class="section-title">More than an app: a complete offline kit</h2>
+    <p class="section-lead">We source and configure the devices, headphones and software for each setting, then design the game itself with the children who'll use it.</p>
+    <div class="cards-4">
+      <article class="card icon-card"><span class="icon">▣</span><h4>Protected tablets</h4><p>Locked to safe learning tools and configured before delivery.</p></article>
+      <article class="card icon-card"><span class="icon">♫</span><h4>Headphones &amp; power</h4><p>Chargers, cases and transport boxes for shared classroom use.</p></article>
+      <article class="card icon-card"><span class="icon">⇩</span><h4>Offline software</h4><p>Lessons, feedback and progress carry on without a connection.</p></article>
+      <article class="card icon-card"><span class="icon">☺</span><h4>Local support</h4><p>Facilitator training, maintenance and ongoing improvement.</p></article>
+    </div>
+    <ol class="flow">
+      <li>ORDER</li><li>CONFIGURE</li><li>TRAIN</li><li>LEARN OFFLINE</li><li>IMPROVE</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ CO-CREATION ============ -->
+<section class="section cocreate">
+  <div class="container split">
+    <div>
+      <p class="eyebrow">CO-CREATED IN EVERY COUNTRY</p>
+      <h2 class="section-title">Children shape the world they learn in</h2>
+      <p>Workshops with children explore language, daily life and national curricula. With trauma-aware researchers, they also test which colours, objects, sounds and symbols feel safe and which carry difficult associations. The result is one game engine with a different visual world for every country.</p>
+    </div>
+    <div class="photo-stack">
+      <div class="photo ph-1"><span>Workshop photo</span></div>
+      <div class="photo ph-2"><span>Workshop photo</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GAMES + CHARACTERS ============ -->
+<section class="section games">
+  <div class="container">
+    <p class="eyebrow">THE GAMES</p>
+    <h2 class="section-title">One learning model, different visual worlds</h2>
+    <div class="cards-4 worlds">
+      <figure class="world w-1"><div class="world-art">12 · 13 · <b>?</b></div><figcaption>Country A · writing numbers</figcaption></figure>
+      <figure class="world w-2"><div class="world-art">▦ 100</div><figcaption>Country B · hundred grid</figcaption></figure>
+      <figure class="world w-3"><div class="world-art">9 − 4</div><figcaption>Country C · subtraction</figcaption></figure>
+      <figure class="world w-4"><div class="world-art">● ● ●</div><figcaption>Country D · counting</figcaption></figure>
+    </div>
+
+    <div class="characters">
+      <div class="characters-copy">
+        <p class="eyebrow">THE CHARACTERS</p>
+        <h3>A guide who looks like the children they teach</h3>
+        <p>Every country gets its own pair of guides, one for reading and one for maths, drawn from workshops with local children.</p>
+      </div>
+      <div class="char-row" id="charRow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACCESSIBILITY ============ -->
+<section class="section access">
+  <div class="container">
+    <p class="eyebrow">ACCESSIBILITY BY DESIGN</p>
+    <h2 class="section-title">Clear enough to use. Calm enough to continue.</h2>
+    <p class="section-lead">Built toward WCAG 2.2, extended with child-centred, trauma-aware design.</p>
+    <div class="cards-4">
+      <article class="card"><span class="big-icon">👂</span><h4>Hear it</h4><p>Spoken guidance and sound cues support emerging readers.</p></article>
+      <article class="card"><span class="big-icon">👁</span><h4>See it</h4><p>Legible type and strong contrast. Meaning never rests on colour alone.</p></article>
+      <article class="card"><span class="big-icon">✋</span><h4>Reach it</h4><p>Large, consistently placed controls sized for children's hands.</p></article>
+      <article class="card"><span class="big-icon">♡</span><h4>Feel safe</h4><p>Predictable flows and locally tested symbols reduce emotional load.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="section gallery" id="gallery">
+  <div class="container">
+    <p class="eyebrow">FROM THE FIELD</p>
+    <h2 class="section-title">Gallery</h2>
+    <div class="gallery-grid">
+      <figure class="g g-1"><figcaption>Session in a temporary classroom</figcaption></figure>
+      <figure class="g g-2"><figcaption>Reading together</figcaption></figure>
+      <figure class="g g-3"><figcaption>Classroom activity</figcaption></figure>
+      <figure class="g g-4"><figcaption>Facilitator session</figcaption></figure>
+      <figure class="g g-5"><figcaption>Learning offline on a tablet</figcaption></figure>
+      <figure class="g g-6"><figcaption>Device kit in class</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PATHWAYS ============ -->
+<section class="section pathways" id="pathways">
+  <div class="container">
+    <p class="eyebrow">TWO PATHWAYS</p>
+    <h2 class="section-title">We deploy at scale with governments and implementing partners.</h2>
+    <div class="cards-2">
+      <article class="card path-card">
+        <p class="mini-label">GOVERNMENTS &amp; MINISTRIES</p>
+        <h3>Integrates into national education systems</h3>
+        <p>Curriculum-aligned, government-owned, designed to hand over.</p>
+        <a href="#contact" class="btn btn-primary">Government model →</a>
+      </article>
+      <article class="card path-card alt">
+        <p class="mini-label">IMPLEMENTING PARTNERS</p>
+        <h3>Deploy inside existing programmes</h3>
+        <p>We bring the platform, evidence and support. You bring the context.</p>
+        <a href="#contact" class="btn btn-outline">Partner model →</a>
+      </article>
+    </div>
+
+    <h3 class="steps-title">How a deployment runs</h3>
+    <ol class="steps">
+      <li><span>01</span><h4>Scope &amp; align</h4><p>Map to the national curriculum and learning goals.</p></li>
+      <li><span>02</span><h4>Localise content</h4><p>Adapt language, voice and context.</p></li>
+      <li><span>03</span><h4>Train facilitators</h4><p>Onboard teachers and community facilitators.</p></li>
+      <li><span>04</span><h4>Measure &amp; hand over</h4><p>Share the learning data, then transfer to the system.</p></li>
+    </ol>
+
+    <div class="partners">
+      <p>Trusted by governments, backed by leading organisations in the sector.</p>
+      <div class="logos">
+        <span>Partner</span><span>Ministry</span><span>Foundation</span><span>University</span><span>Agency</span><span>Fund</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ INSIGHTS ============ -->
+<section class="section insights" id="insights">
+  <div class="container">
+    <div class="row-head">
+      <div>
+        <p class="eyebrow">FROM THE FIELD</p>
+        <h2 class="section-title">Latest insights</h2>
+      </div>
+      <a href="#insights" class="link-arrow">All insights →</a>
+    </div>
+    <div class="cards-3">
+      <article class="card post"><div class="post-img pi-1"></div><p class="mini-label">EVIDENCE</p><h4>What the evidence says about handing over to government</h4><a href="#insights" class="link-arrow">Read more →</a></article>
+      <article class="card post"><div class="post-img pi-2"></div><p class="mini-label">FROM THE TEAM</p><h4>Our first national programme is now government-owned</h4><a href="#insights" class="link-arrow">Read more →</a></article>
+      <article class="card post"><div class="post-img pi-3"></div><p class="mini-label">FIELD NOTES</p><h4>How peer-reviewed research shapes our games</h4><a href="#insights" class="link-arrow">Read more →</a></article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section class="section contact" id="contact">
+  <div class="container contact-grid">
+    <div>
+      <p class="eyebrow">GET IN TOUCH</p>
+      <h2 class="section-title">Bring Bright Steps to your context.</h2>
+      <p>Tell us about your setting. Someone from the partnerships team will reply within three working days.</p>
+      <ul class="checks">
+        <li>No commitment: an orientation call comes first</li>
+        <li>We share the evidence pack and cost model</li>
+        <li>Then a scoping plan for your setting</li>
+      </ul>
+    </div>
+    <form class="card form" id="contactForm" novalidate>
+      <h3>Send us a message</h3>
+      <div class="form-row">
+        <label>Name<input name="name" required autocomplete="name" /></label>
+        <label>Organisation<input name="org" autocomplete="organization" /></label>
+      </div>
+      <div class="form-row">
+        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        <label>Country<input name="country" autocomplete="country-name" /></label>
+      </div>
+      <fieldset>
+        <legend>I'm writing as</legend>
+        <div class="radio-pills">
+          <label><input type="radio" name="role" value="gov" checked /><span>Government or ministry</span></label>
+          <label><input type="radio" name="role" value="partner" /><span>Implementing partner</span></label>
+          <label><input type="radio" name="role" value="funder" /><span>Funder</span></label>
+          <label><input type="radio" name="role" value="research" /><span>Researcher</span></label>
+          <label><input type="radio" name="role" value="press" /><span>Press</span></label>
+        </div>
+      </fieldset>
+      <label>Message<textarea name="message" rows="4" required></textarea></label>
+      <label class="consent"><input type="checkbox" name="consent" required /> I agree to be contacted about this enquiry.</label>
+      <button class="btn btn-primary" type="submit">Send message →</button>
+      <p class="form-status" id="formStatus" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="cta-band">
+  <div class="container">
+    <p class="eyebrow">EVERY CHILD STARTS WITH ACCESS</p>
+    <h2>Help more children find their way back to learning.</h2>
+    <a href="#contact" class="btn btn-dark">Partner with us →</a>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div><span class="logo-mark light">BRIGHT<br/>STEPS</span></div>
+    <div><h5>IN PRACTICE</h5><a href="#practice">Conflict settings</a><a href="#practice">Fragile &amp; low-resource</a></div>
+    <div><h5>ABOUT</h5><a href="#platform">Our approach</a><a href="#top">Our story</a><a href="#insights">Press &amp; news</a><a href="#top">FAQ</a></div>
+    <div><h5>CONTACT</h5><a href="mailto:hello@example.org">hello@example.org</a><a href="mailto:support@example.org">support@example.org</a></div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> Bright Steps</span>
+    <span><a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Safeguarding</a></span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
