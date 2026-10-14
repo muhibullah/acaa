@@ -20,38 +20,30 @@
 html, body { margin: 0; height: 100%; }
 body {
   font-family: "Nunito", "Vazirmatn", system-ui, sans-serif; color: var(--ink);
-  background: radial-gradient(circle at 20% 10%, #12707a, var(--teal-deep) 70%);
+  background: linear-gradient(180deg, #e6f3fc, #cfe6f7);
   display: flex; flex-direction: column; height: 100%; overflow: hidden;
 }
 [dir="rtl"] body, body[dir="rtl"] { font-family: "Vazirmatn", "Nunito", system-ui, sans-serif; }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
 
 /* ---------- Prototype toolbar (outside the app) ---------- */
-.proto-bar { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 16px; flex-wrap: wrap; color: #fff; }
+.proto-bar { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 16px; flex-wrap: wrap; color: var(--ink); }
 .proto-name { font-weight: 900; font-size: .95rem; opacity: .9; }
 .proto-name small { font-weight: 800; font-size: .7rem; background: var(--sun); color: var(--ink); padding: 3px 8px; border-radius: 99px; margin-inline-start: 6px; letter-spacing: .06em; }
-.devices { display: flex; background: rgba(255,255,255,.12); border-radius: 99px; padding: 4px; }
-.devices button { color: #fff; font-weight: 800; padding: 8px 16px; border-radius: 99px; font-size: .9rem; }
-.devices button.on { background: #fff; color: var(--teal); }
-.notes-btn { color: #fff; font-weight: 800; font-size: .9rem; padding: 8px 14px; border-radius: 99px; border: 1.5px solid rgba(255,255,255,.35); }
-.notes-btn.on { background: var(--sun); color: var(--ink); border-color: var(--sun); }
-.notes { position: fixed; top: 64px; right: 16px; width: 300px; background: #fff; color: var(--ink); border-radius: 18px; padding: 16px 18px; box-shadow: 0 20px 50px rgba(0,0,0,.3); z-index: 50; display: none; }
-.notes.show { display: block; animation: in .2s; }
-.notes h3 { margin: 0 0 6px; font-size: .75rem; letter-spacing: .1em; color: var(--coral); }
-.notes ul { margin: 0; padding-left: 18px; }
-.notes li { margin: 6px 0; line-height: 1.45; font-size: .92rem; }
-.notes p { margin: 10px 0 0; font-size: .78rem; color: var(--muted); }
+.devices { display: flex; background: rgba(255,255,255,.75); box-shadow: 0 2px 10px rgba(30,80,120,.1); border-radius: 99px; padding: 4px; }
+.devices button { color: var(--muted); font-weight: 800; padding: 8px 16px; border-radius: 99px; font-size: .9rem; }
+.devices button.on { background: var(--teal); color: #fff; }
 
 /* ---------- Stage + device frames ---------- */
 .stage { flex: 1; min-height: 0; display: grid; place-items: center; padding: 8px 16px 20px; overflow: hidden; }
 .scaler { position: relative; }
 .device { position: absolute; top: 0; left: 0; transform-origin: top left; }
-.device.phone { width: 390px; height: 800px; background: #0a1a24; border-radius: 52px; padding: 12px; box-shadow: 0 40px 90px rgba(0,0,0,.45); }
+.device.phone { width: 390px; height: 800px; background: #0a1a24; border-radius: 52px; padding: 12px; box-shadow: 0 30px 70px rgba(30,80,120,.28); }
 .device.phone::before { content: ""; position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 110px; height: 30px; background: #0a1a24; border-radius: 20px; z-index: 30; }
-.device.tablet { width: 1180px; height: 820px; background: #0a1a24; border-radius: 44px; padding: 22px; box-shadow: 0 40px 90px rgba(0,0,0,.45); }
+.device.tablet { width: 1180px; height: 820px; background: #0a1a24; border-radius: 44px; padding: 22px; box-shadow: 0 30px 70px rgba(30,80,120,.28); }
 .device.tablet::before { content: ""; position: absolute; top: 50%; left: 8px; width: 7px; height: 7px; border-radius: 50%; background: #23384a; }
 .device.tablet .app { border-radius: 24px; }
-.device.laptop { width: 1360px; height: 900px; padding: 22px 22px 60px; background: #0a1a24; border-radius: 26px 26px 0 0; box-shadow: 0 40px 90px rgba(0,0,0,.45); }
+.device.laptop { width: 1360px; height: 900px; padding: 22px 22px 60px; background: #0a1a24; border-radius: 26px 26px 0 0; box-shadow: 0 30px 70px rgba(30,80,120,.28); }
 .device.laptop::after { content: ""; position: absolute; left: -90px; right: -90px; bottom: -26px; height: 26px; background: linear-gradient(#c9d2da, #8e9aa5); border-radius: 0 0 26px 26px; }
 .device.laptop::before { content: ""; position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); width: 7px; height: 7px; border-radius: 50%; background: #23384a; }
 .device.laptop .app { border-radius: 8px; }
@@ -245,7 +237,7 @@ h2 { font-size: 1.55rem; margin: 6px 0 4px; font-weight: 900; }
 
 /* ---------- Real phone: show the app full screen ---------- */
 body.native .proto-bar { padding: 8px; gap: 8px; }
-body.native .proto-name, body.native .notes-btn span { display: none; }
+body.native .proto-name { display: none; }
 body.native .devices button { padding: 6px 12px; font-size: .82rem; }
 body.native .stage { padding: 0; place-items: stretch; }
 body.native .scaler { width: 100% !important; height: 100% !important; }
@@ -254,7 +246,6 @@ body.native .device.phone::before { display: none; }
 body.native .device.phone .app { border-radius: 0; }
 body.native .device.phone .status { height: 10px; }
 body.native .device.phone .status * { display: none; }
-body.native .notes { top: 56px; left: 12px; right: 12px; width: auto; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
 </style>
 </head>
@@ -267,9 +258,7 @@ body.native .notes { top: 56px; left: 12px; right: 12px; width: auto; }
     <button data-device="tablet">📲 Tablet</button>
     <button data-device="laptop">💻 Laptop</button>
   </div>
-  <button class="notes-btn" id="notesBtn">💡 <span>Why this screen?</span></button>
 </header>
-<div class="notes" id="notes"></div>
 
 <div class="stage" id="stage">
 <div class="scaler" id="scaler">
@@ -639,19 +628,6 @@ const T = {
   },
 };
 
-// Why each screen exists (from the family survey), shown beside the phone.
-const WHY = {
-  home: ["Most families prefer Dari or Pashto, so the language switch is always at the top.", "Some parents find reading hard: every page can be read aloud.", "Lessons are saved on the phone, because many homes share one device."],
-  homework: ["Homework and study support was the help families asked for most.", "A learning coach who speaks the family's language helps where parents can't."],
-  "homework-task": ["Tasks are split into small steps so a child can work alone.", "A photo of paper work means it still counts without a laptop."],
-  chat: ["Children can message a coach in Dari or English.", "Quick replies help younger children who can't type yet."],
-  learn: ["Families asked for educational games, books and online resources.", "Content is grouped by age, because families have children from nursery to sixth form."],
-  game: ["Short games keep learning going in small moments on a shared phone."],
-  story: ["Stories in Dari and Pashto keep the home language strong.", "Read aloud supports children who are still learning to read."],
-  calm: ["Many families have moved home and said it significantly affected their children's learning. A gentle wellbeing check helps."],
-  progress: ["Many families live in temporary or emergency housing and have moved more than once.", "Progress stays with the child when they change school."],
-  places: ["Lack of a quiet study space was one of the top problems reported.", "Lack of a laptop or tablet was the other: families can borrow one."],
-};
 
 let lang = "en";
 let screen = "home";
@@ -669,10 +645,6 @@ function applyLang() {
   renderStreak(); renderSteps(); renderQuick();
 }
 
-function renderWhy() {
-  const items = WHY[screen] || [];
-  $("#notes").innerHTML = `<h3>WHY THIS SCREEN?</h3><ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul><p>Based on the family survey. Names, coach and places are made-up examples.</p>`;
-}
 
 function go(name) {
   stopSpeaking();
@@ -681,7 +653,6 @@ function go(name) {
   const tab = $(`.screen[data-screen="${name}"]`).dataset.tab;
   $$("[data-tabbtn]").forEach((b) => b.classList.toggle("on", b.dataset.tabbtn === tab));
   $("#screens").scrollTop = 0;
-  renderWhy();
   if (name === "game") newRound();
   if (name === "chat" && !$("#chat").children.length) addMsg(t("c1"), "them");
 }
@@ -809,8 +780,6 @@ document.addEventListener("click", (e) => {
   const g = e.target.closest("[data-go]"); if (g) { go(g.dataset.go); return; }
   const ts = e.target.closest("[data-toast]"); if (ts) { toast(t(ts.dataset.toast)); return; }
   const d = e.target.closest("[data-device]"); if (d) { setDevice(d.dataset.device); return; }
-  if (e.target.closest("#notesBtn")) { $("#notes").classList.toggle("show"); $("#notesBtn").classList.toggle("on"); return; }
-  if (!e.target.closest("#notes")) { $("#notes").classList.remove("show"); $("#notesBtn").classList.remove("on"); }
 });
 
 // ---------- Device switcher ----------
@@ -842,7 +811,6 @@ addEventListener("resize", fit);
 try { const saved = localStorage.getItem("hlk-device"); if (saved) device = saved; } catch (e) {}
 
 applyLang();
-renderWhy();
 setDevice(device);
 </script>
 </body>
