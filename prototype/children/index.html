@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0d5c63" />
+<title>HomeLearn Kids — Prototype</title>
+<meta name="description" content="Clickable prototype of the HomeLearnBridge children's app. Concept for discussion." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Vazirmatn:wght@500;700;800&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --teal: #0d5c63; --teal-deep: #083d44; --teal-soft: #e3f2ef;
+  --coral: #f26b4f; --sun: #ffc857; --sand: #faf6ef; --ink: #12263a; --muted: #5d6b78;
+  --green: #2bb673; --sky: #4d9de0; --purple: #8b6fd6; --pink: #ef6f9b;
+  --card: #fff; --line: #ece5d8;
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; }
+body {
+  font-family: "Nunito", "Vazirmatn", system-ui, sans-serif; color: var(--ink);
+  background: radial-gradient(circle at 20% 10%, #12707a, var(--teal-deep) 70%);
+  display: flex; align-items: center; justify-content: center; gap: 48px; padding: 24px; min-height: 100%;
+}
+[dir="rtl"] body, body[dir="rtl"] { font-family: "Vazirmatn", "Nunito", system-ui, sans-serif; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+
+/* ---------- Side panel (desktop) ---------- */
+.side { color: #fff; max-width: 340px; }
+.side .tag { display: inline-block; background: var(--sun); color: var(--ink); font-weight: 800; font-size: .75rem; letter-spacing: .08em; padding: 5px 10px; border-radius: 99px; }
+.side h1 { font-size: 2rem; line-height: 1.15; margin: 14px 0 10px; }
+.side p { color: rgba(255,255,255,.8); line-height: 1.55; }
+.why { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); border-radius: 18px; padding: 18px; margin-top: 18px; }
+.why h3 { margin: 0 0 8px; font-size: .8rem; letter-spacing: .1em; color: var(--sun); }
+.why ul { margin: 0; padding-left: 18px; }
+.why li { margin: 6px 0; color: rgba(255,255,255,.9); line-height: 1.45; font-size: .95rem; }
+.side small { display: block; margin-top: 16px; color: rgba(255,255,255,.55); }
+
+/* ---------- Phone ---------- */
+.phone {
+  width: 390px; height: 800px; max-height: calc(100vh - 48px);
+  background: #0a1a24; border-radius: 52px; padding: 12px; box-shadow: 0 40px 90px rgba(0,0,0,.45);
+  position: relative; flex-shrink: 0;
+}
+.phone::before { content: ""; position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 110px; height: 30px; background: #0a1a24; border-radius: 20px; z-index: 30; }
+.app { position: relative; height: 100%; background: var(--sand); border-radius: 42px; overflow: hidden; display: flex; flex-direction: column; }
+
+/* status + top bar */
+.status { height: 50px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 30px 6px; font-weight: 800; font-size: .85rem; direction: ltr; }
+.topbar { display: flex; align-items: center; gap: 8px; padding: 6px 16px 10px; flex-shrink: 0; }
+.langs { display: flex; background: #fff; border-radius: 99px; padding: 3px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.langs button { padding: 6px 11px; border-radius: 99px; font-weight: 800; font-size: .82rem; color: var(--muted); }
+.langs button.on { background: var(--teal); color: #fff; }
+.spacer { flex: 1; }
+.icon-btn { width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.15rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); position: relative; }
+.icon-btn.speaking { background: var(--coral); color: #fff; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { transform: scale(1.08); } }
+.icon-btn .dot { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; background: var(--coral); border-radius: 50%; border: 2px solid #fff; }
+
+/* screens */
+.screens { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scrollbar-width: none; }
+.screens::-webkit-scrollbar { display: none; }
+.screen { display: none; padding: 4px 16px 24px; animation: in .25s ease; }
+.screen.on { display: block; }
+@keyframes in { from { opacity: 0; transform: translateY(8px); } }
+h2 { font-size: 1.55rem; margin: 6px 0 4px; font-weight: 900; }
+.sub { color: var(--muted); margin: 0 0 16px; font-weight: 600; }
+.card { background: var(--card); border-radius: 22px; padding: 16px; box-shadow: 0 4px 16px rgba(13,92,99,.07); margin-bottom: 12px; }
+.row { display: flex; align-items: center; gap: 12px; }
+.big-emoji { font-size: 1.8rem; width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; flex-shrink: 0; }
+.label { font-size: .72rem; font-weight: 900; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin: 18px 4px 8px; }
+.muted { color: var(--muted); }
+.small { font-size: .85rem; }
+.pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: .75rem; font-weight: 800; }
+.pill.ok { background: #dff5e9; color: #17804f; }
+.pill.warn { background: #fff1d6; color: #9a6400; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 16px; font-weight: 900; font-size: 1rem; }
+.btn.primary { background: var(--coral); color: #fff; box-shadow: 0 5px 0 #d4533a; }
+.btn.primary:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4533a; }
+.btn.soft { background: var(--teal-soft); color: var(--teal); }
+.btn.white { background: #fff; color: var(--teal); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.tile { border-radius: 20px; padding: 14px; color: #fff; text-align: start; min-height: 110px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 0 rgba(0,0,0,.12); }
+.tile:active { transform: translateY(2px); }
+.tile .e { font-size: 2rem; }
+.tile b { font-size: 1rem; line-height: 1.2; }
+
+/* home */
+.hero { background: linear-gradient(135deg, var(--teal), #13808a); color: #fff; border-radius: 26px; padding: 18px; position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; right: -30px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,200,87,.25); }
+.hero h2 { color: #fff; }
+.hero .avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--sun); display: grid; place-items: center; font-size: 1.8rem; border: 3px solid #fff; flex-shrink: 0; }
+.streak { display: flex; gap: 6px; margin-top: 14px; position: relative; z-index: 1; }
+.streak span { flex: 1; text-align: center; background: rgba(255,255,255,.15); border-radius: 10px; padding: 6px 0; font-size: .72rem; font-weight: 800; }
+.streak span.done { background: var(--sun); color: var(--ink); }
+.task { display: flex; align-items: center; gap: 12px; width: 100%; text-align: start; }
+.task .check { width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--line); flex-shrink: 0; display: grid; place-items: center; color: #fff; font-weight: 900; }
+.task.done .check { background: var(--green); border-color: var(--green); }
+.task.done .t-title { text-decoration: line-through; color: var(--muted); }
+.t-title { font-weight: 800; }
+.chev { margin-inline-start: auto; color: var(--muted); font-size: 1.3rem; }
+[dir="rtl"] .chev { transform: scaleX(-1); }
+.offline { display: flex; align-items: center; gap: 10px; background: #fff; border: 2px dashed #b9ddd6; border-radius: 18px; padding: 12px 14px; font-weight: 700; font-size: .9rem; }
+
+/* homework */
+.steps { list-style: none; padding: 0; margin: 0; }
+.steps li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: flex-start; }
+.steps li:last-child { border: 0; }
+.steps .n { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-soft); color: var(--teal); display: grid; place-items: center; font-weight: 900; flex-shrink: 0; }
+.steps li.done .n { background: var(--green); color: #fff; }
+.steps li.done p { color: var(--muted); }
+.steps p { margin: 4px 0 0; font-weight: 700; }
+.hint { background: #fff8e6; border-radius: 16px; padding: 12px 14px; font-weight: 700; margin-top: 10px; display: none; }
+.hint.show { display: block; animation: in .25s; }
+.progress { height: 12px; background: var(--teal-soft); border-radius: 99px; overflow: hidden; }
+.progress span { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width .4s; }
+.photo-prev { margin-top: 10px; border-radius: 14px; max-height: 140px; display: none; }
+
+/* chat */
+.chat { display: flex; flex-direction: column; gap: 8px; }
+.msg { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-weight: 600; line-height: 1.4; }
+.msg.them { background: #fff; align-self: flex-start; border-end-start-radius: 4px; }
+.msg.me { background: var(--teal); color: #fff; align-self: flex-end; border-end-end-radius: 4px; }
+.composer { display: flex; gap: 8px; margin-top: 12px; }
+.composer input { flex: 1; border: 2px solid var(--line); border-radius: 99px; padding: 12px 16px; font: inherit; font-weight: 600; background: #fff; }
+.composer button { width: 48px; border-radius: 50%; background: var(--coral); color: #fff; font-size: 1.2rem; }
+.quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+.quick button { background: #fff; border: 2px solid var(--line); border-radius: 99px; padding: 6px 12px; font-weight: 700; font-size: .85rem; }
+
+/* learn */
+.ages { display: flex; gap: 6px; margin-bottom: 14px; }
+.ages button { flex: 1; padding: 10px 6px; border-radius: 14px; background: #fff; font-weight: 800; font-size: .85rem; }
+.ages button.on { background: var(--ink); color: #fff; }
+
+/* game */
+.game { text-align: center; }
+.eq { display: inline-flex; gap: 12px; align-items: center; background: var(--teal); color: #fff; font-size: 2.4rem; font-weight: 900; padding: 12px 22px; border-radius: 20px; direction: ltr; margin: 10px 0 20px; }
+.slot { min-width: 64px; height: 58px; border-radius: 14px; background: var(--sun); color: var(--ink); display: grid; place-items: center; }
+.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; direction: ltr; }
+.answers button { height: 64px; border-radius: 18px; color: #fff; font-size: 1.6rem; font-weight: 900; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
+.answers button.wrong { opacity: .35; }
+.stars { font-size: 1.5rem; letter-spacing: 4px; margin: 6px 0; }
+.feedback { min-height: 1.6em; font-weight: 900; font-size: 1.1rem; margin-top: 14px; }
+
+/* breathe */
+.breathe { width: 180px; height: 180px; margin: 20px auto; border-radius: 50%; background: radial-gradient(circle, #b8e3dc, var(--teal-soft)); display: grid; place-items: center; font-weight: 900; color: var(--teal); font-size: 1.2rem; transition: transform 4s ease-in-out; }
+.breathe.big { transform: scale(1.35); }
+.feelings { display: flex; justify-content: space-between; }
+.feelings button { font-size: 2rem; width: 56px; height: 56px; border-radius: 16px; background: #fff; }
+.feelings button.on { background: var(--sun); transform: scale(1.1); }
+
+/* story */
+.story-img { height: 150px; border-radius: 20px; background: linear-gradient(180deg, #a8dadc, #f1e3c6); display: grid; place-items: center; font-size: 4rem; margin-bottom: 14px; }
+.story-text { font-size: 1.25rem; font-weight: 700; line-height: 1.7; }
+
+/* progress */
+.badges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.badge { text-align: center; font-size: .7rem; font-weight: 800; color: var(--muted); }
+.badge div { width: 56px; height: 56px; margin: 0 auto 4px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: var(--sun); box-shadow: 0 3px 0 #e0a93a; }
+.badge.locked div { background: #eee; box-shadow: none; filter: grayscale(1); opacity: .5; }
+.subject { margin: 12px 0; }
+.subject .row { justify-content: space-between; font-weight: 800; margin-bottom: 6px; }
+.subject .row > span:first-child { display: inline-flex; gap: 8px; }
+.moves { background: linear-gradient(135deg, #fff1d6, #ffe3c9); }
+.timeline { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: .75rem; font-weight: 800; }
+.timeline span { background: #fff; border-radius: 10px; padding: 6px 8px; }
+.timeline i { color: var(--coral); font-style: normal; }
+.place { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.place:last-child { border: 0; }
+.map { height: 140px; border-radius: 18px; margin-bottom: 12px; position: relative; overflow: hidden;
+  background: linear-gradient(90deg, transparent 48%, #fff 48% 52%, transparent 52%), linear-gradient(0deg, transparent 58%, #fff 58% 62%, transparent 62%), linear-gradient(135deg, #dcefe9, #cfe6f2); }
+.pin { position: absolute; font-size: 1.6rem; transform: translate(-50%, -100%); }
+
+/* tab bar */
+.tabbar { flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; padding: 8px 8px 22px; border-top: 1px solid var(--line); }
+.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .72rem; font-weight: 800; color: var(--muted); padding: 6px 2px; border-radius: 14px; }
+.tabbar button .e { font-size: 1.45rem; filter: grayscale(.6); }
+.tabbar button.on { color: var(--teal); background: var(--teal-soft); }
+.tabbar button.on .e { filter: none; }
+
+.back { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: var(--teal); padding: 6px 0; }
+[dir="rtl"] .back .arr { transform: scaleX(-1); display: inline-block; }
+
+.toast { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 99px; font-weight: 800; font-size: .9rem; opacity: 0; transition: .25s; pointer-events: none; white-space: nowrap; z-index: 20; }
+.toast.show { opacity: 1; transform: translateX(-50%); }
+
+/* mobile: app fills the screen */
+.why-btn { display: none; }
+@media (max-width: 860px) {
+  body { padding: 0; gap: 0; background: var(--sand); display: block; }
+  .side { display: none; }
+  .phone { width: 100%; height: 100dvh; max-height: none; border-radius: 0; padding: 0; box-shadow: none; }
+  .phone::before { display: none; }
+  .app { border-radius: 0; }
+  .status { height: 14px; padding: 0; }
+  .status * { display: none; }
+  .why-btn { display: grid; }
+  .sheet { position: absolute; inset: auto 0 0 0; background: var(--teal-deep); color: #fff; border-radius: 24px 24px 0 0; padding: 20px 20px 34px; z-index: 25; transform: translateY(100%); transition: .3s; }
+  .sheet.show { transform: none; }
+}
+@media (min-width: 861px) { .sheet { display: none; } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+
+<aside class="side">
+  <span class="tag">PROTOTYPE · CONCEPT FOR DISCUSSION</span>
+  <h1>HomeLearn Kids</h1>
+  <p>The children's app from HomeLearnBridge. Tap through it like a real phone app. Nothing is saved or sent anywhere.</p>
+  <div class="why" id="whyPanel"></div>
+  <small>The names, the coach and the places are made-up examples. The reasons above summarise the family survey.</small>
+</aside>
+
+<div class="phone">
+  <div class="app" id="app">
+    <div class="status"><span>9:41</span><span>📶 🔋</span></div>
+
+    <div class="topbar">
+      <div class="langs" role="group" aria-label="Language">
+        <button data-lang="en" class="on">EN</button>
+        <button data-lang="fa">دری</button>
+        <button data-lang="ps">پښتو</button>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn why-btn" id="whyBtn" aria-label="Why is this here?">💡</button>
+      <button class="icon-btn" id="readBtn" aria-label="Read this page to me">🔊</button>
+    </div>
+
+    <div class="screens" id="screens">
+
+      <!-- ============ HOME ============ -->
+      <section class="screen on" data-screen="home" data-tab="home">
+        <div class="hero">
+          <div class="row">
+            <div class="avatar">🧒</div>
+            <div>
+              <h2 data-t="hi"></h2>
+              <div data-t="heroSub" style="opacity:.85;font-weight:700"></div>
+            </div>
+          </div>
+          <div class="streak" id="streak"></div>
+        </div>
+
+        <div class="label" data-t="todayTasks"></div>
+        <div class="card">
+          <button class="task" data-go="homework-task"><span class="check"></span><span><span class="t-title" data-t="task1"></span><br/><span class="small muted" data-t="task1meta"></span></span><span class="chev">›</span></button>
+        </div>
+        <div class="card">
+          <button class="task" data-go="story"><span class="check"></span><span><span class="t-title" data-t="task2"></span><br/><span class="small muted" data-t="task2meta"></span></span><span class="chev">›</span></button>
+        </div>
+        <div class="card">
+          <button class="task" data-go="game"><span class="check"></span><span><span class="t-title" data-t="task3"></span><br/><span class="small muted" data-t="task3meta"></span></span><span class="chev">›</span></button>
+        </div>
+
+        <button class="btn primary" id="readHome" style="margin-top:14px">🔊 <span data-t="readToMe"></span></button>
+
+        <div class="label" data-t="savedLabel"></div>
+        <div class="offline">✅ <span data-t="offlineNote"></span></div>
+      </section>
+
+      <!-- ============ HOMEWORK LIST ============ -->
+      <section class="screen" data-screen="homework" data-tab="homework">
+        <h2 data-t="hwTitle"></h2>
+        <p class="sub" data-t="hwSub"></p>
+        <div class="card">
+          <button class="task" data-go="homework-task"><span class="big-emoji" style="background:#ffe9e3">➗</span><span><span class="t-title" data-t="task1"></span><br/><span class="pill warn" data-t="dueTomorrow"></span></span><span class="chev">›</span></button>
+        </div>
+        <div class="card">
+          <button class="task" data-go="homework-task"><span class="big-emoji" style="background:#e3f0ff">📖</span><span><span class="t-title" data-t="hw2"></span><br/><span class="pill warn" data-t="dueFriday"></span></span><span class="chev">›</span></button>
+        </div>
+        <div class="card">
+          <button class="task done"><span class="big-emoji" style="background:#dff5e9">🔬</span><span><span class="t-title" data-t="hw3"></span><br/><span class="pill ok" data-t="sentToTeacher"></span></span></button>
+        </div>
+        <div class="label" data-t="needHelp"></div>
+        <div class="card row">
+          <span class="big-emoji" style="background:var(--teal-soft)">👩‍🏫</span>
+          <div style="flex:1"><b data-t="coachName"></b><div class="small muted" data-t="coachLangs"></div></div>
+          <button class="btn soft" style="width:auto;padding:10px 14px" data-go="chat" data-t="chat"></button>
+        </div>
+      </section>
+
+      <!-- ============ HOMEWORK TASK ============ -->
+      <section class="screen" data-screen="homework-task" data-tab="homework">
+        <button class="back" data-go="homework"><span class="arr">←</span> <span data-t="back"></span></button>
+        <h2 data-t="task1"></h2>
+        <p class="sub" data-t="stepsSub"></p>
+        <div class="progress"><span id="hwBar" style="width:0%"></span></div>
+        <div class="card" style="margin-top:12px">
+          <ol class="steps" id="steps"></ol>
+        </div>
+        <button class="btn soft" id="hintBtn">💡 <span data-t="getHint"></span></button>
+        <div class="hint" id="hint" data-t="hintText"></div>
+        <div class="grid2" style="margin-top:10px">
+          <label class="btn white" style="box-shadow:0 2px 8px rgba(0,0,0,.06)">📷 <span data-t="photo"></span>
+            <input type="file" accept="image/*" capture="environment" id="photoIn" hidden />
+          </label>
+          <button class="btn white" style="box-shadow:0 2px 8px rgba(0,0,0,.06)" data-go="chat">💬 <span data-t="askCoach"></span></button>
+        </div>
+        <img class="photo-prev" id="photoPrev" alt="Photo of homework" />
+      </section>
+
+      <!-- ============ CHAT ============ -->
+      <section class="screen" data-screen="chat" data-tab="homework">
+        <button class="back" data-go="homework"><span class="arr">←</span> <span data-t="back"></span></button>
+        <div class="row" style="margin:8px 0 14px">
+          <span class="big-emoji" style="background:var(--teal-soft)">👩‍🏫</span>
+          <div><b data-t="coachName"></b><div class="small" style="color:var(--green);font-weight:800">● <span data-t="online"></span></div></div>
+        </div>
+        <div class="chat" id="chat"></div>
+        <div class="quick" id="quick"></div>
+        <form class="composer" id="composer">
+          <input id="chatIn" autocomplete="off" />
+          <button type="submit" aria-label="Send">➤</button>
+        </form>
+      </section>
+
+      <!-- ============ LEARN ============ -->
+      <section class="screen" data-screen="learn" data-tab="learn">
+        <h2 data-t="learnTitle"></h2>
+        <p class="sub" data-t="learnSub"></p>
+        <div class="ages" id="ages">
+          <button data-age="0" class="on" data-t="age1"></button>
+          <button data-age="1" data-t="age2"></button>
+          <button data-age="2" data-t="age3"></button>
+        </div>
+        <button class="card row" style="width:100%;text-align:start;background:linear-gradient(135deg,var(--coral),#f4925e);color:#fff" data-go="game">
+          <span class="big-emoji" style="background:rgba(255,255,255,.2)">🎮</span>
+          <div style="flex:1"><div class="small" style="font-weight:900;opacity:.85" data-t="gameOfDay"></div><b style="font-size:1.1rem" data-t="gameName"></b></div>
+          <span class="chev" style="color:#fff">›</span>
+        </button>
+        <div class="grid2">
+          <button class="tile" style="background:var(--sky)" data-go="game"><span class="e">🔢</span><b data-t="maths"></b></button>
+          <button class="tile" style="background:var(--purple)" data-go="story"><span class="e">🔤</span><b data-t="english"></b></button>
+          <button class="tile" style="background:var(--teal)" data-go="story"><span class="e">📚</span><b data-t="stories"></b></button>
+          <button class="tile" style="background:var(--green)" data-go="calm"><span class="e">🌱</span><b data-t="wellbeing"></b></button>
+        </div>
+        <div class="label" data-t="savedLabel"></div>
+        <div class="offline">⬇️ <span data-t="downloaded"></span></div>
+      </section>
+
+      <!-- ============ GAME ============ -->
+      <section class="screen game" data-screen="game" data-tab="learn">
+        <button class="back" data-go="learn" style="float:inline-start"><span class="arr">←</span> <span data-t="back"></span></button>
+        <div style="clear:both"></div>
+        <div class="stars" id="stars">☆☆☆☆☆</div>
+        <h2 data-t="missing"></h2>
+        <div class="eq"><span id="ga">8</span><span id="gop">−</span><span class="slot" id="gslot">?</span><span>=</span><span id="gc">3</span></div>
+        <div class="answers" id="ganswers"></div>
+        <div class="feedback" id="gfeed"></div>
+      </section>
+
+      <!-- ============ STORY ============ -->
+      <section class="screen" data-screen="story" data-tab="learn">
+        <button class="back" data-go="learn"><span class="arr">←</span> <span data-t="back"></span></button>
+        <h2 data-t="storyTitle"></h2>
+        <div class="story-img">🌳🐦</div>
+        <p class="story-text" data-t="storyText"></p>
+        <button class="btn primary" id="readStory">🔊 <span data-t="readToMe"></span></button>
+      </section>
+
+      <!-- ============ CALM ============ -->
+      <section class="screen" data-screen="calm" data-tab="learn">
+        <button class="back" data-go="learn"><span class="arr">←</span> <span data-t="back"></span></button>
+        <h2 data-t="feelTitle"></h2>
+        <div class="feelings card" id="feelings">
+          <button aria-label="Happy">😀</button><button aria-label="Okay">🙂</button><button aria-label="Tired">😴</button><button aria-label="Worried">😟</button><button aria-label="Sad">😢</button>
+        </div>
+        <p class="muted small" id="feelMsg" style="text-align:center;font-weight:700;min-height:1.4em"></p>
+        <div class="breathe" id="breathe" data-t="breatheIn"></div>
+        <button class="btn soft" id="breatheBtn" data-t="startBreathing"></button>
+      </section>
+
+      <!-- ============ PROGRESS ============ -->
+      <section class="screen" data-screen="progress" data-tab="progress">
+        <h2 data-t="progressTitle"></h2>
+        <p class="sub" data-t="progressSub"></p>
+        <div class="card">
+          <div class="label" style="margin-top:0" data-t="myBadges"></div>
+          <div class="badges">
+            <div class="badge"><div>⭐</div><span data-t="b1"></span></div>
+            <div class="badge"><div>📚</div><span data-t="b2"></span></div>
+            <div class="badge"><div>🔥</div><span data-t="b3"></span></div>
+            <div class="badge locked"><div>🏆</div><span data-t="b4"></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="subject"><div class="row"><span>🔢 <span data-t="maths"></span></span><span>70%</span></div><div class="progress"><span style="width:70%"></span></div></div>
+          <div class="subject"><div class="row"><span>🔤 <span data-t="english"></span></span><span>55%</span></div><div class="progress"><span style="width:55%;background:var(--purple)"></span></div></div>
+          <div class="subject"><div class="row"><span>📚 <span data-t="reading"></span></span><span>80%</span></div><div class="progress"><span style="width:80%;background:var(--sky)"></span></div></div>
+        </div>
+        <div class="card moves">
+          <b>🎒 <span data-t="movesTitle"></span></b>
+          <p class="small" style="margin:6px 0 0;font-weight:600" data-t="movesText"></p>
+          <div class="timeline"><span data-t="school1"></span><i>→</i><span data-t="school2"></span><i>→</i><span>✅ <span data-t="saved"></span></span></div>
+        </div>
+        <button class="btn primary" data-go="places">📍 <span data-t="findPlace"></span></button>
+      </section>
+
+      <!-- ============ PLACES ============ -->
+      <section class="screen" data-screen="places" data-tab="progress">
+        <button class="back" data-go="progress"><span class="arr">←</span> <span data-t="back"></span></button>
+        <h2 data-t="placesTitle"></h2>
+        <p class="sub" data-t="placesSub"></p>
+        <div class="map"><span class="pin" style="left:30%;top:45%">📍</span><span class="pin" style="left:68%;top:70%">📍</span><span class="pin" style="left:52%;top:55%;font-size:1.3rem">🧒</span></div>
+        <div class="card">
+          <div class="place"><span class="big-emoji" style="background:var(--teal-soft)">🏫</span><div style="flex:1"><b data-t="hub"></b><div class="small muted" data-t="hubMeta"></div></div><button class="btn soft" style="width:auto;padding:8px 12px" data-toast="booked" data-t="book"></button></div>
+          <div class="place"><span class="big-emoji" style="background:#e3f0ff">📚</span><div style="flex:1"><b data-t="library"></b><div class="small muted" data-t="libraryMeta"></div></div><button class="btn soft" style="width:auto;padding:8px 12px" data-toast="booked" data-t="book"></button></div>
+        </div>
+        <div class="card row">
+          <span class="big-emoji" style="background:#fff1d6">💻</span>
+          <div style="flex:1"><b data-t="noDevice"></b><div class="small muted" data-t="noDeviceSub"></div></div>
+        </div>
+        <button class="btn soft" data-toast="askedGrownUp">🙋 <span data-t="askGrownUp"></span></button>
+      </section>
+    </div>
+
+    <nav class="tabbar" id="tabbar">
+      <button data-go="home" data-tabbtn="home" class="on"><span class="e">🏠</span><span data-t="tabHome"></span></button>
+      <button data-go="homework" data-tabbtn="homework"><span class="e">✏️</span><span data-t="tabHw"></span></button>
+      <button data-go="learn" data-tabbtn="learn"><span class="e">🎨</span><span data-t="tabLearn"></span></button>
+      <button data-go="progress" data-tabbtn="progress"><span class="e">🏅</span><span data-t="tabProgress"></span></button>
+    </nav>
+
+    <div class="toast" id="toast"></div>
+    <div class="sheet" id="sheet"></div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// Text in three languages. Dari and Pashto are first drafts and
+// should be checked by a native speaker before testing with families.
+// ---------------------------------------------------------------
+const T = {
+  en: {
+    hi: "Hi Ahmed! 👋", heroSub: "Ready to learn today?", todayTasks: "Today's tasks",
+    task1: "Maths: halves and quarters", task1meta: "Homework · 3 small steps",
+    task2: "Read a story", task2meta: "Reading · 5 minutes",
+    task3: "Number game", task3meta: "Game of the day",
+    readToMe: "Read this page to me", savedLabel: "Works without internet",
+    offlineNote: "Today's lessons are saved on this phone.",
+    tabHome: "Home", tabHw: "Homework", tabLearn: "Learn & play", tabProgress: "My progress",
+    hwTitle: "Homework help", hwSub: "Big tasks, broken into small steps.",
+    hw2: "English: write about my weekend", hw3: "Science: plant diary",
+    dueTomorrow: "Due tomorrow", dueFriday: "Due Friday", sentToTeacher: "✓ Sent to teacher",
+    needHelp: "Need help?", coachName: "Coach Sara", coachLangs: "Speaks Dari and English",
+    chat: "Chat", back: "Back", stepsSub: "Do one step at a time. Tick it when you finish.",
+    s1: "Draw a pizza and cut it into 2 equal parts.", s2: "Colour one part. That's one half (½).",
+    s3: "Cut each half again. One piece is a quarter (¼).",
+    getHint: "Get a hint", hintText: "💡 Halves are 2 equal parts. Quarters are 4 equal parts. Try folding a piece of paper!",
+    photo: "Photo of my work", askCoach: "Ask my coach", photoSent: "📷 Photo sent to Coach Sara",
+    online: "Online now",
+    c1: "Hi Ahmed! I'm Sara, your learning coach. How can I help? 😊",
+    q1: "I don't understand step 2", q2: "Can you explain in Dari?", q3: "I finished! ✅",
+    r1: "No problem! Imagine sharing a pizza with one friend. You each get one half. 🍕",
+    r2: "Of course! I can send you a voice message in Dari.", r3: "Amazing work, Ahmed! ⭐ I'll tell your teacher.",
+    rDefault: "Thanks! I'll reply soon. 👍", typeMsg: "Type a message…",
+    learnTitle: "Learn & play", learnSub: "Choose your age group.", age1: "Ages 5–7", age2: "Ages 8–11", age3: "Ages 12–16",
+    gameOfDay: "GAME OF THE DAY", gameName: "Find the missing number",
+    maths: "Maths", english: "English", stories: "Stories in Dari & Pashto", wellbeing: "How I feel",
+    reading: "Reading", downloaded: "12 lessons downloaded to use offline.",
+    missing: "Which number is missing?", great: ["Great job! ⭐", "Well done! 🎉", "You got it! 👏"], tryAgain: "Try again!",
+    storyTitle: "The little bird", storyText: "A little bird lived in a big tree. Every morning she sang a happy song. One day the wind was strong, but the bird held on tight. When the sun came out, she sang again.",
+    feelTitle: "How do you feel today?", feelOk: "Thank you for telling me. 💛",
+    feelHard: "It's okay to feel this way. You can talk to a grown-up you trust. 💛",
+    breatheIn: "Breathe in", breatheOut: "Breathe out", startBreathing: "Start breathing with me",
+    progressTitle: "My progress", progressSub: "Look how much you've learned!",
+    myBadges: "My badges", b1: "First task", b2: "5 stories", b3: "7-day streak", b4: "Maths star",
+    movesTitle: "My learning moves with me", movesText: "If you move home or change school, your progress stays safe. Your new teacher can see it.",
+    school1: "Old school", school2: "New school", saved: "Saved",
+    findPlace: "Find a place to study near me",
+    placesTitle: "Places to study", placesSub: "Quiet places with tables, Wi-Fi and help.",
+    hub: "HomeLearn Study Hub", hubMeta: "10 min walk · Mon–Fri 3–6 pm",
+    library: "Local library", libraryMeta: "15 min walk · free computers",
+    book: "Book", booked: "✅ Booked! A grown-up will get a message.",
+    noDevice: "No tablet or laptop at home?", noDeviceSub: "Your family can borrow one from HomeLearnBridge.",
+    askGrownUp: "Ask a grown-up to request one", askedGrownUp: "✅ We told your grown-up",
+    days: ["M", "T", "W", "T", "F", "S", "S"],
+    noVoice: "This device has no voice for this language. The real app would play recorded audio.",
+  },
+  fa: {
+    hi: "سلام احمد! 👋", heroSub: "آماده یادگیری امروز هستی؟", todayTasks: "کارهای امروز",
+    task1: "ریاضی: نصف و ربع", task1meta: "کارخانگی · ۳ مرحله کوچک",
+    task2: "یک قصه بخوان", task2meta: "خواندن · ۵ دقیقه",
+    task3: "بازی اعداد", task3meta: "بازی امروز",
+    readToMe: "این صفحه را برایم بخوان", savedLabel: "بدون انترنت هم کار می‌کند",
+    offlineNote: "درس‌های امروز در این تلفن ذخیره شده‌اند.",
+    tabHome: "خانه", tabHw: "کارخانگی", tabLearn: "بیاموز و بازی کن", tabProgress: "پیشرفت من",
+    hwTitle: "کمک در کارخانگی", hwSub: "کارهای بزرگ، به مرحله‌های کوچک تقسیم شده‌اند.",
+    hw2: "انگلیسی: درباره آخر هفته‌ام بنویسم", hw3: "ساینس: دفترچه نبات",
+    dueTomorrow: "تا فردا", dueFriday: "تا جمعه", sentToTeacher: "✓ به معلم فرستاده شد",
+    needHelp: "کمک لازم داری؟", coachName: "مربی سارا", coachLangs: "دری و انگلیسی صحبت می‌کند",
+    chat: "گفتگو", back: "برگشت", stepsSub: "هر بار یک مرحله را انجام بده. وقتی تمام شد، تیک بزن.",
+    s1: "یک پیتزا بکش و آن را به ۲ قسمت برابر تقسیم کن.", s2: "یک قسمت را رنگ کن. این یک نصف (½) است.",
+    s3: "هر نصف را دوباره تقسیم کن. هر تکه یک ربع (¼) است.",
+    getHint: "راهنمایی بگیر", hintText: "💡 نصف یعنی ۲ قسمت برابر. ربع یعنی ۴ قسمت برابر. یک کاغذ را قات کن و امتحان کن!",
+    photo: "عکس کارم", askCoach: "از مربی‌ام بپرس", photoSent: "📷 عکس به مربی سارا فرستاده شد",
+    online: "آنلاین است",
+    c1: "سلام احمد! من سارا هستم، مربی یادگیری‌ات. چطور کمکت کنم؟ 😊",
+    q1: "مرحله ۲ را نمی‌فهمم", q2: "می‌شود به دری توضیح بدهی؟", q3: "تمام کردم! ✅",
+    r1: "مشکلی نیست! فکر کن یک پیتزا را با یک دوستت تقسیم می‌کنی. هر کدام یک نصف می‌گیرید. 🍕",
+    r2: "حتماً! برایت یک پیام صوتی به دری می‌فرستم.", r3: "عالی بود احمد! ⭐ به معلمت می‌گویم.",
+    rDefault: "تشکر! زود جواب می‌دهم. 👍", typeMsg: "پیام بنویس…",
+    learnTitle: "بیاموز و بازی کن", learnSub: "گروه سنی‌ات را انتخاب کن.", age1: "۵ تا ۷ سال", age2: "۸ تا ۱۱ سال", age3: "۱۲ تا ۱۶ سال",
+    gameOfDay: "بازی امروز", gameName: "عدد گم‌شده را پیدا کن",
+    maths: "ریاضی", english: "انگلیسی", stories: "قصه‌ها به دری و پشتو", wellbeing: "احساس من",
+    reading: "خواندن", downloaded: "۱۲ درس برای استفاده بدون انترنت دانلود شده.",
+    missing: "کدام عدد گم شده؟", great: ["آفرین! ⭐", "خیلی خوب! 🎉", "درست است! 👏"], tryAgain: "دوباره امتحان کن!",
+    storyTitle: "پرنده کوچک", storyText: "یک پرنده کوچک در یک درخت بزرگ زندگی می‌کرد. هر صبح یک آهنگ شاد می‌خواند. یک روز باد شدید آمد، اما پرنده محکم نگه داشت. وقتی آفتاب برآمد، دوباره آواز خواند.",
+    feelTitle: "امروز چه احساسی داری؟", feelOk: "تشکر که به من گفتی. 💛",
+    feelHard: "اشکالی ندارد که این احساس را داری. می‌توانی با یک بزرگسال که به او اعتماد داری صحبت کنی. 💛",
+    breatheIn: "نفس بکش", breatheOut: "نفس را بیرون بده", startBreathing: "با من نفس بکش",
+    progressTitle: "پیشرفت من", progressSub: "ببین چقدر یاد گرفته‌ای!",
+    myBadges: "نشان‌های من", b1: "اولین کار", b2: "۵ قصه", b3: "۷ روز پی‌درپی", b4: "ستاره ریاضی",
+    movesTitle: "یادگیری‌ام همراه من است", movesText: "اگر خانه یا مکتب را عوض کنی، پیشرفتت محفوظ می‌ماند. معلم جدیدت می‌تواند آن را ببیند.",
+    school1: "مکتب قبلی", school2: "مکتب جدید", saved: "ذخیره شد",
+    findPlace: "یک جای درس خواندن نزدیکم پیدا کن",
+    placesTitle: "جاهای درس خواندن", placesSub: "جاهای آرام با میز، وای‌فای و کمک.",
+    hub: "مرکز درسی HomeLearn", hubMeta: "۱۰ دقیقه پیاده · دوشنبه تا جمعه ۳ تا ۶ عصر",
+    library: "کتابخانه محلی", libraryMeta: "۱۵ دقیقه پیاده · کمپیوتر رایگان",
+    book: "رزرو", booked: "✅ رزرو شد! به یک بزرگسال پیام می‌رسد.",
+    noDevice: "در خانه تبلت یا لپ‌تاپ نداری؟", noDeviceSub: "خانواده‌ات می‌تواند یکی از HomeLearnBridge قرض بگیرد.",
+    askGrownUp: "از یک بزرگسال بخواه درخواست کند", askedGrownUp: "✅ به بزرگسالت گفتیم",
+    days: ["د", "س", "چ", "پ", "ج", "ش", "ی"],
+    noVoice: "این دستگاه صدای این زبان را ندارد. در اپ واقعی صدای ضبط‌شده پخش می‌شود.",
+  },
+  ps: {
+    hi: "سلام احمده! 👋", heroSub: "نن د زده کړې لپاره چمتو یې؟", todayTasks: "د نن ورځې دندې",
+    task1: "ریاضي: نیمه او څلورمه برخه", task1meta: "کورنی کار · ۳ کوچني ګامونه",
+    task2: "یوه کیسه ولوله", task2meta: "لوستل · ۵ دقیقې",
+    task3: "د شمېرو لوبه", task3meta: "د نن ورځې لوبه",
+    readToMe: "دا پاڼه راته ولوله", savedLabel: "پرته له انټرنېټه هم کار کوي",
+    offlineNote: "د نن ورځې لوستونه په دې تلیفون کې خوندي دي.",
+    tabHome: "کور", tabHw: "کورنی کار", tabLearn: "زده کړه او لوبه", tabProgress: "زما پرمختګ",
+    hwTitle: "د کورني کار مرسته", hwSub: "لوی کارونه په کوچنیو ګامونو وېشل شوي.",
+    hw2: "انګلیسي: د خپلې اونۍ د پای په اړه ولیکه", hw3: "ساینس: د بوټي ورځپاڼه",
+    dueTomorrow: "تر سبا", dueFriday: "تر جمعې", sentToTeacher: "✓ ښوونکي ته ولېږل شو",
+    needHelp: "مرستې ته اړتیا لرې؟", coachName: "روزونکې سارا", coachLangs: "دري او انګلیسي خبرې کوي",
+    chat: "خبرې", back: "شاته", stepsSub: "هر ځل یو ګام واخله. چې خلاص شو، نښه یې کړه.",
+    s1: "یو پیتزا رسم کړه او په ۲ برابرو برخو یې ووېشه.", s2: "یوه برخه رنګ کړه. دا نیمه (½) ده.",
+    s3: "هره نیمه بیا ووېشه. هره ټوټه څلورمه برخه (¼) ده.",
+    getHint: "لارښوونه واخله", hintText: "💡 نیمه یعنې ۲ برابرې برخې. څلورمه یعنې ۴ برابرې برخې. یوه پاڼه قات کړه او وې ازمایه!",
+    photo: "زما د کار انځور", askCoach: "له روزونکې وپوښته", photoSent: "📷 انځور روزونکې سارا ته ولېږل شو",
+    online: "اوس آنلاین ده",
+    c1: "سلام احمده! زه سارا یم، ستا د زده کړې روزونکې. څنګه مرسته درسره وکړم؟ 😊",
+    q1: "دوهم ګام نه پوهېږم", q2: "په دري یې تشریح کولی شې؟", q3: "خلاص مې کړ! ✅",
+    r1: "هېڅ ستونزه نشته! فکر وکړه چې یو پیتزا له یو ملګري سره وېشې. هر یو نیمه اخلئ. 🍕",
+    r2: "هو، حتماً! تاته به په دري کې غږیز پیغام ولېږم.", r3: "ډېر ښه کار دې وکړ احمده! ⭐ ښوونکي ته به دې ووایم.",
+    rDefault: "مننه! ژر به ځواب درکړم. 👍", typeMsg: "پیغام ولیکه…",
+    learnTitle: "زده کړه او لوبه", learnSub: "خپله عمري ډله وټاکه.", age1: "۵–۷ کلن", age2: "۸–۱۱ کلن", age3: "۱۲–۱۶ کلن",
+    gameOfDay: "د نن ورځې لوبه", gameName: "ورکه شمېره پیدا کړه",
+    maths: "ریاضي", english: "انګلیسي", stories: "کیسې په دري او پښتو", wellbeing: "زما احساس",
+    reading: "لوستل", downloaded: "۱۲ لوستونه پرته له انټرنېټه د کارولو لپاره ښکته شوي.",
+    missing: "کومه شمېره ورکه ده؟", great: ["شاباس! ⭐", "ډېر ښه! 🎉", "سمه ده! 👏"], tryAgain: "بیا هڅه وکړه!",
+    storyTitle: "کوچنۍ مرغۍ", storyText: "یوه کوچنۍ مرغۍ په یوه لویه ونه کې اوسېده. هر سهار به یې یوه خوشاله سندره ویله. یوه ورځ سخت باد راغی، خو مرغۍ ټینګه ونیوله. کله چې لمر راووت، بیا یې سندره وویله.",
+    feelTitle: "نن څه احساس لرې؟", feelOk: "مننه چې راته دې وویل. 💛",
+    feelHard: "سمه ده چې داسې احساس لرې. له یو داسې لوی سړي سره خبرې کولی شې چې باور پرې لرې. 💛",
+    breatheIn: "ساه واخله", breatheOut: "ساه وباسه", startBreathing: "له ما سره ساه واخله",
+    progressTitle: "زما پرمختګ", progressSub: "وګوره څومره دې زده کړي!",
+    myBadges: "زما نښانونه", b1: "لومړۍ دنده", b2: "۵ کیسې", b3: "۷ ورځې پرله پسې", b4: "د ریاضي ستوری",
+    movesTitle: "زما زده کړه له ما سره ځي", movesText: "که کور یا ښوونځی بدل کړې، ستا پرمختګ خوندي پاتې کېږي. نوی ښوونکی دې یې لیدلی شي.",
+    school1: "پخوانی ښوونځی", school2: "نوی ښوونځی", saved: "خوندي شو",
+    findPlace: "ما ته نږدې د زده کړې ځای پیدا کړه",
+    placesTitle: "د زده کړې ځایونه", placesSub: "ارام ځایونه چې مېز، وای‌فای او مرسته لري.",
+    hub: "د HomeLearn د زده کړې مرکز", hubMeta: "۱۰ دقیقې پیاده · دوشنبه–جمعه ۳–۶ ماسپښین",
+    library: "سیمه‌ییز کتابتون", libraryMeta: "۱۵ دقیقې پیاده · وړیا کمپیوټرونه",
+    book: "بک کړه", booked: "✅ بک شو! لوی سړي ته به پیغام ورشي.",
+    noDevice: "په کور کې ټابلیټ یا لپ‌ټاپ نه لرې؟", noDeviceSub: "ستا کورنۍ کولی شي له HomeLearnBridge څخه یو په پور واخلي.",
+    askGrownUp: "له یو لوی سړي وغواړه چې غوښتنه وکړي", askedGrownUp: "✅ ستا لوی سړي ته مو وویل",
+    days: ["د", "س", "چ", "پ", "ج", "ش", "ی"],
+    noVoice: "په دې وسیله کې د دې ژبې غږ نشته. په اصلي اپ کې به ثبت شوی غږ غږېږي.",
+  },
+};
+
+// Why each screen exists (from the family survey), shown beside the phone.
+const WHY = {
+  home: ["Most families prefer Dari or Pashto, so the language switch is always at the top.", "Some parents find reading hard: every page can be read aloud.", "Lessons are saved on the phone, because many homes share one device."],
+  homework: ["Homework and study support was the help families asked for most.", "A learning coach who speaks the family's language helps where parents can't."],
+  "homework-task": ["Tasks are split into small steps so a child can work alone.", "A photo of paper work means it still counts without a laptop."],
+  chat: ["Children can message a coach in Dari or English.", "Quick replies help younger children who can't type yet."],
+  learn: ["Families asked for educational games, books and online resources.", "Content is grouped by age, because families have children from nursery to sixth form."],
+  game: ["Short games keep learning going in small moments on a shared phone."],
+  story: ["Stories in Dari and Pashto keep the home language strong.", "Read aloud supports children who are still learning to read."],
+  calm: ["Many families have moved home and said it significantly affected their children's learning. A gentle wellbeing check helps."],
+  progress: ["Many families live in temporary or emergency housing and have moved more than once.", "Progress stays with the child when they change school."],
+  places: ["Lack of a quiet study space was one of the top problems reported.", "Lack of a laptop or tablet was the other: families can borrow one."],
+};
+
+let lang = "en";
+let screen = "home";
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const t = (k) => T[lang][k] ?? T.en[k];
+
+function applyLang() {
+  const rtl = lang !== "en";
+  document.documentElement.lang = lang;
+  $("#app").dir = rtl ? "rtl" : "ltr";
+  $$("[data-t]").forEach((el) => (el.textContent = t(el.dataset.t)));
+  $$(".langs button").forEach((b) => b.classList.toggle("on", b.dataset.lang === lang));
+  $("#chatIn").placeholder = t("typeMsg");
+  renderStreak(); renderSteps(); renderQuick();
+}
+
+function renderWhy() {
+  const items = WHY[screen] || [];
+  const html = `<h3>WHY THIS SCREEN?</h3><ul>${items.map((i) => `<li>${i}</li>`).join("")}</ul>`;
+  $("#whyPanel").innerHTML = html;
+  $("#sheet").innerHTML = html + `<button class="btn white" style="margin-top:14px" id="sheetClose">OK</button>`;
+}
+
+function go(name) {
+  stopSpeaking();
+  screen = name;
+  $$(".screen").forEach((s) => s.classList.toggle("on", s.dataset.screen === name));
+  const tab = $(`.screen[data-screen="${name}"]`).dataset.tab;
+  $$("[data-tabbtn]").forEach((b) => b.classList.toggle("on", b.dataset.tabbtn === tab));
+  $("#screens").scrollTop = 0;
+  renderWhy();
+  if (name === "game") newRound();
+  if (name === "chat" && !$("#chat").children.length) addMsg(t("c1"), "them");
+}
+
+function toast(msg) {
+  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toast.tm); toast.tm = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+// ---------- Home ----------
+function renderStreak() {
+  $("#streak").innerHTML = t("days").map((d, i) => `<span class="${i < 4 ? "done" : ""}">${i < 4 ? "🔥" : d}</span>`).join("");
+}
+
+// ---------- Homework steps ----------
+const doneSteps = new Set();
+function renderSteps() {
+  $("#steps").innerHTML = ["s1", "s2", "s3"].map((k, i) => `
+    <li class="${doneSteps.has(i) ? "done" : ""}"><button class="n" data-step="${i}" aria-label="Step ${i + 1}">${doneSteps.has(i) ? "✓" : i + 1}</button><p>${t(k)}</p></li>`).join("");
+  $("#hwBar").style.width = `${(doneSteps.size / 3) * 100}%`;
+}
+$("#steps").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-step]"); if (!b) return;
+  const i = +b.dataset.step; doneSteps.has(i) ? doneSteps.delete(i) : doneSteps.add(i);
+  renderSteps();
+  if (doneSteps.size === 3) { toast(t("great")[0]); $$(".task")[0].classList.add("done"); }
+});
+$("#hintBtn").addEventListener("click", () => $("#hint").classList.toggle("show"));
+$("#photoIn").addEventListener("change", (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  const img = $("#photoPrev"); img.src = URL.createObjectURL(f); img.style.display = "block";
+  toast(t("photoSent"));
+});
+
+// ---------- Chat ----------
+function addMsg(text, who) {
+  const m = document.createElement("div"); m.className = `msg ${who}`; m.textContent = text;
+  $("#chat").appendChild(m); m.scrollIntoView({ block: "end", behavior: "smooth" });
+}
+function renderQuick() {
+  $("#quick").innerHTML = ["q1", "q2", "q3"].map((k, i) => `<button data-q="${i}">${t(k)}</button>`).join("");
+}
+function reply(i) { setTimeout(() => addMsg(t(["r1", "r2", "r3"][i] || "rDefault"), "them"), 900); }
+$("#quick").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-q]"); if (!b) return;
+  addMsg(b.textContent, "me"); reply(+b.dataset.q);
+});
+$("#composer").addEventListener("submit", (e) => {
+  e.preventDefault(); const v = $("#chatIn").value.trim(); if (!v) return;
+  addMsg(v, "me"); $("#chatIn").value = ""; reply(-1);
+});
+
+// ---------- Learn ----------
+$("#ages").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-age]"); if (!b) return;
+  $$("#ages button").forEach((x) => x.classList.toggle("on", x === b));
+});
+
+// ---------- Game ----------
+const COLORS = ["#4d9de0", "#2bb673", "#f26b4f", "#8b6fd6", "#ef6f9b", "#0d5c63"];
+let answer = 0, stars = 0;
+const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+function newRound() {
+  const add = Math.random() < .5; let a, b, c;
+  if (add) { a = rand(1, 9); b = rand(1, 9); c = a + b; } else { a = rand(5, 15); b = rand(1, a - 1); c = a - b; }
+  answer = b; $("#ga").textContent = a; $("#gop").textContent = add ? "+" : "−"; $("#gc").textContent = c;
+  $("#gslot").textContent = "?"; $("#gfeed").textContent = "";
+  const start = Math.max(1, b - rand(0, 5));
+  $("#ganswers").innerHTML = Array.from({ length: 6 }, (_, i) => `<button style="background:${COLORS[i]}" data-ans="${start + i}">${start + i}</button>`).join("");
+  $("#stars").textContent = "★".repeat(stars) + "☆".repeat(5 - stars);
+}
+$("#ganswers").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-ans]"); if (!b || b.disabled) return;
+  if (+b.dataset.ans === answer) {
+    $("#gslot").textContent = answer; stars = Math.min(5, stars + 1);
+    $("#stars").textContent = "★".repeat(stars) + "☆".repeat(5 - stars);
+    const g = t("great"); $("#gfeed").textContent = g[rand(0, g.length - 1)];
+    $$("#ganswers button").forEach((x) => (x.disabled = true));
+    if (stars === 5) { $$(".task")[2].classList.add("done"); stars = 0; }
+    setTimeout(newRound, 1100);
+  } else { b.classList.add("wrong"); b.disabled = true; $("#gfeed").textContent = t("tryAgain"); }
+});
+
+// ---------- Calm ----------
+$("#feelings").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  $$("#feelings button").forEach((x) => x.classList.toggle("on", x === b));
+  const i = $$("#feelings button").indexOf(b);
+  $("#feelMsg").textContent = i < 2 ? t("feelOk") : t("feelHard");
+});
+let breathTimer = null;
+$("#breatheBtn").addEventListener("click", () => {
+  const el = $("#breathe");
+  if (breathTimer) { clearInterval(breathTimer); breathTimer = null; el.classList.remove("big"); el.textContent = t("breatheIn"); return; }
+  let inhale = true;
+  const step = () => { el.classList.toggle("big", inhale); el.textContent = t(inhale ? "breatheIn" : "breatheOut"); inhale = !inhale; };
+  step(); breathTimer = setInterval(step, 4000);
+});
+
+// ---------- Read aloud ----------
+const VOICE_LANG = { en: "en-GB", fa: "fa", ps: "ps" };
+function stopSpeaking() { speechSynthesis?.cancel(); $("#readBtn").classList.remove("speaking"); }
+function speak(text) {
+  if (!("speechSynthesis" in window)) return toast(t("noVoice"));
+  if (speechSynthesis.speaking) return stopSpeaking();
+  const want = VOICE_LANG[lang];
+  const voice = speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith(want));
+  if (!voice && lang !== "en") return toast(t("noVoice"));
+  const u = new SpeechSynthesisUtterance(text);
+  if (voice) u.voice = voice; u.lang = voice ? voice.lang : "en-GB"; u.rate = .9;
+  u.onend = () => $("#readBtn").classList.remove("speaking");
+  $("#readBtn").classList.add("speaking");
+  speechSynthesis.speak(u);
+}
+const screenText = () => $$(".screen.on [data-t], .screen.on .story-text")
+  .filter((el) => el.offsetParent !== null).map((el) => el.textContent).join(". ");
+$("#readBtn").addEventListener("click", () => speak(screenText()));
+$("#readHome").addEventListener("click", () => speak(screenText()));
+$("#readStory").addEventListener("click", () => speak(t("storyTitle") + ". " + t("storyText")));
+speechSynthesis?.getVoices();
+
+// ---------- Global clicks ----------
+document.addEventListener("click", (e) => {
+  const l = e.target.closest("[data-lang]"); if (l) { lang = l.dataset.lang; stopSpeaking(); applyLang(); return; }
+  const g = e.target.closest("[data-go]"); if (g) { go(g.dataset.go); return; }
+  const ts = e.target.closest("[data-toast]"); if (ts) { toast(t(ts.dataset.toast)); return; }
+  if (e.target.closest("#whyBtn")) { $("#sheet").classList.add("show"); return; }
+  if (e.target.closest("#sheetClose")) { $("#sheet").classList.remove("show"); }
+});
+
+applyLang();
+renderWhy();
+</script>
+</body>
+</html>
