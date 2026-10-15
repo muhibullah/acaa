@@ -1,817 +1,872 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0d5c63" />
-<title>HomeLearn Kids — App Prototype</title>
-<meta name="description" content="Clickable prototype of the HomeLearnBridge children's app. Concept for discussion." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Vazirmatn:wght@500;700;800&display=swap" rel="stylesheet" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#EAF4FF">
+<title>HomeLearn Bridge — Kids App</title>
+<meta name="description" content="Clickable prototype of the HomeLearn Bridge children's app in English, Dari and Pashto. Concept for discussion.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='2' y='2' width='116' height='116' rx='30' fill='%23FFF7E6'/%3E%3Ccircle cx='95' cy='24' r='10' fill='%23FFC83D'/%3E%3Cpath d='M18 56 L60 20 L102 56' fill='none' stroke='%232F6FED' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 60 C49 53 35 53 26 57 L26 87 C35 83 49 83 60 90 Z' fill='%23FF8A3D'/%3E%3Cpath d='M60 60 C71 53 85 53 94 57 L94 87 C85 83 71 83 60 90 Z' fill='%233CC37A'/%3E%3Cpath d='M20 106 Q60 84 100 106' fill='none' stroke='%238B5CF6' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@600;700;800&family=Vazirmatn:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --teal: #0d5c63; --teal-deep: #083d44; --teal-soft: #e3f2ef;
-  --coral: #f26b4f; --sun: #ffc857; --sand: #faf6ef; --ink: #12263a; --muted: #5d6b78;
-  --green: #2bb673; --sky: #4d9de0; --purple: #8b6fd6; --pink: #ef6f9b;
-  --card: #fff; --line: #ece5d8;
+:root{
+  --blue:#2463EB;--blue-d:#1A4BC0;--blue-l:#E3EDFF;--green:#22A95B;--green-d:#178245;--green-l:#DFF5E7;
+  --orange:#FF8A3D;--orange-l:#FFEBDC;--yellow:#FFC83D;--yellow-l:#FFF6D8;--purple:#7C4DEB;--purple-d:#5D33C4;--purple-l:#EEE7FF;
+  --pink:#F0508A;--pink-l:#FFE4EE;--teal:#14A3B8;--teal-l:#DDF5F8;
+  --ink:#16244A;--muted:#66708C;--line:#E3EAF5;--card:#FFFFFF;
+  --bg1:#E4F0FF;--bg2:#F6FAFF;
+  --font:"Nunito","Vazirmatn",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Baloo 2","Vazirmatn",system-ui,sans-serif;
 }
-* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-html, body { margin: 0; height: 100%; }
-body {
-  font-family: "Nunito", "Vazirmatn", system-ui, sans-serif; color: var(--ink);
-  background: linear-gradient(180deg, #e6f3fc, #cfe6f7);
-  display: flex; flex-direction: column; height: 100%; overflow: hidden;
+[dir=rtl]{--font:"Vazirmatn","Nunito",system-ui,sans-serif;--display:"Vazirmatn","Baloo 2",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2) 60%);overflow:hidden}
+button,input{font:inherit;color:inherit;border:none;background:none}
+button{cursor:pointer}
+h1,h2,h3,.disp{font-family:var(--display)}
+
+/* ---------- layout ---------- */
+.app{height:100vh;height:100dvh;display:flex;flex-direction:column}
+.main{flex:1;position:relative;overflow:hidden}
+.view{position:absolute;inset:0;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.view.on{display:block;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.wrap{max-width:560px;margin:0 auto;padding:16px 18px 28px;min-height:100%;display:flex;flex-direction:column}
+.nav{order:2;display:flex;justify-content:space-around;background:#fff;border-top:1px solid var(--line);padding:6px 4px calc(8px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(22,36,74,.05)}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 6px;border-radius:14px;font-size:12.5px;font-weight:800;color:#8D96AE;min-width:60px;position:relative}
+.nav button svg{width:26px;height:26px}
+.nav button.on{color:var(--blue)}
+.nav .badge-n{position:absolute;top:2px;inset-inline-end:12px;background:var(--pink);color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff}
+.nav .brand{display:none}
+body.nonav .nav{display:none}
+
+/* tablet */
+@media (min-width:700px){
+  .wrap{max-width:820px;padding:24px 32px 36px}
+  .nav button{font-size:14px;min-width:90px}
+  .nav button svg{width:30px;height:30px}
 }
-[dir="rtl"] body, body[dir="rtl"] { font-family: "Vazirmatn", "Nunito", system-ui, sans-serif; }
-button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+/* laptop: sidebar */
+@media (min-width:1100px){
+  .app{flex-direction:row}
+  .nav{order:0;flex-direction:column;justify-content:flex-start;gap:6px;width:240px;border-top:none;border-inline-end:1px solid var(--line);padding:24px 16px;box-shadow:none}
+  .nav .brand{display:flex;align-items:center;gap:10px;margin:0 8px 22px}
+  .nav .brand svg{width:52px;height:52px}
+  .nav .brand b{font-family:var(--display);font-size:20px;line-height:1}
+  .nav button{flex-direction:row;gap:14px;font-size:17px;padding:12px 16px;justify-content:flex-start}
+  .nav button.on{background:var(--blue-l)}
+  .nav .badge-n{position:static;margin-inline-start:auto}
+  .wrap{max-width:1080px;padding:32px 44px 44px;zoom:1.12}
+  .tile{min-height:200px}.tile .ic{font-size:70px}
+}
 
-/* ---------- Prototype toolbar (outside the app) ---------- */
-.proto-bar { flex-shrink: 0; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 16px; flex-wrap: wrap; color: var(--ink); }
-.proto-name { font-weight: 900; font-size: .95rem; opacity: .9; }
-.proto-name small { font-weight: 800; font-size: .7rem; background: var(--sun); color: var(--ink); padding: 3px 8px; border-radius: 99px; margin-inline-start: 6px; letter-spacing: .06em; }
-.devices { display: flex; background: rgba(255,255,255,.75); box-shadow: 0 2px 10px rgba(30,80,120,.1); border-radius: 99px; padding: 4px; }
-.devices button { color: var(--muted); font-weight: 800; padding: 8px 16px; border-radius: 99px; font-size: .9rem; }
-.devices button.on { background: var(--teal); color: #fff; }
+/* ---------- common ---------- */
+.bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;min-height:48px}
+.bar .ttl{flex:1;text-align:center}
+.bar .ttl h2{font-size:24px;font-weight:800;line-height:1.15}
+.bar .ttl small{display:block;font-size:15px;font-weight:700;color:var(--purple)}
+.ibtn{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:22px;box-shadow:0 2px 0 var(--line),0 4px 12px rgba(22,36,74,.06);flex:none;color:var(--ink)}
+.ibtn svg{width:24px;height:24px}
+.ibtn.snd{color:var(--blue)}
+.ibtn.ghost{visibility:hidden}
+[dir=rtl] .flip{transform:scaleX(-1)}
+.card{background:var(--card);border-radius:24px;box-shadow:0 2px 0 var(--line),0 6px 18px rgba(22,36,74,.05)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border-radius:999px;font-family:var(--display);font-size:22px;font-weight:800;color:#fff;background:var(--blue);box-shadow:0 5px 0 var(--blue-d);transition:transform .08s,opacity .2s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 var(--blue-d)}
+.btn.green{background:var(--green);box-shadow:0 5px 0 var(--green-d)}
+.btn.purple{background:var(--purple);box-shadow:0 5px 0 var(--purple-d)}
+.btn:disabled{opacity:.4;pointer-events:none}
+.icb{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:30px;flex:none}
+.c-blue{background:var(--blue-l)}.c-green{background:var(--green-l)}.c-orange{background:var(--orange-l)}.c-yellow{background:var(--yellow-l)}.c-purple{background:var(--purple-l)}.c-pink{background:var(--pink-l)}.c-teal{background:var(--teal-l)}
+.toast{position:fixed;left:50%;bottom:100px;transform:translate(-50%,16px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:18px;font-size:16px;font-weight:700;opacity:0;transition:.25s;pointer-events:none;z-index:50;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.sec{font-family:var(--display);font-size:20px;font-weight:800;margin:18px 0 10px;display:flex;align-items:center;gap:8px}
+.sec a{margin-inline-start:auto;font-family:var(--font);font-size:14px;color:var(--blue);font-weight:800}
 
-/* ---------- Stage + device frames ---------- */
-.stage { flex: 1; min-height: 0; display: grid; place-items: center; padding: 8px 16px 20px; overflow: hidden; }
-.scaler { position: relative; }
-.device { position: absolute; top: 0; left: 0; transform-origin: top left; }
-.device.phone { width: 390px; height: 800px; background: #0a1a24; border-radius: 52px; padding: 12px; box-shadow: 0 30px 70px rgba(30,80,120,.28); }
-.device.phone::before { content: ""; position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 110px; height: 30px; background: #0a1a24; border-radius: 20px; z-index: 30; }
-.device.tablet { width: 1180px; height: 820px; background: #0a1a24; border-radius: 44px; padding: 22px; box-shadow: 0 30px 70px rgba(30,80,120,.28); }
-.device.tablet::before { content: ""; position: absolute; top: 50%; left: 8px; width: 7px; height: 7px; border-radius: 50%; background: #23384a; }
-.device.tablet .app { border-radius: 24px; }
-.device.laptop { width: 1360px; height: 900px; padding: 22px 22px 60px; background: #0a1a24; border-radius: 26px 26px 0 0; box-shadow: 0 30px 70px rgba(30,80,120,.28); }
-.device.laptop::after { content: ""; position: absolute; left: -90px; right: -90px; bottom: -26px; height: 26px; background: linear-gradient(#c9d2da, #8e9aa5); border-radius: 0 0 26px 26px; }
-.device.laptop::before { content: ""; position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); width: 7px; height: 7px; border-radius: 50%; background: #23384a; }
-.device.laptop .app { border-radius: 8px; }
-.window-bar { display: none; }
-.device.laptop .window-bar { display: flex; align-items: center; gap: 8px; height: 38px; flex-shrink: 0; padding: 0 14px; background: #e9e4da; font-size: .8rem; font-weight: 700; color: var(--muted); direction: ltr; }
-.window-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff6b6b; }
-.window-bar i:nth-child(2) { background: #ffc94d; } .window-bar i:nth-child(3) { background: #3ad29f; }
-.window-bar span { margin: 0 auto; background: #fff; padding: 4px 40px; border-radius: 8px; }
+/* list rows like the reference */
+.rows{display:grid;gap:12px}
+.row{display:flex;align-items:center;gap:14px;padding:14px;text-align:start;width:100%;border:2px solid transparent}
+.row:active{transform:scale(.99)}
+.row .tx{flex:1;min-width:0}
+.row .tx b{display:block;font-family:var(--display);font-size:20px;line-height:1.15}
+.row .tx small{display:block;font-size:14px;color:var(--muted);font-weight:700;line-height:1.3}
+.row .chev{color:#A3ACC2;font-size:22px;font-weight:800}
+.row.b-blue{border-color:#CFE0FF}.row.b-green{border-color:#C7EED6}.row.b-orange{border-color:#FFD9BD}.row.b-yellow{border-color:#FFE9A8}.row.b-purple{border-color:#DCCFFF}.row.b-pink{border-color:#FFCADD}.row.b-teal{border-color:#BDEBF1}
+@media (min-width:1100px){.rows.two{grid-template-columns:1fr 1fr}}
 
-/* ---------- Phone ---------- */
-.app { position: relative; height: 100%; background: var(--sand); border-radius: 42px; overflow: hidden; display: flex; flex-direction: column; }
+/* ---------- splash ---------- */
+#v-splash{background:linear-gradient(180deg,#CFE5FF 0%,#EAF4FF 50%,#D9F3E2 100%)}
+#v-splash .wrap{align-items:center;justify-content:center;text-align:center;gap:6px;max-width:520px}
+.logo-xl{width:132px;height:132px;filter:drop-shadow(0 10px 16px rgba(36,99,235,.25))}
+.wm{font-family:var(--display);font-weight:800;line-height:.95;font-size:52px;letter-spacing:-.01em}
+.wm .a{color:var(--blue)}.wm .b{background:linear-gradient(90deg,#FF8A3D,#F0508A 45%,#7C4DEB 75%,#22A95B);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag3{font-family:var(--display);font-size:22px;font-weight:700;color:var(--blue);display:flex;gap:10px;justify-content:center;align-items:center;margin-top:4px}
+.tag3 i{width:7px;height:7px;border-radius:50%;background:var(--orange);display:inline-block}
+.hero{position:relative;width:100%;height:200px;margin:8px 0}
+.hero .hill{position:absolute;left:-40px;right:-40px;bottom:0;height:96px;background:#86D49F;border-radius:50% 50% 0 0}
+.hero .hill2{position:absolute;left:30%;right:-60px;bottom:0;height:120px;background:#A3E0B5;border-radius:50% 50% 0 0}
+.hero .kids{position:absolute;left:0;right:0;bottom:22px;display:flex;justify-content:center;align-items:flex-end;font-size:clamp(56px,17vw,80px);line-height:1}
+.hero .kids span{animation:bob 2.6s ease-in-out infinite}
+.hero .kids .bk{font-size:46px;margin:0 -10px 4px;animation:none;z-index:2}
+.hero .kids span:nth-child(3){animation-delay:.4s;font-size:1.15em}
+.hero .kids span:nth-child(5){animation-delay:.8s}
+@keyframes bob{50%{transform:translateY(-7px)}}
+.hero .sun{position:absolute;top:6px;inset-inline-end:14%;font-size:44px}
+.hero .cl{position:absolute;font-size:38px;top:20px;inset-inline-start:8%;opacity:.95}
+.langs{display:flex;gap:8px;justify-content:center;margin:6px 0 16px}
+.langs button{background:#fff;border-radius:999px;padding:9px 18px;font-size:18px;font-weight:800;box-shadow:0 3px 0 var(--line)}
+.langs button.on{background:var(--ink);color:#fff;box-shadow:0 3px 0 #0A1430}
+.small{font-size:14px;font-weight:700;color:#3C6B50;margin-top:10px}
 
-/* status + top bar */
-.status { height: 50px; flex-shrink: 0; display: flex; justify-content: space-between; align-items: flex-end; padding: 0 30px 6px; font-weight: 800; font-size: .85rem; direction: ltr; }
-.topbar { display: flex; align-items: center; gap: 8px; padding: 6px 16px 10px; flex-shrink: 0; }
-.langs { display: flex; background: #fff; border-radius: 99px; padding: 3px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-.langs button { padding: 6px 11px; border-radius: 99px; font-weight: 800; font-size: .82rem; color: var(--muted); }
-.langs button.on { background: var(--teal); color: #fff; }
-.spacer { flex: 1; }
-.icon-btn { width: 40px; height: 40px; border-radius: 50%; background: #fff; display: grid; place-items: center; font-size: 1.15rem; box-shadow: 0 2px 8px rgba(0,0,0,.06); position: relative; }
-.icon-btn.speaking { background: var(--coral); color: #fff; animation: pulse 1s infinite; }
-@keyframes pulse { 50% { transform: scale(1.08); } }
-.icon-btn .dot { position: absolute; top: 6px; right: 6px; width: 9px; height: 9px; background: var(--coral); border-radius: 50%; border: 2px solid #fff; }
+/* ---------- who ---------- */
+.kids4{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (min-width:700px){.kids4{grid-template-columns:repeat(4,1fr)}}
+.kid{padding:18px 8px 14px;text-align:center}
+.kid .face{width:90px;height:90px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-size:52px}
+.kid b{font-family:var(--display);font-size:22px;display:block;line-height:1.1}
+.kid small{font-size:15px;color:var(--muted);font-weight:700}
+.kid.add{background:transparent;border:3px dashed #B9C8E4;box-shadow:none;color:var(--muted)}
+.kid.add .face{border:3px dashed #B9C8E4;font-size:40px}
 
-/* screens */
-.screens { flex: 1; overflow-y: auto; overflow-x: hidden; position: relative; scrollbar-width: none; }
-.screens::-webkit-scrollbar { display: none; }
-.screen { display: none; padding: 4px 16px 24px; animation: in .25s ease; }
-.screen.on { display: block; }
-@keyframes in { from { opacity: 0; transform: translateY(8px); } }
-h2 { font-size: 1.55rem; margin: 6px 0 4px; font-weight: 900; }
-.sub { color: var(--muted); margin: 0 0 16px; font-weight: 600; }
-.card { background: var(--card); border-radius: 22px; padding: 16px; box-shadow: 0 4px 16px rgba(13,92,99,.07); margin-bottom: 12px; }
-.row { display: flex; align-items: center; gap: 12px; }
-.big-emoji { font-size: 1.8rem; width: 52px; height: 52px; border-radius: 16px; display: grid; place-items: center; flex-shrink: 0; }
-.label { font-size: .72rem; font-weight: 900; letter-spacing: .1em; color: var(--muted); text-transform: uppercase; margin: 18px 4px 8px; }
-.muted { color: var(--muted); }
-.small { font-size: .85rem; }
-.pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: .75rem; font-weight: 800; }
-.pill.ok { background: #dff5e9; color: #17804f; }
-.pill.warn { background: #fff1d6; color: #9a6400; }
-.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; border-radius: 16px; font-weight: 900; font-size: 1rem; }
-.btn.primary { background: var(--coral); color: #fff; box-shadow: 0 5px 0 #d4533a; }
-.btn.primary:active { transform: translateY(3px); box-shadow: 0 2px 0 #d4533a; }
-.btn.soft { background: var(--teal-soft); color: var(--teal); }
-.btn.white { background: #fff; color: var(--teal); }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.tile { border-radius: 20px; padding: 14px; color: #fff; text-align: start; min-height: 110px; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 0 rgba(0,0,0,.12); }
-.tile:active { transform: translateY(2px); }
-.tile .e { font-size: 2rem; }
-.tile b { font-size: 1rem; line-height: 1.2; }
+/* ---------- home ---------- */
+.hello{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.av{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-size:34px;border:3px solid #fff;box-shadow:0 3px 10px rgba(22,36,74,.12);flex:none}
+.hello .tx{flex:1}
+.hello h1{font-size:28px;font-weight:800;line-height:1.05}
+.hello small{font-size:15px;color:var(--muted);font-weight:700}
+.today{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--yellow-l);border:2px solid #FFE6A0}
+.today .st{font-size:40px}
+.today .tx{flex:1}
+.today b{font-family:var(--display);font-size:20px;display:block;line-height:1.1}
+.today .dots{display:flex;gap:8px;margin-top:6px}
+.today .dot{width:44px;height:44px;border-radius:14px;background:#fff;display:grid;place-items:center;font-size:24px;position:relative}
+.today .dot.done::after{content:"✓";position:absolute;inset-inline-end:-5px;bottom:-5px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;border:2px solid #fff}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
+@media (min-width:700px){.tiles{grid-template-columns:repeat(4,1fr)}}
+.tile{border-radius:26px;padding:18px 10px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:2px solid transparent;min-height:168px;justify-content:center}
+.tile:active{transform:scale(.98)}
+.tile .ic{font-size:60px;line-height:1.05}
+.tile b{font-family:var(--display);font-size:23px;line-height:1}
+.tile small{font-size:13.5px;font-weight:700;opacity:.75;line-height:1.25}
+.t-blue{background:#E6EFFF;border-color:#CFE0FF;color:#1C4FC4}.t-green{background:#E3F7EA;border-color:#C7EED6;color:#167A40}.t-purple{background:#F0EAFF;border-color:#DCCFFF;color:#5A30C2}.t-orange{background:#FFF0E4;border-color:#FFD9BD;color:#B4511A}.t-yellow{background:#FFF7DC;border-color:#FFE9A8;color:#8A6300}.t-pink{background:#FFE9F1;border-color:#FFCADD;color:#B1255B}.t-teal{background:#E2F7FA;border-color:#BDEBF1;color:#0C7686}
+.msgprev{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-top:16px;width:100%;text-align:start}
+.msgprev .tx{flex:1;min-width:0}
+.msgprev b{font-family:var(--display);font-size:18px;display:block}
+.msgprev small{font-size:14px;color:var(--muted);font-weight:700;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pill-n{background:var(--pink);color:#fff;font-weight:800;font-size:14px;min-width:26px;height:26px;border-radius:13px;display:grid;place-items:center}
+@media (min-width:1100px){.homegrid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:start}.homegrid .tiles{grid-template-columns:repeat(2,1fr)}}
 
-/* home */
-.hero { background: linear-gradient(135deg, var(--teal), #13808a); color: #fff; border-radius: 26px; padding: 18px; position: relative; overflow: hidden; }
-.hero::after { content: ""; position: absolute; right: -30px; bottom: -40px; width: 140px; height: 140px; border-radius: 50%; background: rgba(255,200,87,.25); }
-.hero h2 { color: #fff; }
-.hero .avatar { width: 54px; height: 54px; border-radius: 50%; background: var(--sun); display: grid; place-items: center; font-size: 1.8rem; border: 3px solid #fff; flex-shrink: 0; }
-.streak { display: flex; gap: 6px; margin-top: 14px; position: relative; z-index: 1; }
-.streak span { flex: 1; text-align: center; background: rgba(255,255,255,.15); border-radius: 10px; padding: 6px 0; font-size: .72rem; font-weight: 800; }
-.streak span.done { background: var(--sun); color: var(--ink); }
-.task { display: flex; align-items: center; gap: 12px; width: 100%; text-align: start; }
-.task .check { width: 30px; height: 30px; border-radius: 50%; border: 3px solid var(--line); flex-shrink: 0; display: grid; place-items: center; color: #fff; font-weight: 900; }
-.task.done .check { background: var(--green); border-color: var(--green); }
-.task.done .t-title { text-decoration: line-through; color: var(--muted); }
-.t-title { font-weight: 800; }
-.chev { margin-inline-start: auto; color: var(--muted); font-size: 1.3rem; }
-[dir="rtl"] .chev { transform: scaleX(-1); }
-.offline { display: flex; align-items: center; gap: 10px; background: #fff; border: 2px dashed #b9ddd6; border-radius: 18px; padding: 12px 14px; font-weight: 700; font-size: .9rem; }
+/* ---------- chips ---------- */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin-bottom:12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;background:#fff;border-radius:999px;padding:8px 16px;font-size:15px;font-weight:800;color:var(--muted);box-shadow:0 2px 0 var(--line);display:flex;gap:6px;align-items:center}
+.chips button.on{background:var(--blue);color:#fff;box-shadow:0 2px 0 var(--blue-d)}
+.ages{display:flex;gap:8px;margin-bottom:14px}
+.ages button{flex:1;background:#fff;border-radius:18px;padding:8px 4px;font-weight:800;font-size:15px;box-shadow:0 2px 0 var(--line);display:flex;align-items:center;justify-content:center;gap:6px}
+.ages button.on{background:var(--ink);color:#fff}
 
-/* homework */
-.steps { list-style: none; padding: 0; margin: 0; }
-.steps li { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); align-items: flex-start; }
-.steps li:last-child { border: 0; }
-.steps .n { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-soft); color: var(--teal); display: grid; place-items: center; font-weight: 900; flex-shrink: 0; }
-.steps li.done .n { background: var(--green); color: #fff; }
-.steps li.done p { color: var(--muted); }
-.steps p { margin: 4px 0 0; font-weight: 700; }
-.hint { background: #fff8e6; border-radius: 16px; padding: 12px 14px; font-weight: 700; margin-top: 10px; display: none; }
-.hint.show { display: block; animation: in .25s; }
-.progress { height: 12px; background: var(--teal-soft); border-radius: 99px; overflow: hidden; }
-.progress span { display: block; height: 100%; background: var(--green); border-radius: 99px; transition: width .4s; }
-.photo-prev { margin-top: 10px; border-radius: 14px; max-height: 140px; display: none; }
+/* ---------- activity ---------- */
+#v-act{background:linear-gradient(180deg,#EDE5FF,#F7F3FF)}
+#v-act .wrap{max-width:720px}
+.qcard{padding:18px;text-align:center}
+.qcard .q{font-family:var(--display);font-size:24px;font-weight:800;margin-bottom:12px;line-height:1.2}
+.stage{border:2px solid var(--line);border-radius:22px;min-height:220px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 14px;padding:16px}
+.stage .it{font-size:58px;line-height:1.1;animation:pop .35s backwards}
+.stage .letter{font-family:var(--display);font-size:140px;font-weight:800;color:var(--purple);line-height:1}
+.stage .word{font-size:100px;line-height:1}
+@keyframes pop{from{transform:scale(0)}}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.opts.three{grid-template-columns:repeat(3,1fr)}
+.opt{background:#fff;border:2px solid var(--line);border-radius:18px;min-height:76px;font-family:var(--display);font-size:34px;font-weight:800;display:grid;place-items:center;line-height:1;padding:6px}
+.opt.small{font-size:24px}
+.opt.ok{background:var(--green);border-color:var(--green);color:#fff}
+.opt.no{background:var(--pink-l);border-color:#FFB3CC;animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.opt svg{width:52px;height:52px}
+.prog{display:flex;gap:6px;margin:0 0 14px}
+.prog i{flex:1;height:10px;border-radius:10px;background:#fff}
+.prog i.f{background:var(--yellow)}
+.fbk{text-align:center;font-family:var(--display);font-size:22px;font-weight:800;height:40px;margin:12px 0 4px;opacity:0;transition:.2s}
+.fbk.show{opacity:1}
+.fbk.good{color:var(--green)}.fbk.try{color:var(--pink)}
 
-/* chat */
-.chat { display: flex; flex-direction: column; gap: 8px; }
-.msg { max-width: 80%; padding: 10px 14px; border-radius: 18px; font-weight: 600; line-height: 1.4; }
-.msg.them { background: #fff; align-self: flex-start; border-end-start-radius: 4px; }
-.msg.me { background: var(--teal); color: #fff; align-self: flex-end; border-end-end-radius: 4px; }
-.composer { display: flex; gap: 8px; margin-top: 12px; }
-.composer input { flex: 1; border: 2px solid var(--line); border-radius: 99px; padding: 12px 16px; font: inherit; font-weight: 600; background: #fff; }
-.composer button { width: 48px; border-radius: 50%; background: var(--coral); color: #fff; font-size: 1.2rem; }
-.quick { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
-.quick button { background: #fff; border: 2px solid var(--line); border-radius: 99px; padding: 6px 12px; font-weight: 700; font-size: .85rem; }
+/* ---------- reward ---------- */
+#v-reward{background:radial-gradient(circle at 50% 25%,#FFFFFF 0%,#F2ECFF 60%,#E8DEFF 100%)}
+#v-reward .wrap{align-items:center;text-align:center;max-width:560px}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+.confetti i{position:absolute;top:-20px;width:10px;height:16px;border-radius:3px;animation:fall 2.6s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+.starbig{width:170px;height:170px;margin-top:10px;animation:popstar .6s}
+@keyframes popstar{from{transform:scale(.2) rotate(-20deg)}70%{transform:scale(1.12)}}
+.ribbon{position:relative;background:var(--blue);color:#fff;font-family:var(--display);font-size:32px;font-weight:800;padding:4px 34px;border-radius:12px;margin-top:-26px;box-shadow:0 5px 0 var(--blue-d)}
+.earned{font-family:var(--display);font-size:22px;font-weight:800;margin:14px 0}
+.bdg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;padding:16px 10px}
+@media (min-width:700px){.bdg.wide{grid-template-columns:repeat(6,1fr)}}
+.bd{display:flex;flex-direction:column;align-items:center;font-weight:800;font-size:14px;line-height:1.2;text-align:center}
+.bd .m{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;font-size:36px;border:5px solid #fff;box-shadow:0 0 0 3px currentColor,0 5px 10px rgba(0,0,0,.08);margin-bottom:8px}
+.bd.lock{color:#B9C1D3!important}.bd.lock .m{background:#EEF1F7!important;filter:grayscale(1)}
 
-/* learn */
-.ages { display: flex; gap: 6px; margin-bottom: 14px; }
-.ages button { flex: 1; padding: 10px 6px; border-radius: 14px; background: #fff; font-weight: 800; font-size: .85rem; }
-.ages button.on { background: var(--ink); color: #fff; }
+/* ---------- progress ---------- */
+.prof{display:flex;align-items:center;gap:14px;padding:16px}
+.prof b{font-family:var(--display);font-size:26px;display:block;line-height:1}
+.prof small{color:var(--muted);font-weight:700;font-size:15px}
+.jar{display:flex;align-items:center;gap:14px;padding:16px;background:var(--yellow-l);border:2px solid #FFE6A0;margin-top:12px}
+.jar .n{font-family:var(--display);font-size:32px;font-weight:800;line-height:1}
+.meter{height:14px;background:#fff;border-radius:14px;overflow:hidden;margin:8px 0 4px}
+.meter span{display:block;height:100%;background:linear-gradient(90deg,var(--yellow),var(--orange));border-radius:14px;transition:width .5s}
+.jar small{font-size:13px;color:var(--muted);font-weight:700}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px 10px}
+@media (min-width:700px){.skills{grid-template-columns:repeat(6,1fr)}}
+.sk{text-align:center;font-weight:800;font-size:14px;line-height:1.2}
+.sk .m{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:28px;margin:0 auto 6px}
+.sk small{display:block;color:var(--muted);font-size:13px}
+@media (min-width:1100px){.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}}
 
-/* game */
-.game { text-align: center; }
-.eq { display: inline-flex; gap: 12px; align-items: center; background: var(--teal); color: #fff; font-size: 2.4rem; font-weight: 900; padding: 12px 22px; border-radius: 20px; direction: ltr; margin: 10px 0 20px; }
-.slot { min-width: 64px; height: 58px; border-radius: 14px; background: var(--sun); color: var(--ink); display: grid; place-items: center; }
-.answers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; direction: ltr; }
-.answers button { height: 64px; border-radius: 18px; color: #fff; font-size: 1.6rem; font-weight: 900; box-shadow: 0 5px 0 rgba(0,0,0,.18); }
-.answers button.wrong { opacity: .35; }
-.stars { font-size: 1.5rem; letter-spacing: 4px; margin: 6px 0; }
-.feedback { min-height: 1.6em; font-weight: 900; font-size: 1.1rem; margin-top: 14px; }
+/* ---------- story ---------- */
+#v-story{background:linear-gradient(180deg,#E2F1FF,#F6FBFF)}
+#v-story .wrap{max-width:780px}
+.page{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+.scene{font-size:104px;line-height:1.1;width:100%;padding:30px 10px}
+.sent{font-family:var(--display);font-size:27px;font-weight:700;line-height:1.35;max-width:600px}
+.pager{display:flex;gap:14px;align-items:center;justify-content:center;margin-top:16px}
+.pdots{display:flex;gap:6px}.pdots i{width:12px;height:12px;border-radius:12px;background:#C6D4EA}.pdots i.on{width:30px;background:var(--blue)}
 
-/* breathe */
-.breathe { width: 180px; height: 180px; margin: 20px auto; border-radius: 50%; background: radial-gradient(circle, #b8e3dc, var(--teal-soft)); display: grid; place-items: center; font-weight: 900; color: var(--teal); font-size: 1.2rem; transition: transform 4s ease-in-out; }
-.breathe.big { transform: scale(1.35); }
-.feelings { display: flex; justify-content: space-between; }
-.feelings button { font-size: 2rem; width: 56px; height: 56px; border-radius: 16px; background: #fff; }
-.feelings button.on { background: var(--sun); transform: scale(1.1); }
+/* ---------- homework ---------- */
+.school{text-align:center;padding:10px 0 4px}
+.school .ill{font-size:78px;line-height:1.1}
+.school p{font-weight:700;color:var(--muted);font-size:16px;max-width:360px;margin:6px auto 0}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.step{padding:12px 4px;text-align:center;position:relative;border:2px solid transparent}
+.step .ic{font-size:38px;line-height:1.1}
+.step b{font-size:14px;display:block;font-weight:800}
+.step.on{background:var(--green-l);border-color:#9EDFB7}
+.step .ck{position:absolute;top:-8px;inset-inline-end:-6px;width:26px;height:26px;border-radius:50%;background:#fff;border:2px solid var(--line);display:grid;place-items:center;font-size:14px;font-weight:900;color:#fff}
+.step.on .ck{background:var(--green);border-color:var(--green)}
+.nbad{background:var(--pink);color:#fff;font-size:13px;font-weight:800;min-width:24px;height:24px;border-radius:12px;display:grid;place-items:center}
 
-/* story */
-.story-img { height: 150px; border-radius: 20px; background: linear-gradient(180deg, #a8dadc, #f1e3c6); display: grid; place-items: center; font-size: 4rem; margin-bottom: 14px; }
-.story-text { font-size: 1.25rem; font-weight: 700; line-height: 1.7; }
+/* ---------- messages ---------- */
+#v-chat .wrap{padding-bottom:0;max-width:760px}
+.chatbar{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.chatbar .tx{flex:1}
+.chatbar b{font-family:var(--display);font-size:20px;display:block;line-height:1.1}
+.chatbar small{font-size:13.5px;color:var(--green);font-weight:800}
+.safe{display:flex;gap:8px;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);background:#fff;border-radius:999px;padding:6px 12px;margin:0 auto 12px;width:max-content;max-width:100%}
+.thread{flex:1;display:flex;flex-direction:column;gap:10px;padding:4px 2px 12px;overflow-y:auto}
+.msg{max-width:78%;padding:10px 14px;border-radius:20px;font-size:17px;font-weight:700;line-height:1.35;animation:in .2s}
+.msg.them{background:#fff;border-end-start-radius:6px;align-self:flex-start;box-shadow:0 2px 0 var(--line)}
+.msg.me{background:var(--blue);color:#fff;border-end-end-radius:6px;align-self:flex-end}
+.msg .tm{display:block;font-size:11.5px;opacity:.6;margin-top:2px}
+.msg.voice{display:flex;align-items:center;gap:8px}
+.msg.voice .wave{display:flex;gap:3px;align-items:center}
+.msg.voice .wave i{width:4px;border-radius:4px;background:currentColor;opacity:.8}
+.typing{align-self:flex-start;background:#fff;border-radius:20px;padding:12px 16px;display:none;gap:4px}
+.typing.on{display:flex}
+.typing i{width:8px;height:8px;border-radius:50%;background:#A3ACC2;animation:blink 1s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes blink{50%{opacity:.25}}
+.quick{display:flex;gap:8px;overflow-x:auto;padding:8px 0;scrollbar-width:none}
+.quick::-webkit-scrollbar{display:none}
+.quick button{flex:none;background:#fff;border:2px solid #CFE0FF;color:var(--blue);border-radius:999px;padding:8px 14px;font-size:15px;font-weight:800}
+.composer{display:flex;gap:8px;align-items:center;padding:8px 0 14px;position:sticky;bottom:0;background:linear-gradient(180deg,rgba(246,250,255,0),var(--bg2) 30%)}
+.composer input{flex:1;background:#fff;border-radius:999px;padding:13px 18px;font-size:16px;font-weight:700;box-shadow:0 2px 0 var(--line);min-width:0;outline:none}
+.composer .ibtn.mic{background:var(--green);color:#fff}
+.composer .ibtn.send{background:var(--blue);color:#fff}
+.composer .ibtn.rec{background:var(--pink);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
 
-/* progress */
-.badges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.badge { text-align: center; font-size: .7rem; font-weight: 800; color: var(--muted); }
-.badge div { width: 56px; height: 56px; margin: 0 auto 4px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; background: var(--sun); box-shadow: 0 3px 0 #e0a93a; }
-.badge.locked div { background: #eee; box-shadow: none; filter: grayscale(1); opacity: .5; }
-.subject { margin: 12px 0; }
-.subject .row { justify-content: space-between; font-weight: 800; margin-bottom: 6px; }
-.subject .row > span:first-child { display: inline-flex; gap: 8px; }
-.moves { background: linear-gradient(135deg, #fff1d6, #ffe3c9); }
-.timeline { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: .75rem; font-weight: 800; }
-.timeline span { background: #fff; border-radius: 10px; padding: 6px 8px; }
-.timeline i { color: var(--coral); font-style: normal; }
-.place { display: flex; gap: 12px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
-.place:last-child { border: 0; }
-.map { height: 140px; border-radius: 18px; margin-bottom: 12px; position: relative; overflow: hidden;
-  background: linear-gradient(90deg, transparent 48%, #fff 48% 52%, transparent 52%), linear-gradient(0deg, transparent 58%, #fff 58% 62%, transparent 62%), linear-gradient(135deg, #dcefe9, #cfe6f2); }
-.pin { position: absolute; font-size: 1.6rem; transform: translate(-50%, -100%); }
-
-/* tab bar */
-.tabbar { flex-shrink: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; padding: 8px 8px 22px; border-top: 1px solid var(--line); }
-.tabbar button { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: .72rem; font-weight: 800; color: var(--muted); padding: 6px 2px; border-radius: 14px; }
-.tabbar button .e { font-size: 1.45rem; filter: grayscale(.6); }
-.tabbar button.on { color: var(--teal); background: var(--teal-soft); }
-.tabbar button.on .e { filter: none; }
-
-.back { display: inline-flex; align-items: center; gap: 6px; font-weight: 800; color: var(--teal); padding: 6px 0; }
-[dir="rtl"] .back .arr { transform: scaleX(-1); display: inline-block; }
-
-.toast { position: absolute; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: #fff; padding: 10px 18px; border-radius: 99px; font-weight: 800; font-size: .9rem; opacity: 0; transition: .25s; pointer-events: none; white-space: nowrap; z-index: 20; }
-.toast.show { opacity: 1; transform: translateX(-50%); }
-
-/* ---------- Tablet layout ---------- */
-.device.tablet .status { padding: 0 34px 6px; height: 40px; }
-.device.tablet .topbar { padding: 8px 28px 14px; }
-.device.tablet .screen { padding: 8px 28px 32px; }
-.device.tablet h2 { font-size: 2rem; }
-.device.tablet .hero { padding: 26px; }
-.device.tablet .tasks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.device.tablet .tasks .card { margin: 0; min-height: 120px; display: flex; }
-.device.tablet .tiles { grid-template-columns: repeat(4, 1fr); }
-.device.tablet .tile { min-height: 150px; }
-.device.tablet .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.device.tablet .pgrid .card { margin: 0; }
-.device.tablet .answers { max-width: 520px; margin: 0 auto; }
-.device.tablet .narrow { max-width: 620px; margin-inline: auto; }
-.device.tablet .tabbar { padding: 10px 160px 14px; }
-.device.tablet .tabbar button { flex-direction: row; justify-content: center; gap: 8px; font-size: .95rem; padding: 10px; }
-
-/* ---------- Laptop layout: sidebar navigation ---------- */
-.device.laptop .status { display: none; }
-.device.laptop .app { display: grid; grid-template-columns: 230px 1fr; grid-template-rows: auto auto 1fr; }
-.device.laptop .window-bar { grid-column: 1 / -1; }
-.device.laptop .topbar { grid-column: 2; padding: 16px 36px 8px; }
-.device.laptop .screens { grid-column: 2; grid-row: 3; }
-.device.laptop .tabbar { grid-column: 1; grid-row: 2 / 4; display: flex; flex-direction: column; gap: 6px; padding: 20px 14px; border-top: 0; border-inline-end: 1px solid var(--line); }
-.device.laptop .tabbar::before { content: "HomeLearn Kids"; font-weight: 900; color: var(--teal); font-size: 1.15rem; padding: 4px 12px 18px; }
-.device.laptop .tabbar button { flex-direction: row; justify-content: flex-start; gap: 12px; font-size: 1rem; padding: 12px 14px; }
-.device.laptop .screen { padding: 8px 36px 36px; max-width: 1040px; }
-.device.laptop h2 { font-size: 2.1rem; }
-.device.laptop .hero { padding: 28px; }
-.device.laptop .tasks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-.device.laptop .tasks .card { margin: 0; min-height: 110px; display: flex; }
-.device.laptop .tiles { grid-template-columns: repeat(4, 1fr); }
-.device.laptop .tile { min-height: 160px; }
-.device.laptop .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.device.laptop .pgrid .card { margin: 0; }
-.device.laptop .answers { max-width: 560px; margin: 0 auto; }
-.device.laptop .narrow { max-width: 640px; }
-.device.laptop .btn.primary, .device.laptop .btn.soft { max-width: 420px; }
-.device.laptop .toast { bottom: 40px; }
-
-/* ---------- Real phone: show the app full screen ---------- */
-body.native .proto-bar { padding: 8px; gap: 8px; }
-body.native .proto-name { display: none; }
-body.native .devices button { padding: 6px 12px; font-size: .82rem; }
-body.native .stage { padding: 0; place-items: stretch; }
-body.native .scaler { width: 100% !important; height: 100% !important; }
-body.native .device.phone { position: static; transform: none !important; width: 100%; height: 100%; padding: 0; border-radius: 0; box-shadow: none; }
-body.native .device.phone::before { display: none; }
-body.native .device.phone .app { border-radius: 0; }
-body.native .device.phone .status { height: 10px; }
-body.native .device.phone .status * { display: none; }
-@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+/* ---------- rewards ---------- */
+.rw-jar{display:flex;align-items:center;gap:16px;padding:18px;background:linear-gradient(135deg,#FFF6D8,#FFE7B8);border:2px solid #FFE0A0}
+.rw-jar .big{font-size:64px;line-height:1}
+.rw-jar .n{font-family:var(--display);font-size:40px;font-weight:800;line-height:1}
+.rw-jar small{color:var(--muted);font-weight:700;font-size:14px}
+.chest{display:flex;align-items:center;gap:14px;padding:16px;width:100%;text-align:start;background:linear-gradient(135deg,var(--purple),#A07BFF);color:#fff;border:0}
+.chest .ic{font-size:52px;line-height:1;transition:transform .3s}
+.chest.open .ic{transform:scale(1.15) rotate(-8deg)}
+.chest b{font-family:var(--display);font-size:22px;display:block;line-height:1.1}
+.chest small{font-weight:700;opacity:.9}
+.chest:disabled{opacity:.75}
+.shop{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (min-width:700px){.shop{grid-template-columns:repeat(6,1fr)}}
+.item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 6px;text-align:center;border:3px solid transparent;position:relative}
+.item .ic{font-size:44px;line-height:1.1}
+.item b{font-size:15px;font-weight:800;line-height:1.15}
+.item small{font-size:12.5px;font-weight:800;color:var(--muted)}
+.item.lock .ic{filter:grayscale(1);opacity:.35}
+.item.lock::after{content:"🔒";position:absolute;top:8px;inset-inline-end:8px;font-size:16px}
+.item.on{border-color:var(--green);background:var(--green-l)}
+.item.on small{color:var(--green-d)}
+#hAv,.pAv{position:relative}
+#hAv[data-acc]::after,.pAv[data-acc]::after{content:attr(data-acc);position:absolute;top:-14px;inset-inline-end:-10px;font-size:.62em;filter:drop-shadow(0 2px 2px rgba(0,0,0,.15))}
 </style>
 </head>
-<body>
+<body class="nonav">
+<div class="app">
 
-<header class="proto-bar">
-  <span class="proto-name">HomeLearn Kids<small>PROTOTYPE</small></span>
-  <div class="devices" role="group" aria-label="Screen type">
-    <button data-device="phone" class="on">📱 Phone</button>
-    <button data-device="tablet">📲 Tablet</button>
-    <button data-device="laptop">💻 Laptop</button>
+<nav class="nav" id="nav">
+  <div class="brand"><svg viewBox="0 0 120 120" class="logo"></svg><b><span style="color:var(--blue)">HomeLearn</span><br><span style="color:var(--orange)">Bridge</span></b></div>
+  <button data-go="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span data-t="home"></span></button>
+  <button data-go="courses"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M12 6c-2-1.6-5-2-8-1.5V19c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V4.5C17 4 14 4.4 12 6z"/><path d="M12 6v14.5"/></svg><span data-t="courses"></span></button>
+  <button data-go="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 20V13M10 20V8M15 20v-9M20 20V4"/></svg><span data-t="progress"></span></button>
+  <button data-go="msgs"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5" stroke-linecap="round"/></svg><span data-t="messages"></span><span class="badge-n" id="navBadge">1</span></button>
+  <button data-go="rewards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="3.5" y="9" width="17" height="11.5" rx="1.5"/><path d="M2.5 9h19v-3h-19z"/><path d="M12 6v14.5"/><path d="M12 6C10.5 3 7 2.5 7 4.5S10 6 12 6zM12 6c1.5-3 5-3.5 5-1.5S14 6 12 6z" stroke-linecap="round"/></svg><span data-t="rwNav"></span></button>
+</nav>
+
+<div class="main">
+
+<!-- 1 SPLASH -->
+<section class="view on" id="v-splash" data-nonav><div class="wrap">
+  <svg viewBox="0 0 120 120" class="logo logo-xl"></svg>
+  <div class="wm"><div class="a">HomeLearn</div><div class="b">Bridge</div></div>
+  <div class="tag3"><span data-t="t1"></span><i></i><span data-t="t2"></span><i></i><span data-t="t3"></span></div>
+  <div class="hero"><span class="cl">☁️</span><span class="sun">☀️</span><div class="hill2"></div><div class="hill"></div>
+    <div class="kids"><span>👦🏽</span><span class="bk">📘</span><span>👧🏻</span><span class="bk">📙</span><span>👧🏾</span></div></div>
+  <div class="langs" id="langs"><button data-lang="en">English</button><button data-lang="fa">دری</button><button data-lang="ps">پښتو</button></div>
+  <button class="btn" data-go="who"><span data-t="start"></span></button>
+  <div class="small">📥 <span data-t="offline"></span></div>
+</div></section>
+
+<!-- WHO -->
+<section class="view" id="v-who" data-nonav><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="splash"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="who"></h2></div><button class="ibtn snd" data-say="who">🔊</button></div>
+  <div class="kids4" id="kids"></div>
+</div></section>
+
+<!-- 2 HOME -->
+<section class="view" id="v-home"><div class="wrap">
+  <div class="hello">
+    <button class="av" id="hAv" data-go="who">🦁</button>
+    <div class="tx"><h1><span data-t="hello"></span> <span class="kname">Ahmed</span>! 👋</h1><small data-t="great2see"></small></div>
+    <button class="ibtn" id="langBtn" title="Language">🌐</button>
   </div>
-</header>
-
-<div class="stage" id="stage">
-<div class="scaler" id="scaler">
-<div class="device phone" id="device">
-  <div class="app" id="app">
-    <div class="window-bar"><i></i><i></i><i></i><span>HomeLearn Kids</span></div>
-    <div class="status"><span>9:41</span><span>📶 🔋</span></div>
-
-    <div class="topbar">
-      <div class="langs" role="group" aria-label="Language">
-        <button data-lang="en" class="on">EN</button>
-        <button data-lang="fa">دری</button>
-        <button data-lang="ps">پښتو</button>
+  <div class="homegrid">
+    <div>
+      <div class="card today">
+        <span class="st">⭐</span>
+        <div class="tx"><b data-t="todayAct"></b>
+          <div class="dots"><button class="dot done" data-game="count">🔢</button><button class="dot done" data-game="phonics">🔤</button><button class="dot" data-go="story">📖</button></div>
+        </div>
+        <span class="disp" style="font-size:22px;font-weight:800">2/3</span>
       </div>
-      <div class="spacer"></div>
-      <button class="icon-btn" id="readBtn" aria-label="Read this page to me">🔊</button>
+      <div class="tiles">
+        <button class="tile t-blue" data-go="courses"><span class="ic">📘</span><b data-t="courses"></b><small data-t="coursesSub"></small></button>
+        <button class="tile t-green" data-go="games"><span class="ic">🎮</span><b data-t="play"></b><small data-t="playSub"></small></button>
+        <button class="tile t-purple" data-go="read"><span class="ic">📚</span><b data-t="read"></b><small data-t="readSub"></small></button>
+        <button class="tile t-yellow" data-go="progress"><span class="ic">🏆</span><b data-t="progress"></b><small data-t="progSub"></small></button>
+      </div>
     </div>
-
-    <div class="screens" id="screens">
-
-      <!-- ============ HOME ============ -->
-      <section class="screen on" data-screen="home" data-tab="home">
-        <div class="hero">
-          <div class="row">
-            <div class="avatar">🧒</div>
-            <div>
-              <h2 data-t="hi"></h2>
-              <div data-t="heroSub" style="opacity:.85;font-weight:700"></div>
-            </div>
-          </div>
-          <div class="streak" id="streak"></div>
-        </div>
-
-        <div class="label" data-t="todayTasks"></div>
-        <div class="tasks">
-        <div class="card">
-          <button class="task" data-go="homework-task"><span class="check"></span><span><span class="t-title" data-t="task1"></span><br/><span class="small muted" data-t="task1meta"></span></span><span class="chev">›</span></button>
-        </div>
-        <div class="card">
-          <button class="task" data-go="story"><span class="check"></span><span><span class="t-title" data-t="task2"></span><br/><span class="small muted" data-t="task2meta"></span></span><span class="chev">›</span></button>
-        </div>
-        <div class="card">
-          <button class="task" data-go="game"><span class="check"></span><span><span class="t-title" data-t="task3"></span><br/><span class="small muted" data-t="task3meta"></span></span><span class="chev">›</span></button>
-        </div>
-        </div>
-
-        <button class="btn primary" id="readHome" style="margin-top:14px">🔊 <span data-t="readToMe"></span></button>
-
-        <div class="label" data-t="savedLabel"></div>
-        <div class="offline">✅ <span data-t="offlineNote"></span></div>
-      </section>
-
-      <!-- ============ HOMEWORK LIST ============ -->
-      <section class="screen" data-screen="homework" data-tab="homework">
-        <h2 data-t="hwTitle"></h2>
-        <p class="sub" data-t="hwSub"></p>
-        <div class="card">
-          <button class="task" data-go="homework-task"><span class="big-emoji" style="background:#ffe9e3">➗</span><span><span class="t-title" data-t="task1"></span><br/><span class="pill warn" data-t="dueTomorrow"></span></span><span class="chev">›</span></button>
-        </div>
-        <div class="card">
-          <button class="task" data-go="homework-task"><span class="big-emoji" style="background:#e3f0ff">📖</span><span><span class="t-title" data-t="hw2"></span><br/><span class="pill warn" data-t="dueFriday"></span></span><span class="chev">›</span></button>
-        </div>
-        <div class="card">
-          <button class="task done"><span class="big-emoji" style="background:#dff5e9">🔬</span><span><span class="t-title" data-t="hw3"></span><br/><span class="pill ok" data-t="sentToTeacher"></span></span></button>
-        </div>
-        <div class="label" data-t="needHelp"></div>
-        <div class="card row">
-          <span class="big-emoji" style="background:var(--teal-soft)">👩‍🏫</span>
-          <div style="flex:1"><b data-t="coachName"></b><div class="small muted" data-t="coachLangs"></div></div>
-          <button class="btn soft" style="width:auto;padding:10px 14px" data-go="chat" data-t="chat"></button>
-        </div>
-      </section>
-
-      <!-- ============ HOMEWORK TASK ============ -->
-      <section class="screen narrow" data-screen="homework-task" data-tab="homework">
-        <button class="back" data-go="homework"><span class="arr">←</span> <span data-t="back"></span></button>
-        <h2 data-t="task1"></h2>
-        <p class="sub" data-t="stepsSub"></p>
-        <div class="progress"><span id="hwBar" style="width:0%"></span></div>
-        <div class="card" style="margin-top:12px">
-          <ol class="steps" id="steps"></ol>
-        </div>
-        <button class="btn soft" id="hintBtn">💡 <span data-t="getHint"></span></button>
-        <div class="hint" id="hint" data-t="hintText"></div>
-        <div class="grid2" style="margin-top:10px">
-          <label class="btn white" style="box-shadow:0 2px 8px rgba(0,0,0,.06)">📷 <span data-t="photo"></span>
-            <input type="file" accept="image/*" capture="environment" id="photoIn" hidden />
-          </label>
-          <button class="btn white" style="box-shadow:0 2px 8px rgba(0,0,0,.06)" data-go="chat">💬 <span data-t="askCoach"></span></button>
-        </div>
-        <img class="photo-prev" id="photoPrev" alt="Photo of homework" />
-      </section>
-
-      <!-- ============ CHAT ============ -->
-      <section class="screen narrow" data-screen="chat" data-tab="homework">
-        <button class="back" data-go="homework"><span class="arr">←</span> <span data-t="back"></span></button>
-        <div class="row" style="margin:8px 0 14px">
-          <span class="big-emoji" style="background:var(--teal-soft)">👩‍🏫</span>
-          <div><b data-t="coachName"></b><div class="small" style="color:var(--green);font-weight:800">● <span data-t="online"></span></div></div>
-        </div>
-        <div class="chat" id="chat"></div>
-        <div class="quick" id="quick"></div>
-        <form class="composer" id="composer">
-          <input id="chatIn" autocomplete="off" />
-          <button type="submit" aria-label="Send">➤</button>
-        </form>
-      </section>
-
-      <!-- ============ LEARN ============ -->
-      <section class="screen" data-screen="learn" data-tab="learn">
-        <h2 data-t="learnTitle"></h2>
-        <p class="sub" data-t="learnSub"></p>
-        <div class="ages" id="ages">
-          <button data-age="0" class="on" data-t="age1"></button>
-          <button data-age="1" data-t="age2"></button>
-          <button data-age="2" data-t="age3"></button>
-        </div>
-        <button class="card row" style="width:100%;text-align:start;background:linear-gradient(135deg,var(--coral),#f4925e);color:#fff" data-go="game">
-          <span class="big-emoji" style="background:rgba(255,255,255,.2)">🎮</span>
-          <div style="flex:1"><div class="small" style="font-weight:900;opacity:.85" data-t="gameOfDay"></div><b style="font-size:1.1rem" data-t="gameName"></b></div>
-          <span class="chev" style="color:#fff">›</span>
-        </button>
-        <div class="grid2 tiles">
-          <button class="tile" style="background:var(--sky)" data-go="game"><span class="e">🔢</span><b data-t="maths"></b></button>
-          <button class="tile" style="background:var(--purple)" data-go="story"><span class="e">🔤</span><b data-t="english"></b></button>
-          <button class="tile" style="background:var(--teal)" data-go="story"><span class="e">📚</span><b data-t="stories"></b></button>
-          <button class="tile" style="background:var(--green)" data-go="calm"><span class="e">🌱</span><b data-t="wellbeing"></b></button>
-        </div>
-        <div class="label" data-t="savedLabel"></div>
-        <div class="offline">⬇️ <span data-t="downloaded"></span></div>
-      </section>
-
-      <!-- ============ GAME ============ -->
-      <section class="screen game" data-screen="game" data-tab="learn">
-        <button class="back" data-go="learn" style="float:inline-start"><span class="arr">←</span> <span data-t="back"></span></button>
-        <div style="clear:both"></div>
-        <div class="stars" id="stars">☆☆☆☆☆</div>
-        <h2 data-t="missing"></h2>
-        <div class="eq"><span id="ga">8</span><span id="gop">−</span><span class="slot" id="gslot">?</span><span>=</span><span id="gc">3</span></div>
-        <div class="answers" id="ganswers"></div>
-        <div class="feedback" id="gfeed"></div>
-      </section>
-
-      <!-- ============ STORY ============ -->
-      <section class="screen narrow" data-screen="story" data-tab="learn">
-        <button class="back" data-go="learn"><span class="arr">←</span> <span data-t="back"></span></button>
-        <h2 data-t="storyTitle"></h2>
-        <div class="story-img">🌳🐦</div>
-        <p class="story-text" data-t="storyText"></p>
-        <button class="btn primary" id="readStory">🔊 <span data-t="readToMe"></span></button>
-      </section>
-
-      <!-- ============ CALM ============ -->
-      <section class="screen narrow" data-screen="calm" data-tab="learn">
-        <button class="back" data-go="learn"><span class="arr">←</span> <span data-t="back"></span></button>
-        <h2 data-t="feelTitle"></h2>
-        <div class="feelings card" id="feelings">
-          <button aria-label="Happy">😀</button><button aria-label="Okay">🙂</button><button aria-label="Tired">😴</button><button aria-label="Worried">😟</button><button aria-label="Sad">😢</button>
-        </div>
-        <p class="muted small" id="feelMsg" style="text-align:center;font-weight:700;min-height:1.4em"></p>
-        <div class="breathe" id="breathe" data-t="breatheIn"></div>
-        <button class="btn soft" id="breatheBtn" data-t="startBreathing"></button>
-      </section>
-
-      <!-- ============ PROGRESS ============ -->
-      <section class="screen" data-screen="progress" data-tab="progress">
-        <h2 data-t="progressTitle"></h2>
-        <p class="sub" data-t="progressSub"></p>
-        <div class="pgrid">
-        <div class="card">
-          <div class="label" style="margin-top:0" data-t="myBadges"></div>
-          <div class="badges">
-            <div class="badge"><div>⭐</div><span data-t="b1"></span></div>
-            <div class="badge"><div>📚</div><span data-t="b2"></span></div>
-            <div class="badge"><div>🔥</div><span data-t="b3"></span></div>
-            <div class="badge locked"><div>🏆</div><span data-t="b4"></span></div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="subject"><div class="row"><span>🔢 <span data-t="maths"></span></span><span>70%</span></div><div class="progress"><span style="width:70%"></span></div></div>
-          <div class="subject"><div class="row"><span>🔤 <span data-t="english"></span></span><span>55%</span></div><div class="progress"><span style="width:55%;background:var(--purple)"></span></div></div>
-          <div class="subject"><div class="row"><span>📚 <span data-t="reading"></span></span><span>80%</span></div><div class="progress"><span style="width:80%;background:var(--sky)"></span></div></div>
-        </div>
-        <div class="card moves">
-          <b>🎒 <span data-t="movesTitle"></span></b>
-          <p class="small" style="margin:6px 0 0;font-weight:600" data-t="movesText"></p>
-          <div class="timeline"><span data-t="school1"></span><i>→</i><span data-t="school2"></span><i>→</i><span>✅ <span data-t="saved"></span></span></div>
-        </div>
-        </div>
-        <button class="btn primary" data-go="places">📍 <span data-t="findPlace"></span></button>
-      </section>
-
-      <!-- ============ PLACES ============ -->
-      <section class="screen narrow" data-screen="places" data-tab="progress">
-        <button class="back" data-go="progress"><span class="arr">←</span> <span data-t="back"></span></button>
-        <h2 data-t="placesTitle"></h2>
-        <p class="sub" data-t="placesSub"></p>
-        <div class="map"><span class="pin" style="left:30%;top:45%">📍</span><span class="pin" style="left:68%;top:70%">📍</span><span class="pin" style="left:52%;top:55%;font-size:1.3rem">🧒</span></div>
-        <div class="card">
-          <div class="place"><span class="big-emoji" style="background:var(--teal-soft)">🏫</span><div style="flex:1"><b data-t="hub"></b><div class="small muted" data-t="hubMeta"></div></div><button class="btn soft" style="width:auto;padding:8px 12px" data-toast="booked" data-t="book"></button></div>
-          <div class="place"><span class="big-emoji" style="background:#e3f0ff">📚</span><div style="flex:1"><b data-t="library"></b><div class="small muted" data-t="libraryMeta"></div></div><button class="btn soft" style="width:auto;padding:8px 12px" data-toast="booked" data-t="book"></button></div>
-        </div>
-        <div class="card row">
-          <span class="big-emoji" style="background:#fff1d6">💻</span>
-          <div style="flex:1"><b data-t="noDevice"></b><div class="small muted" data-t="noDeviceSub"></div></div>
-        </div>
-        <button class="btn soft" data-toast="askedGrownUp">🙋 <span data-t="askGrownUp"></span></button>
-      </section>
+    <div>
+      <button class="card msgprev" data-go="chat" data-who="0"><span class="av" style="width:52px;height:52px;font-size:28px;background:var(--teal-l)">👩🏽‍🏫</span><span class="tx"><b data-t="tSara"></b><small id="lastMsg"></small></span><span class="pill-n" id="homeBadge">1</span></button>
+      <button class="card row b-orange" style="margin-top:12px" data-go="hw"><span class="icb c-orange">📝</span><span class="tx"><b data-t="homework"></b><small data-t="hwTitle"></small></span><span class="nbad">1</span></button>
+      <button class="card row b-pink" style="margin-top:12px" data-go="feel"><span class="icb c-pink">💛</span><span class="tx"><b data-t="feelings"></b><small data-t="feelQ"></small></span><span class="chev flip">›</span></button>
     </div>
-
-    <nav class="tabbar" id="tabbar">
-      <button data-go="home" data-tabbtn="home" class="on"><span class="e">🏠</span><span data-t="tabHome"></span></button>
-      <button data-go="homework" data-tabbtn="homework"><span class="e">✏️</span><span data-t="tabHw"></span></button>
-      <button data-go="learn" data-tabbtn="learn"><span class="e">🎨</span><span data-t="tabLearn"></span></button>
-      <button data-go="progress" data-tabbtn="progress"><span class="e">🏅</span><span data-t="tabProgress"></span></button>
-    </nav>
-
-    <div class="toast" id="toast"></div>
   </div>
-</div>
-</div>
-</div>
+</div></section>
+
+<!-- 3 COURSES -->
+<section class="view" id="v-courses"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="courses"></h2></div><button class="ibtn snd" data-say="pick">🔊</button></div>
+  <div class="ages" id="ages"><button data-age="0">🐣 4–6</button><button data-age="1" class="on">🌱 7–9</button><button data-age="2">🌳 10–13</button></div>
+  <div class="chips" id="chips"></div>
+  <div class="rows two" id="courseList"></div>
+</div></section>
+
+<!-- LANGUAGES -->
+<section class="view" id="v-langs"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="courses"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="cLang"></h2><small data-t="cLangSub"></small></div><button class="ibtn snd" data-say="pick">🔊</button></div>
+  <div class="rows two">
+    <button class="card row b-blue" data-game="enword"><span class="icb c-blue">🔤</span><span class="tx"><b data-t="lEn"></b><small data-t="lEnSub"></small></span><span class="chev flip">›</span></button>
+    <button class="card row b-green" data-game="dari"><span class="icb c-green" style="font-family:Vazirmatn;font-weight:800;font-size:26px">پ</span><span class="tx"><b data-t="lFa"></b><small data-t="lFaSub"></small></span><span class="chev flip">›</span></button>
+    <button class="card row b-orange" data-game="pashto"><span class="icb c-orange" style="font-family:Vazirmatn;font-weight:800;font-size:26px">ښ</span><span class="tx"><b data-t="lPs"></b><small data-t="lPsSub"></small></span><span class="chev flip">›</span></button>
+    <button class="card row b-purple" data-game="phonics"><span class="icb c-purple">🅰️</span><span class="tx"><b data-t="cPhon"></b><small data-t="cPhonSub"></small></span><span class="chev flip">›</span></button>
+  </div>
+</div></section>
+
+<!-- GAMES -->
+<section class="view" id="v-games"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="play"></h2></div><button class="ibtn snd" data-say="pick">🔊</button></div>
+  <div class="tiles" style="margin-top:0">
+    <button class="tile t-orange" data-game="count"><span class="ic">🍎</span><b data-t="gCount"></b></button>
+    <button class="tile t-blue" data-game="shape"><span class="ic">🔷</span><b data-t="gShape"></b></button>
+    <button class="tile t-yellow" data-game="phonics"><span class="ic">🔤</span><b data-t="gLetters"></b></button>
+    <button class="tile t-green" data-game="nature"><span class="ic">🐶</span><b data-t="gNature"></b></button>
+  </div>
+</div></section>
+
+<!-- 4 ACTIVITY -->
+<section class="view" id="v-act" data-nonav><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="back"><span class="flip">‹</span></button><div class="ttl"><h2 id="aTitle"></h2><small id="aSub"></small></div><button class="ibtn snd" id="sayQ">🔊</button></div>
+  <div class="prog" id="prog"></div>
+  <div class="card qcard">
+    <div class="q" id="qText"></div>
+    <div class="stage" id="stage"></div>
+    <div class="opts" id="opts"></div>
+  </div>
+  <div class="fbk" id="fbk"></div>
+  <button class="btn green" id="nextBtn" disabled><span data-t="next"></span></button>
+</div></section>
+
+<!-- 9 REWARD -->
+<section class="view" id="v-reward" data-nonav><div class="confetti" id="confetti"></div><div class="wrap">
+  <div class="bar" style="width:100%"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="rewards"></h2></div><span class="ibtn ghost"></span></div>
+  <svg class="starbig" viewBox="0 0 100 100"><path d="M50 4 L62 36 L96 37 L69 58 L79 92 L50 72 L21 92 L31 58 L4 37 L38 36 Z" fill="#FFC83D" stroke="#F2A400" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="48" r="4.5" fill="#16244A"/><circle cx="60" cy="48" r="4.5" fill="#16244A"/><path d="M40 60 Q50 69 60 60" fill="none" stroke="#16244A" stroke-width="4" stroke-linecap="round"/><circle cx="33" cy="57" r="4" fill="#FF8FA8" opacity=".7"/><circle cx="67" cy="57" r="4" fill="#FF8FA8" opacity=".7"/></svg>
+  <div class="ribbon" data-t="great"></div>
+  <div class="earned"><span data-t="earned"></span> <span id="rStars"></span></div>
+  <div class="card" style="width:100%;text-align:start"><div class="sec" style="margin:14px 16px 0" data-t="yourBadges"></div><div class="bdg" id="rBadges"></div></div>
+  <div style="flex:1;min-height:18px"></div>
+  <button class="btn purple" id="againBtn"><span data-t="keepGoing"></span></button>
+</div></section>
+
+<!-- 6 PROGRESS -->
+<section class="view" id="v-progress"><div class="wrap">
+  <div class="bar"><span class="ibtn" style="background:var(--yellow-l)">⭐</span><div class="ttl"><h2 data-t="progress"></h2></div><button class="ibtn snd" data-say="progSay">🔊</button></div>
+  <div class="pgrid">
+    <div>
+      <div class="card prof"><span class="av pAv">🦁</span><div><b class="kname">Ahmed</b><small id="pYear"></small></div></div>
+      <div class="card jar"><div style="flex:1"><div class="n">⭐ <span class="starN">12</span> <span data-t="starsW" style="font-size:22px"></span></div><div class="meter"><span id="meter"></span></div><small data-t="nextReward"></small></div><span style="font-size:52px">🧰</span></div>
+      <div class="sec" data-t="skillsP"></div>
+      <div class="card skills" id="skills"></div>
+    </div>
+    <div>
+      <div class="sec" data-t="yourBadges"></div>
+      <div class="card"><div class="bdg" id="allBadges"></div></div>
+      <div class="sec"><span data-t="recent"></span></div>
+      <div class="card recent" id="recent"></div>
+      <div class="card" style="display:flex;gap:12px;align-items:center;padding:14px;margin-top:12px;background:var(--ink);color:#fff"><span style="font-size:36px">🎒</span><b style="font-size:16px;line-height:1.3" data-t="travels"></b></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- READ -->
+<section class="view" id="v-read"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="read"></h2></div><button class="ibtn snd" data-say="pick">🔊</button></div>
+  <div class="rows two">
+    <button class="card row b-blue" data-go="story"><span class="icb c-blue" style="width:72px;height:72px;font-size:42px">🐦</span><span class="tx"><b data-t="storyTitle"></b><small>📖 4 · ⏱ 3 min</small></span><span class="chev flip">›</span></button>
+    <button class="card row b-yellow" data-toast="soon"><span class="icb c-yellow" style="width:72px;height:72px;font-size:42px">🐑</span><span class="tx"><b data-t="story2"></b><small>🔒 <span data-t="soon"></span></small></span><span class="chev flip">›</span></button>
+    <button class="card row b-purple" data-toast="soon"><span class="icb c-purple" style="width:72px;height:72px;font-size:42px">🌙</span><span class="tx"><b data-t="story3"></b><small>🔒 <span data-t="soon"></span></small></span><span class="chev flip">›</span></button>
+  </div>
+</div></section>
+
+<!-- STORY -->
+<section class="view" id="v-story" data-nonav><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="read">✕</button><div class="ttl"><h2 data-t="storyTitle"></h2></div><button class="ibtn snd" id="sayPage">🔊</button></div>
+  <div class="page"><div class="card scene" id="scene"></div><div class="sent" id="sent"></div></div>
+  <div class="pager"><button class="ibtn" id="pPrev"><span class="flip">◀</span></button><div class="pdots" id="pDots"></div><button class="ibtn" id="pNext" style="background:var(--blue);color:#fff"><span class="flip">▶</span></button></div>
+</div></section>
+
+<!-- 7 HOMEWORK / SCHOOL -->
+<section class="view" id="v-hw"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="school"></h2></div><button class="ibtn snd" data-say="hwSay">🔊</button></div>
+  <div class="school"><div class="ill">🌳🏫🌳</div><p data-t="schoolSub"></p></div>
+  <div class="sec">📝 <span data-t="homework"></span><span class="nbad" style="margin-inline-start:4px">1</span></div>
+  <div class="card row b-green" style="margin-bottom:14px"><span class="icb c-green" style="font-size:36px">🌱</span><span class="tx"><b data-t="hwTitle"></b><small>🏫 <span data-t="science"></span> · 📅 <span data-t="hwDue"></span></small></span></div>
+  <div class="steps" id="steps"></div>
+  <div style="height:14px"></div>
+  <button class="btn" data-toast="photo">📷 <span data-t="send"></span></button>
+  <div class="sec">🏫 <span data-t="fromSchool"></span></div>
+  <div class="rows two">
+    <button class="card row b-teal" data-go="chat" data-who="0"><span class="icb c-teal">💬</span><span class="tx"><b data-t="messages"></b><small data-t="fromTeacher"></small></span><span class="chev flip">›</span></button>
+    <button class="card row b-blue" data-toast="updates"><span class="icb c-blue">📣</span><span class="tx"><b data-t="updates"></b><small data-t="updatesSub"></small></span><span class="chev flip">›</span></button>
+  </div>
+</div></section>
+
+<!-- FEELINGS -->
+<section class="view" id="v-feel"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="feelQ"></h2></div><button class="ibtn snd" data-say="feelQ">🔊</button></div>
+  <div class="tiles" style="margin-top:0">
+    <button class="tile t-yellow" data-feel="0"><span class="ic" style="font-size:80px">😀</span></button>
+    <button class="tile t-blue" data-feel="1"><span class="ic" style="font-size:80px">😐</span></button>
+    <button class="tile t-purple" data-feel="2"><span class="ic" style="font-size:80px">😢</span></button>
+    <button class="tile t-pink" data-feel="3"><span class="ic" style="font-size:80px">😠</span></button>
+  </div>
+  <div class="card" id="feelMsg" style="margin-top:16px;padding:18px;text-align:center;font-family:var(--display);font-size:22px;font-weight:800;opacity:0;transition:.25s"></div>
+</div></section>
+
+<!-- MESSAGES LIST -->
+<section class="view" id="v-msgs"><div class="wrap">
+  <div class="bar"><span class="ibtn" style="background:var(--teal-l)">💬</span><div class="ttl"><h2 data-t="messages"></h2></div><button class="ibtn snd" data-say="msgSay">🔊</button></div>
+  <div class="safe">👀 <span data-t="safe"></span></div>
+  <div class="rows">
+    <button class="card row b-teal" data-go="chat" data-who="0"><span class="av" style="width:58px;height:58px;font-size:32px;background:var(--teal-l)">👩🏽‍🏫</span><span class="tx"><b data-t="tSara"></b><small id="lastMsg2"></small></span><span class="pill-n" id="listBadge">1</span></button>
+    <button class="card row b-green" data-go="chat" data-who="1"><span class="av" style="width:58px;height:58px;font-size:32px;background:var(--green-l)">🧑🏻‍🏫</span><span class="tx"><b data-t="tAli"></b><small data-t="aliLast"></small></span><span class="chev flip">›</span></button>
+  </div>
+  <div class="sec" data-t="quickSay"></div>
+  <div class="tiles" style="margin-top:0">
+    <button class="tile t-orange" data-quick="0"><span class="ic">🙋</span><b style="font-size:18px" data-t="q0s"></b></button>
+    <button class="tile t-green" data-quick="1"><span class="ic">✅</span><b style="font-size:18px" data-t="q1s"></b></button>
+    <button class="tile t-pink" data-quick="2"><span class="ic">💛</span><b style="font-size:18px" data-t="q2s"></b></button>
+    <button class="tile t-blue" data-go="chat" data-who="0" data-rec="1"><span class="ic">🎤</span><b style="font-size:18px" data-t="voiceS"></b></button>
+  </div>
+</div></section>
+
+<!-- CHAT -->
+<section class="view" id="v-chat" data-nonav><div class="wrap">
+  <div class="chatbar"><button class="ibtn" data-go="msgs"><span class="flip">‹</span></button><span class="av" id="cAv" style="width:50px;height:50px;font-size:28px;background:var(--teal-l)">👩🏽‍🏫</span><div class="tx"><b id="cName"></b><small>● <span data-t="online"></span></small></div><button class="ibtn snd" id="sayLast">🔊</button></div>
+  <div class="safe">👀 <span data-t="safe"></span></div>
+  <div class="thread" id="thread"><div class="typing" id="typing"><i></i><i></i><i></i></div></div>
+  <div class="quick" id="quick"></div>
+  <div class="composer">
+    <button class="ibtn" data-toast="photoMsg">📷</button>
+    <input id="inp" autocomplete="off">
+    <button class="ibtn mic" id="micBtn">🎤</button>
+    <button class="ibtn send" id="sendBtn"><span class="flip">➤</span></button>
+  </div>
+</div></section>
+
+<!-- REWARDS -->
+<section class="view" id="v-rewards"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="home"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="rwTitle"></h2></div><button class="ibtn snd" data-say="rwSay">🔊</button></div>
+  <div class="card rw-jar"><span class="big">🫙</span><div style="flex:1"><div class="n">⭐ <span class="starN">12</span></div><div class="meter"><span id="rwMeter"></span></div><small id="rwNext"></small></div></div>
+  <div style="height:12px"></div>
+  <button class="card chest" id="chest"><span class="ic">🎁</span><span><b data-t="chest"></b><small id="chestSub"></small></span></button>
+  <div class="sec">🎨 <span data-t="unlock"></span></div>
+  <div class="shop" id="shop"></div>
+  <div class="sec">🏅 <span data-t="stickers"></span></div>
+  <div class="card"><div class="bdg wide" id="rwBadges"></div></div>
+</div></section>
+
+</div><!-- main -->
+</div><!-- app -->
+<div class="toast" id="toast"></div>
 
 <script>
-// ---------------------------------------------------------------
-// Text in three languages. Dari and Pashto are first drafts and
-// should be checked by a native speaker before testing with families.
-// ---------------------------------------------------------------
-const T = {
-  en: {
-    hi: "Hi Ahmed! 👋", heroSub: "Ready to learn today?", todayTasks: "Today's tasks",
-    task1: "Maths: halves and quarters", task1meta: "Homework · 3 small steps",
-    task2: "Read a story", task2meta: "Reading · 5 minutes",
-    task3: "Number game", task3meta: "Game of the day",
-    readToMe: "Read this page to me", savedLabel: "Works without internet",
-    offlineNote: "Today's lessons are saved on this phone.",
-    tabHome: "Home", tabHw: "Homework", tabLearn: "Learn & play", tabProgress: "My progress",
-    hwTitle: "Homework help", hwSub: "Big tasks, broken into small steps.",
-    hw2: "English: write about my weekend", hw3: "Science: plant diary",
-    dueTomorrow: "Due tomorrow", dueFriday: "Due Friday", sentToTeacher: "✓ Sent to teacher",
-    needHelp: "Need help?", coachName: "Coach Sara", coachLangs: "Speaks Dari and English",
-    chat: "Chat", back: "Back", stepsSub: "Do one step at a time. Tick it when you finish.",
-    s1: "Draw a pizza and cut it into 2 equal parts.", s2: "Colour one part. That's one half (½).",
-    s3: "Cut each half again. One piece is a quarter (¼).",
-    getHint: "Get a hint", hintText: "💡 Halves are 2 equal parts. Quarters are 4 equal parts. Try folding a piece of paper!",
-    photo: "Photo of my work", askCoach: "Ask my coach", photoSent: "📷 Photo sent to Coach Sara",
-    online: "Online now",
-    c1: "Hi Ahmed! I'm Sara, your learning coach. How can I help? 😊",
-    q1: "I don't understand step 2", q2: "Can you explain in Dari?", q3: "I finished! ✅",
-    r1: "No problem! Imagine sharing a pizza with one friend. You each get one half. 🍕",
-    r2: "Of course! I can send you a voice message in Dari.", r3: "Amazing work, Ahmed! ⭐ I'll tell your teacher.",
-    rDefault: "Thanks! I'll reply soon. 👍", typeMsg: "Type a message…",
-    learnTitle: "Learn & play", learnSub: "Choose your age group.", age1: "Ages 5–7", age2: "Ages 8–11", age3: "Ages 12–16",
-    gameOfDay: "GAME OF THE DAY", gameName: "Find the missing number",
-    maths: "Maths", english: "English", stories: "Stories in Dari & Pashto", wellbeing: "How I feel",
-    reading: "Reading", downloaded: "12 lessons downloaded to use offline.",
-    missing: "Which number is missing?", great: ["Great job! ⭐", "Well done! 🎉", "You got it! 👏"], tryAgain: "Try again!",
-    storyTitle: "The little bird", storyText: "A little bird lived in a big tree. Every morning she sang a happy song. One day the wind was strong, but the bird held on tight. When the sun came out, she sang again.",
-    feelTitle: "How do you feel today?", feelOk: "Thank you for telling me. 💛",
-    feelHard: "It's okay to feel this way. You can talk to a grown-up you trust. 💛",
-    breatheIn: "Breathe in", breatheOut: "Breathe out", startBreathing: "Start breathing with me",
-    progressTitle: "My progress", progressSub: "Look how much you've learned!",
-    myBadges: "My badges", b1: "First task", b2: "5 stories", b3: "7-day streak", b4: "Maths star",
-    movesTitle: "My learning moves with me", movesText: "If you move home or change school, your progress stays safe. Your new teacher can see it.",
-    school1: "Old school", school2: "New school", saved: "Saved",
-    findPlace: "Find a place to study near me",
-    placesTitle: "Places to study", placesSub: "Quiet places with tables, Wi-Fi and help.",
-    hub: "HomeLearn Study Hub", hubMeta: "10 min walk · Mon–Fri 3–6 pm",
-    library: "Local library", libraryMeta: "15 min walk · free computers",
-    book: "Book", booked: "✅ Booked! A grown-up will get a message.",
-    noDevice: "No tablet or laptop at home?", noDeviceSub: "Your family can borrow one from HomeLearnBridge.",
-    askGrownUp: "Ask a grown-up to request one", askedGrownUp: "✅ We told your grown-up",
-    days: ["M", "T", "W", "T", "F", "S", "S"],
-    noVoice: "This device has no voice for this language. The real app would play recorded audio.",
-  },
-  fa: {
-    hi: "سلام احمد! 👋", heroSub: "آماده یادگیری امروز هستی؟", todayTasks: "کارهای امروز",
-    task1: "ریاضی: نصف و ربع", task1meta: "کارخانگی · ۳ مرحله کوچک",
-    task2: "یک قصه بخوان", task2meta: "خواندن · ۵ دقیقه",
-    task3: "بازی اعداد", task3meta: "بازی امروز",
-    readToMe: "این صفحه را برایم بخوان", savedLabel: "بدون انترنت هم کار می‌کند",
-    offlineNote: "درس‌های امروز در این تلفن ذخیره شده‌اند.",
-    tabHome: "خانه", tabHw: "کارخانگی", tabLearn: "بیاموز و بازی کن", tabProgress: "پیشرفت من",
-    hwTitle: "کمک در کارخانگی", hwSub: "کارهای بزرگ، به مرحله‌های کوچک تقسیم شده‌اند.",
-    hw2: "انگلیسی: درباره آخر هفته‌ام بنویسم", hw3: "ساینس: دفترچه نبات",
-    dueTomorrow: "تا فردا", dueFriday: "تا جمعه", sentToTeacher: "✓ به معلم فرستاده شد",
-    needHelp: "کمک لازم داری؟", coachName: "مربی سارا", coachLangs: "دری و انگلیسی صحبت می‌کند",
-    chat: "گفتگو", back: "برگشت", stepsSub: "هر بار یک مرحله را انجام بده. وقتی تمام شد، تیک بزن.",
-    s1: "یک پیتزا بکش و آن را به ۲ قسمت برابر تقسیم کن.", s2: "یک قسمت را رنگ کن. این یک نصف (½) است.",
-    s3: "هر نصف را دوباره تقسیم کن. هر تکه یک ربع (¼) است.",
-    getHint: "راهنمایی بگیر", hintText: "💡 نصف یعنی ۲ قسمت برابر. ربع یعنی ۴ قسمت برابر. یک کاغذ را قات کن و امتحان کن!",
-    photo: "عکس کارم", askCoach: "از مربی‌ام بپرس", photoSent: "📷 عکس به مربی سارا فرستاده شد",
-    online: "آنلاین است",
-    c1: "سلام احمد! من سارا هستم، مربی یادگیری‌ات. چطور کمکت کنم؟ 😊",
-    q1: "مرحله ۲ را نمی‌فهمم", q2: "می‌شود به دری توضیح بدهی؟", q3: "تمام کردم! ✅",
-    r1: "مشکلی نیست! فکر کن یک پیتزا را با یک دوستت تقسیم می‌کنی. هر کدام یک نصف می‌گیرید. 🍕",
-    r2: "حتماً! برایت یک پیام صوتی به دری می‌فرستم.", r3: "عالی بود احمد! ⭐ به معلمت می‌گویم.",
-    rDefault: "تشکر! زود جواب می‌دهم. 👍", typeMsg: "پیام بنویس…",
-    learnTitle: "بیاموز و بازی کن", learnSub: "گروه سنی‌ات را انتخاب کن.", age1: "۵ تا ۷ سال", age2: "۸ تا ۱۱ سال", age3: "۱۲ تا ۱۶ سال",
-    gameOfDay: "بازی امروز", gameName: "عدد گم‌شده را پیدا کن",
-    maths: "ریاضی", english: "انگلیسی", stories: "قصه‌ها به دری و پشتو", wellbeing: "احساس من",
-    reading: "خواندن", downloaded: "۱۲ درس برای استفاده بدون انترنت دانلود شده.",
-    missing: "کدام عدد گم شده؟", great: ["آفرین! ⭐", "خیلی خوب! 🎉", "درست است! 👏"], tryAgain: "دوباره امتحان کن!",
-    storyTitle: "پرنده کوچک", storyText: "یک پرنده کوچک در یک درخت بزرگ زندگی می‌کرد. هر صبح یک آهنگ شاد می‌خواند. یک روز باد شدید آمد، اما پرنده محکم نگه داشت. وقتی آفتاب برآمد، دوباره آواز خواند.",
-    feelTitle: "امروز چه احساسی داری؟", feelOk: "تشکر که به من گفتی. 💛",
-    feelHard: "اشکالی ندارد که این احساس را داری. می‌توانی با یک بزرگسال که به او اعتماد داری صحبت کنی. 💛",
-    breatheIn: "نفس بکش", breatheOut: "نفس را بیرون بده", startBreathing: "با من نفس بکش",
-    progressTitle: "پیشرفت من", progressSub: "ببین چقدر یاد گرفته‌ای!",
-    myBadges: "نشان‌های من", b1: "اولین کار", b2: "۵ قصه", b3: "۷ روز پی‌درپی", b4: "ستاره ریاضی",
-    movesTitle: "یادگیری‌ام همراه من است", movesText: "اگر خانه یا مکتب را عوض کنی، پیشرفتت محفوظ می‌ماند. معلم جدیدت می‌تواند آن را ببیند.",
-    school1: "مکتب قبلی", school2: "مکتب جدید", saved: "ذخیره شد",
-    findPlace: "یک جای درس خواندن نزدیکم پیدا کن",
-    placesTitle: "جاهای درس خواندن", placesSub: "جاهای آرام با میز، وای‌فای و کمک.",
-    hub: "مرکز درسی HomeLearn", hubMeta: "۱۰ دقیقه پیاده · دوشنبه تا جمعه ۳ تا ۶ عصر",
-    library: "کتابخانه محلی", libraryMeta: "۱۵ دقیقه پیاده · کمپیوتر رایگان",
-    book: "رزرو", booked: "✅ رزرو شد! به یک بزرگسال پیام می‌رسد.",
-    noDevice: "در خانه تبلت یا لپ‌تاپ نداری؟", noDeviceSub: "خانواده‌ات می‌تواند یکی از HomeLearnBridge قرض بگیرد.",
-    askGrownUp: "از یک بزرگسال بخواه درخواست کند", askedGrownUp: "✅ به بزرگسالت گفتیم",
-    days: ["د", "س", "چ", "پ", "ج", "ش", "ی"],
-    noVoice: "این دستگاه صدای این زبان را ندارد. در اپ واقعی صدای ضبط‌شده پخش می‌شود.",
-  },
-  ps: {
-    hi: "سلام احمده! 👋", heroSub: "نن د زده کړې لپاره چمتو یې؟", todayTasks: "د نن ورځې دندې",
-    task1: "ریاضي: نیمه او څلورمه برخه", task1meta: "کورنی کار · ۳ کوچني ګامونه",
-    task2: "یوه کیسه ولوله", task2meta: "لوستل · ۵ دقیقې",
-    task3: "د شمېرو لوبه", task3meta: "د نن ورځې لوبه",
-    readToMe: "دا پاڼه راته ولوله", savedLabel: "پرته له انټرنېټه هم کار کوي",
-    offlineNote: "د نن ورځې لوستونه په دې تلیفون کې خوندي دي.",
-    tabHome: "کور", tabHw: "کورنی کار", tabLearn: "زده کړه او لوبه", tabProgress: "زما پرمختګ",
-    hwTitle: "د کورني کار مرسته", hwSub: "لوی کارونه په کوچنیو ګامونو وېشل شوي.",
-    hw2: "انګلیسي: د خپلې اونۍ د پای په اړه ولیکه", hw3: "ساینس: د بوټي ورځپاڼه",
-    dueTomorrow: "تر سبا", dueFriday: "تر جمعې", sentToTeacher: "✓ ښوونکي ته ولېږل شو",
-    needHelp: "مرستې ته اړتیا لرې؟", coachName: "روزونکې سارا", coachLangs: "دري او انګلیسي خبرې کوي",
-    chat: "خبرې", back: "شاته", stepsSub: "هر ځل یو ګام واخله. چې خلاص شو، نښه یې کړه.",
-    s1: "یو پیتزا رسم کړه او په ۲ برابرو برخو یې ووېشه.", s2: "یوه برخه رنګ کړه. دا نیمه (½) ده.",
-    s3: "هره نیمه بیا ووېشه. هره ټوټه څلورمه برخه (¼) ده.",
-    getHint: "لارښوونه واخله", hintText: "💡 نیمه یعنې ۲ برابرې برخې. څلورمه یعنې ۴ برابرې برخې. یوه پاڼه قات کړه او وې ازمایه!",
-    photo: "زما د کار انځور", askCoach: "له روزونکې وپوښته", photoSent: "📷 انځور روزونکې سارا ته ولېږل شو",
-    online: "اوس آنلاین ده",
-    c1: "سلام احمده! زه سارا یم، ستا د زده کړې روزونکې. څنګه مرسته درسره وکړم؟ 😊",
-    q1: "دوهم ګام نه پوهېږم", q2: "په دري یې تشریح کولی شې؟", q3: "خلاص مې کړ! ✅",
-    r1: "هېڅ ستونزه نشته! فکر وکړه چې یو پیتزا له یو ملګري سره وېشې. هر یو نیمه اخلئ. 🍕",
-    r2: "هو، حتماً! تاته به په دري کې غږیز پیغام ولېږم.", r3: "ډېر ښه کار دې وکړ احمده! ⭐ ښوونکي ته به دې ووایم.",
-    rDefault: "مننه! ژر به ځواب درکړم. 👍", typeMsg: "پیغام ولیکه…",
-    learnTitle: "زده کړه او لوبه", learnSub: "خپله عمري ډله وټاکه.", age1: "۵–۷ کلن", age2: "۸–۱۱ کلن", age3: "۱۲–۱۶ کلن",
-    gameOfDay: "د نن ورځې لوبه", gameName: "ورکه شمېره پیدا کړه",
-    maths: "ریاضي", english: "انګلیسي", stories: "کیسې په دري او پښتو", wellbeing: "زما احساس",
-    reading: "لوستل", downloaded: "۱۲ لوستونه پرته له انټرنېټه د کارولو لپاره ښکته شوي.",
-    missing: "کومه شمېره ورکه ده؟", great: ["شاباس! ⭐", "ډېر ښه! 🎉", "سمه ده! 👏"], tryAgain: "بیا هڅه وکړه!",
-    storyTitle: "کوچنۍ مرغۍ", storyText: "یوه کوچنۍ مرغۍ په یوه لویه ونه کې اوسېده. هر سهار به یې یوه خوشاله سندره ویله. یوه ورځ سخت باد راغی، خو مرغۍ ټینګه ونیوله. کله چې لمر راووت، بیا یې سندره وویله.",
-    feelTitle: "نن څه احساس لرې؟", feelOk: "مننه چې راته دې وویل. 💛",
-    feelHard: "سمه ده چې داسې احساس لرې. له یو داسې لوی سړي سره خبرې کولی شې چې باور پرې لرې. 💛",
-    breatheIn: "ساه واخله", breatheOut: "ساه وباسه", startBreathing: "له ما سره ساه واخله",
-    progressTitle: "زما پرمختګ", progressSub: "وګوره څومره دې زده کړي!",
-    myBadges: "زما نښانونه", b1: "لومړۍ دنده", b2: "۵ کیسې", b3: "۷ ورځې پرله پسې", b4: "د ریاضي ستوری",
-    movesTitle: "زما زده کړه له ما سره ځي", movesText: "که کور یا ښوونځی بدل کړې، ستا پرمختګ خوندي پاتې کېږي. نوی ښوونکی دې یې لیدلی شي.",
-    school1: "پخوانی ښوونځی", school2: "نوی ښوونځی", saved: "خوندي شو",
-    findPlace: "ما ته نږدې د زده کړې ځای پیدا کړه",
-    placesTitle: "د زده کړې ځایونه", placesSub: "ارام ځایونه چې مېز، وای‌فای او مرسته لري.",
-    hub: "د HomeLearn د زده کړې مرکز", hubMeta: "۱۰ دقیقې پیاده · دوشنبه–جمعه ۳–۶ ماسپښین",
-    library: "سیمه‌ییز کتابتون", libraryMeta: "۱۵ دقیقې پیاده · وړیا کمپیوټرونه",
-    book: "بک کړه", booked: "✅ بک شو! لوی سړي ته به پیغام ورشي.",
-    noDevice: "په کور کې ټابلیټ یا لپ‌ټاپ نه لرې؟", noDeviceSub: "ستا کورنۍ کولی شي له HomeLearnBridge څخه یو په پور واخلي.",
-    askGrownUp: "له یو لوی سړي وغواړه چې غوښتنه وکړي", askedGrownUp: "✅ ستا لوی سړي ته مو وویل",
-    days: ["د", "س", "چ", "پ", "ج", "ش", "ی"],
-    noVoice: "په دې وسیله کې د دې ژبې غږ نشته. په اصلي اپ کې به ثبت شوی غږ غږېږي.",
-  },
+const LOGO=`<rect x="2" y="2" width="116" height="116" rx="30" fill="#FFF7E6"/><circle cx="95" cy="24" r="10" fill="#FFC83D"/><path d="M18 56 L60 20 L102 56" fill="none" stroke="#2F6FED" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 60 C49 53 35 53 26 57 L26 87 C35 83 49 83 60 90 Z" fill="#FF8A3D"/><path d="M60 60 C71 53 85 53 94 57 L94 87 C85 83 71 83 60 90 Z" fill="#3CC37A"/><path d="M20 106 Q60 84 100 106" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/>`;
+document.querySelectorAll('svg.logo').forEach(s=>s.innerHTML=LOGO);
+
+/* =============== WORDS =============== */
+const T={
+en:{t1:"Learn",t2:"Grow",t3:"Together",start:"Get Started",offline:"Works without internet",who:"Who is learning?",add:"Add",year:"Year",
+ home:"Home",courses:"Courses",progress:"My Progress",messages:"Messages",rwNav:"Rewards",
+ hello:"Hello",great2see:"Great to see you today!",todayAct:"Today's activities",
+ coursesSub:"Maths, reading, languages and more",play:"Play",playSub:"Fun games and challenges",read:"Read",readSub:"Stories and books",progSub:"See your stars",
+ pick:"Pick one!",all:"All",
+ cMaths:"Maths",cMathsSub:"Count, add and take away",cRead:"Reading",cReadSub:"Stories and books",cPhon:"Phonics",cPhonSub:"Letter sounds and words",
+ cSci:"Science",cSciSub:"Explore the world around you",cLang:"Languages",cLangSub:"English, Dari and Pashto",cFeel:"Feelings",cFeelSub:"Calm and happy",
+ lEn:"English words",lEnSub:"Match pictures and words",lFa:"Dari letters",lFaSub:"Learn the first letters",lPs:"Pashto letters",lPsSub:"Learn the first letters",
+ gCount:"Count",gShape:"Shapes",gLetters:"Letters",gNature:"Animals",
+ subCount:"Count the objects",subShape:"Find the shape",subPhon:"Letter sounds",subNature:"Explore",subEn:"English words",subFa:"Dari letters",subPs:"Pashto letters",
+ qCount:o=>`How many ${o} are there?`,objs:["apples","stars","balloons","fish","flowers","cakes"],
+ qLetter:L=>`Which picture starts with ${L}?`,qShape:s=>`Find the ${s}`,shapes:["circle","triangle","square","star"],qAnimal:"Find the animal",qPlant:"Find the plant",qWord:"Which word matches the picture?",
+ next:"Next",good:["Great job!","Well done!","Super!","Brilliant!","Yes!"],try:"Try again!",
+ rewards:"Rewards & Badges",great:"Great job!",earned:"You earned",keepGoing:"Keep going!",yourBadges:"Your badges",
+ b0:"Maths Star",b1:"Reading Explorer",b2:"Problem Solver",b3:"Word Wizard",b4:"5-Day Streak",b5:"Kind Heart",
+ starsW:"stars",nextReward:"Next reward at 20 stars",skillsP:"Skills practised",recent:"Recent activities",
+ travels:"Your stars and badges stay with you, even if you move home or school.",progSay:"Look at all your stars!",
+ storyTitle:"Little Bird's New Home",story2:"Counting Sheep",story3:"The Moon Picnic",soon:"Coming soon",
+ pages:["Little Bird lives in a tall tree.","One day, a big wind blows. Little Bird must move.","Little Bird flies to a new place. Everything is new.","Little Bird makes a new friend. The new home feels good!"],
+ school:"School Connection",schoolSub:"Stay connected with your teacher and school.",homework:"Homework",hwTitle:"How do plants grow?",science:"Science",hwDue:"Friday",
+ hwSay:"Your homework: watch the video, draw a plant, label it, then send a photo.",steps:["Watch","Draw","Label","Send"],send:"Send a photo",
+ fromSchool:"From school",fromTeacher:"Talk to your teacher",updates:"Class updates",updatesSub:"News and events",
+ feelings:"Feelings",feelQ:"How do you feel today?",feelA:["Yay! Let's learn! 🎉","Thanks for telling me. 💛","It's OK to feel sad. Talk to a grown-up you trust. 🤗","Let's take 3 big breaths together. 🌬️"],
+ tSara:"Ms Sara · Teacher",tAli:"Mr Ali · Learning coach",online:"Online",safe:"Your parent can see your messages",msgSay:"Send a message to your teacher!",
+ aliLast:"See you at the hub on Saturday! 📚",quickSay:"Quick messages",
+ q0s:"I need help",q1s:"I finished!",q2s:"Thank you",voiceS:"Voice message",
+ quick:["I need help 🙋","I finished my homework ✅","Thank you 💛","I'm stuck on maths 🔢"],
+ replies:["Of course! What do you need help with? 😊","Brilliant! I will check it today ⭐","You're welcome! 💛","Let's do it together. Try counting with your fingers 🖐️"],
+ sara0:n=>`Hi ${n}! Well done on your maths today ⭐`,sara1:"Don't forget your plant homework for Friday 🌱",
+ voiceMsg:"Voice message",voiceReply:"Thank you for your message! 🎧",typeMsg:"Type a message…",
+ rwTitle:"My Rewards",rwSay:"Collect stars to unlock fun things for your character!",chest:"Daily surprise",chestTap:"Tap to open!",chestDone:"+1 ⭐ Come back tomorrow!",unlock:"Unlock with stars",stickers:"My stickers",need:n=>`${n} ⭐`,chosen:"Chosen ✓",tapWear:"Tap to wear",moreStars:n=>`Earn ${n} more ⭐ to unlock this!`,nextAt:(n,i)=>`${n} more ⭐ to unlock ${i}`,allDone:"You unlocked everything! 🎉",items:["Party hat","Cool glasses","Flower","Crown","Hero cape","Rainbow"],
+ toasts:{soon:"Coming soon!",photo:"The camera would open here to send homework to school.",photoMsg:"The camera would open here to send a photo.",updates:"Class news would show here.",ideas:"Simple activities to do together at home.",tips:"Short tips in your language.",res:"Worksheets and videos to download.",hub:"A map of quiet study places near you.",add:"A parent can add a child here.",voice:"A recorded voice would read this aloud."}},
+fa:{t1:"یاد بگیر",t2:"رشد کن",t3:"با هم",start:"شروع",offline:"بدون انترنت کار می‌کند",who:"کی درس می‌خواند؟",add:"افزودن",year:"صنف",
+ home:"خانه",courses:"کورس‌ها",progress:"پیشرفت من",messages:"پیام‌ها",rwNav:"جایزه‌ها",
+ hello:"سلام",great2see:"خوشحالیم که امروز آمدی!",todayAct:"فعالیت‌های امروز",
+ coursesSub:"ریاضی، خواندن، زبان‌ها و بیشتر",play:"بازی",playSub:"بازی‌ها و چالش‌های جالب",read:"خواندن",readSub:"قصه‌ها و کتاب‌ها",progSub:"ستاره‌هایت را ببین",
+ pick:"یکی را انتخاب کن!",all:"همه",
+ cMaths:"ریاضی",cMathsSub:"شمردن، جمع و تفریق",cRead:"خواندن",cReadSub:"قصه‌ها و کتاب‌ها",cPhon:"صدای حروف",cPhonSub:"حروف و کلمات انگلیسی",
+ cSci:"ساینس",cSciSub:"دنیای اطرافت را کشف کن",cLang:"زبان‌ها",cLangSub:"انگلیسی، دری و پشتو",cFeel:"احساسات",cFeelSub:"آرام و خوشحال",
+ lEn:"کلمات انگلیسی",lEnSub:"عکس و کلمه را جور کن",lFa:"حروف دری",lFaSub:"الف ب پ · حروف اول",lPs:"حروف پشتو",lPsSub:"الف ب پ · حروف اول",
+ gCount:"شمارش",gShape:"شکل‌ها",gLetters:"حروف",gNature:"حیوانات",
+ subCount:"چیزها را بشمار",subShape:"شکل را پیدا کن",subPhon:"صدای حروف",subNature:"کشف کن",subEn:"کلمات انگلیسی",subFa:"حروف دری",subPs:"حروف پشتو",
+ qCount:o=>`چند ${o} است؟`,objs:["سیب","ستاره","پوقانه","ماهی","گل","کیک"],
+ qLetter:L=>`کدام عکس با «${L}» شروع می‌شود؟`,qShape:s=>`${s} را پیدا کن`,shapes:["دایره","مثلث","مربع","ستاره"],qAnimal:"حیوان را پیدا کن",qPlant:"گیاه را پیدا کن",qWord:"کدام کلمه با عکس جور است؟",
+ next:"بعدی",good:["آفرین!","شاباش!","عالی!","بسیار خوب!","درست است!"],try:"دوباره کوشش کن!",
+ rewards:"جایزه‌ها و نشان‌ها",great:"آفرین!",earned:"گرفتی",keepGoing:"ادامه بده!",yourBadges:"نشان‌های تو",
+ b0:"ستارهٔ ریاضی",b1:"کاشف خواندن",b2:"حل‌کنندهٔ مشکل",b3:"استاد کلمات",b4:"۵ روز پیاپی",b5:"دل مهربان",
+ starsW:"ستاره",nextReward:"جایزهٔ بعدی با ۲۰ ستاره",skillsP:"مهارت‌های تمرین‌شده",recent:"فعالیت‌های اخیر",
+ travels:"ستاره‌ها و نشان‌هایت با تو می‌مانند، حتی اگر خانه یا مکتب را تغییر دهی.",progSay:"ببین چقدر ستاره داری!",
+ storyTitle:"خانهٔ نو پرندهٔ کوچک",story2:"شمردن گوسفندها",story3:"پیک‌نیک مهتاب",soon:"به زودی",
+ pages:["پرندهٔ کوچک در یک درخت بلند زندگی می‌کند.","یک روز باد شدیدی می‌وزد. پرندهٔ کوچک باید برود.","پرندهٔ کوچک به یک جای نو پرواز می‌کند. همه چیز نو است.","پرندهٔ کوچک یک دوست نو پیدا می‌کند. خانهٔ نو خوب است!"],
+ school:"ارتباط با مکتب",schoolSub:"با معلم و مکتب خود در تماس باش.",homework:"کارخانگی",hwTitle:"گیاهان چگونه رشد می‌کنند؟",science:"ساینس",hwDue:"جمعه",
+ hwSay:"کارخانگی تو: ویدیو را ببین، یک گیاه رسم کن، نام بخش‌ها را بنویس و عکس بفرست.",steps:["ببین","رسم کن","نام بنویس","بفرست"],send:"فرستادن عکس",
+ fromSchool:"از مکتب",fromTeacher:"با معلمت صحبت کن",updates:"خبرهای صنف",updatesSub:"خبرها و برنامه‌ها",
+ feelings:"احساسات",feelQ:"امروز چه احساسی داری؟",feelA:["عالی! بیا یاد بگیریم! 🎉","تشکر که گفتی. 💛","غمگین بودن اشکالی ندارد. با یک بزرگ‌تر که به او اعتماد داری صحبت کن. 🤗","بیا با هم سه نفس عمیق بکشیم. 🌬️"],
+ tSara:"خانم سارا · معلم",tAli:"آقای علی · مربی",online:"آنلاین",safe:"والدینت پیام‌هایت را می‌بینند",msgSay:"به معلمت پیام بفرست!",
+ aliLast:"روز شنبه در مرکز می‌بینمت! 📚",quickSay:"پیام‌های سریع",
+ q0s:"کمک می‌خواهم",q1s:"تمام کردم!",q2s:"تشکر",voiceS:"پیام صوتی",
+ quick:["کمک می‌خواهم 🙋","کارخانگی‌ام تمام شد ✅","تشکر 💛","در ریاضی گیر کرده‌ام 🔢"],
+ replies:["حتماً! در چه چیزی کمک می‌خواهی؟ 😊","عالی! امروز آن را می‌بینم ⭐","خواهش می‌کنم! 💛","بیا با هم انجامش دهیم. با انگشتانت بشمار 🖐️"],
+ sara0:n=>`سلام ${n}! ریاضی امروزت عالی بود ⭐`,sara1:"کارخانگی گیاه را برای جمعه فراموش نکن 🌱",
+ voiceMsg:"پیام صوتی",voiceReply:"تشکر از پیامت! 🎧",typeMsg:"پیام بنویس…",
+ rwTitle:"جایزه‌های من",rwSay:"ستاره جمع کن تا چیزهای جالب برای شخصیتت باز شود!",chest:"تحفهٔ روزانه",chestTap:"برای باز کردن بزن!",chestDone:"+۱ ⭐ فردا دوباره بیا!",unlock:"با ستاره باز کن",stickers:"استیکرهای من",need:n=>`${n} ⭐`,chosen:"انتخاب شد ✓",tapWear:"بزن تا بپوشی",moreStars:n=>`${n} ستارهٔ دیگر بگیر تا باز شود!`,nextAt:(n,i)=>`${n} ⭐ دیگر تا ${i}`,allDone:"همه را باز کردی! 🎉",items:["کلاه جشن","عینک","گل","تاج","چپن قهرمان","رنگین‌کمان"],
+ toasts:{soon:"به زودی!",photo:"اینجا کمره باز می‌شود تا کارخانگی به مکتب فرستاده شود.",photoMsg:"اینجا کمره برای فرستادن عکس باز می‌شود.",updates:"خبرهای صنف اینجا نشان داده می‌شود.",ideas:"فعالیت‌های ساده برای انجام دادن با هم در خانه.",tips:"رهنمایی‌های کوتاه به زبان شما.",res:"ورق‌های کار و ویدیوها برای دانلود.",hub:"نقشهٔ جاهای آرام درسی نزدیک شما.",add:"والدین می‌توانند اینجا کودک اضافه کنند.",voice:"اینجا یک صدای ضبط‌شده متن را می‌خواند."}},
+ps:{t1:"زده کړه",t2:"وده",t3:"یوځای",start:"پیل",offline:"بې انټرنېټه کار کوي",who:"څوک زده کړه کوي؟",add:"زیاتول",year:"ټولګی",
+ home:"کور",courses:"کورسونه",progress:"زما پرمختګ",messages:"پیغامونه",rwNav:"انعامونه",
+ hello:"سلام",great2see:"خوشاله یو چې نن دې ولیدو!",todayAct:"د نن فعالیتونه",
+ coursesSub:"ریاضي، لوستل، ژبې او نور",play:"لوبې",playSub:"په زړه پورې لوبې او ننګونې",read:"لوستل",readSub:"کیسې او کتابونه",progSub:"خپل ستوري وګوره",
+ pick:"یو یې وټاکه!",all:"ټول",
+ cMaths:"ریاضي",cMathsSub:"شمېرل، جمع او تفریق",cRead:"لوستل",cReadSub:"کیسې او کتابونه",cPhon:"د تورو غږونه",cPhonSub:"انګلیسي تورې او کلمې",
+ cSci:"ساینس",cSciSub:"خپله شاوخوا نړۍ وپلټه",cLang:"ژبې",cLangSub:"انګلیسي، دري او پښتو",cFeel:"احساسات",cFeelSub:"ارام او خوشاله",
+ lEn:"انګلیسي کلمې",lEnSub:"انځور او کلمه سره وتړه",lFa:"دري تورې",lFaSub:"الف ب پ · لومړۍ تورې",lPs:"پښتو تورې",lPsSub:"الف ب پ · لومړۍ تورې",
+ gCount:"شمېرل",gShape:"شکلونه",gLetters:"تورې",gNature:"حیوانات",
+ subCount:"شیان وشمېره",subShape:"شکل پیدا کړه",subPhon:"د تورو غږونه",subNature:"وپلټه",subEn:"انګلیسي کلمې",subFa:"دري تورې",subPs:"پښتو تورې",
+ qCount:o=>`څو ${o} دي؟`,objs:["مڼې","ستوري","پوکانۍ","کبان","ګلونه","کېکونه"],
+ qLetter:L=>`کوم انځور په «${L}» پیلېږي؟`,qShape:s=>`${s} پیدا کړه`,shapes:["دایره","مثلث","مربع","ستوری"],qAnimal:"حیوان پیدا کړه",qPlant:"بوټی پیدا کړه",qWord:"کومه کلمه له انځور سره سمون لري؟",
+ next:"بل",good:["شاباس!","ډېر ښه!","عالي!","آفرین!","سم دی!"],try:"بیا هڅه وکړه!",
+ rewards:"جایزې او نښانونه",great:"شاباس!",earned:"دې وګټل",keepGoing:"دوام ورکړه!",yourBadges:"ستا نښانونه",
+ b0:"د ریاضي ستوری",b1:"د لوستلو سپړونکی",b2:"ستونزه حل کوونکی",b3:"د کلمو استاد",b4:"۵ ورځې پرله‌پسې",b5:"مهربان زړه",
+ starsW:"ستوري",nextReward:"بله جایزه په ۲۰ ستورو",skillsP:"تمرین شوي مهارتونه",recent:"وروستي فعالیتونه",
+ travels:"ستا ستوري او نښانونه درسره پاتې کېږي، که کور یا ښوونځی بدل کړې هم.",progSay:"خپل ټول ستوري وګوره!",
+ storyTitle:"د کوچنۍ مرغۍ نوی کور",story2:"د پسونو شمېرل",story3:"د سپوږمۍ مېله",soon:"ژر راځي",
+ pages:["کوچنۍ مرغۍ په یوه لوړه ونه کې اوسېږي.","یوه ورځ سخت باد راځي. کوچنۍ مرغۍ باید لاړه شي.","کوچنۍ مرغۍ یو نوي ځای ته الوځي. هر څه نوي دي.","کوچنۍ مرغۍ یو نوی ملګری پیدا کوي. نوی کور ښه دی!"],
+ school:"له ښوونځي سره اړیکه",schoolSub:"له خپل ښوونکي او ښوونځي سره په اړیکه کې اوسه.",homework:"کورنی کار",hwTitle:"بوټي څنګه وده کوي؟",science:"ساینس",hwDue:"جمعه",
+ hwSay:"ستا کورنی کار: ویډیو وګوره، یو بوټی رسم کړه، برخې یې په نښه کړه او عکس یې ولېږه.",steps:["وګوره","رسم کړه","نوم ولیکه","ولېږه"],send:"عکس ولېږه",
+ fromSchool:"له ښوونځي",fromTeacher:"له خپل ښوونکي سره خبرې وکړه",updates:"د ټولګي خبرونه",updatesSub:"خبرونه او پروګرامونه",
+ feelings:"احساسات",feelQ:"نن څنګه احساس کوې؟",feelA:["ډېر ښه! راځه زده کړه وکړو! 🎉","مننه چې دې وویل. 💛","خپه کېدل سمه خبره ده. له یو باوري لوی سره خبرې وکړه. 🤗","راځه چې یوځای درې ژورې ساګانې واخلو. 🌬️"],
+ tSara:"مېرمن سارا · ښوونکې",tAli:"ښاغلی علي · روزونکی",online:"آنلاین",safe:"مور او پلار دې پیغامونه لیدلی شي",msgSay:"خپل ښوونکي ته پیغام ولېږه!",
+ aliLast:"د شنبې په ورځ په مرکز کې سره وینو! 📚",quickSay:"چټک پیغامونه",
+ q0s:"مرسته غواړم",q1s:"خلاص مې کړ!",q2s:"مننه",voiceS:"غږیز پیغام",
+ quick:["مرسته غواړم 🙋","کورنی کار مې خلاص شو ✅","مننه 💛","په ریاضي کې بند پاتې یم 🔢"],
+ replies:["هرو مرو! په څه کې مرسته غواړې؟ 😊","عالي! نن به یې وګورم ⭐","هیڅ خبره نده! 💛","راځه یوځای یې وکړو. په ګوتو یې وشمېره 🖐️"],
+ sara0:n=>`سلام ${n}! نن دې ریاضي ډېره ښه وه ⭐`,sara1:"د جمعې لپاره د بوټي کورنی کار مه هېروه 🌱",
+ voiceMsg:"غږیز پیغام",voiceReply:"د پیغام مننه! 🎧",typeMsg:"پیغام ولیکه…",
+ rwTitle:"زما انعامونه",rwSay:"ستوري راټول کړه چې ستا د کرکټر لپاره په زړه پورې شیان خلاص شي!",chest:"ورځنۍ ډالۍ",chestTap:"د پرانیستلو لپاره یې کېکاږه!",chestDone:"+۱ ⭐ سبا بیا راشه!",unlock:"په ستورو یې خلاص کړه",stickers:"زما سټیکرونه",need:n=>`${n} ⭐`,chosen:"غوره شو ✓",tapWear:"د اغوستلو لپاره کېکاږه",moreStars:n=>`نور ${n} ⭐ وګټه چې دا خلاص شي!`,nextAt:(n,i)=>`نور ${n} ⭐ تر ${i} پورې`,allDone:"ټول دې خلاص کړل! 🎉",items:["د جشن خولۍ","عینکې","ګل","تاج","د اتل څادر","شنه زرغونه"],
+ toasts:{soon:"ژر راځي!",photo:"دلته کمره خلاصېږي ترڅو کورنی کار ښوونځي ته ولېږل شي.",photoMsg:"دلته د عکس لېږلو لپاره کمره خلاصېږي.",updates:"د ټولګي خبرونه به دلته ښکاره شي.",ideas:"په کور کې د یوځای کولو لپاره ساده فعالیتونه.",tips:"ستاسې په ژبه لنډې لارښوونې.",res:"د ښکته کولو لپاره کاري پاڼې او ویډیوګانې.",hub:"ستاسې نږدې د زده کړې د ارامو ځایونو نقشه.",add:"مور او پلار کولی شي دلته ماشوم زیات کړي.",voice:"دلته به ثبت شوی غږ متن ولولي."}}
 };
 
+/* =============== STATE =============== */
+const KIDS=[{name:"Ahmed",face:"🦁",bg:"#FFE9C7",age:8,yr:3},{name:"Maryam",face:"🦋",bg:"#DFF5E7",age:5,yr:1},{name:"Yusuf",face:"🚀",bg:"#E3EDFF",age:11,yr:6}];
+let lang='en',kid=KIDS[0],stars=12,view='splash',hist=[],game='count',qs=[],qi=0,firstTry=0,wrong=false,page=0,stepsDone=[0],chip='all',unread=1,chatWho=0;
+const earned=new Set(['b0','b1']);
+const SK={count:5,read:3,phonics:4,nature:1,lang:2,feel:1};
+const RECENT=[{ic:'🔢',c:'c-blue',k:'gCount',m:10,s:3},{ic:'📖',c:'c-purple',k:'storyTitle',m:10,s:3},{ic:'🔤',c:'c-yellow',k:'cPhon',m:7,s:2}];
+const chats={0:[],1:[]};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const t=k=>T[lang][k]??T.en[k];
 
-let lang = "en";
-let screen = "home";
-const $ = (s, el = document) => el.querySelector(s);
-const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const t = (k) => T[lang][k] ?? T.en[k];
+/* =============== RENDER =============== */
+function applyLang(){
+  document.documentElement.dir=lang==='en'?'ltr':'rtl';document.documentElement.lang=lang==='en'?'en':lang;
+  $$('[data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v});
+  $$('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  $('#inp').placeholder=t('typeMsg');
+  if(!chats[0].length) seedChat();
+  renderAll(); if(view==='act')renderQ(); if(view==='story')renderPage(); if(view==='chat')renderChat();
+}
+function seedChat(){chats[0]=[{f:'them',k:'sara0'},{f:'them',k:'sara1'}];chats[1]=[{f:'them',k:'aliLast'}];}
+function msgText(m){if(m.k){const v=t(m.k);return typeof v==='function'?v(kid.name):v} if(m.q!==undefined)return t('quick')[m.q]; if(m.r!==undefined)return t('replies')[m.r]; return m.txt||''}
+function renderAll(){
+  $('#kids').innerHTML=KIDS.map((k,i)=>`<button class="card kid" data-kid="${i}"><div class="face" style="background:${k.bg}">${k.face}</div><b>${k.name}</b><small>${t('year')} ${k.yr}</small></button>`).join('')+`<button class="card kid add" data-toast="add"><div class="face">＋</div><b>${t('add')}</b></button>`;
+  $$('.kname').forEach(e=>e.textContent=kid.name);
+  ['#hAv',...$$('.pAv')].forEach(x=>{const e=typeof x==='string'?$(x):x;e.textContent=kid.face;e.style.background=kid.bg;const a=REWARDS.find(r=>r[0]===kid.acc);if(a)e.dataset.acc=a[1];else delete e.dataset.acc});
+  $('#pYear').textContent=`${t('year')} ${kid.yr}`;
+  $$('.starN').forEach(e=>e.textContent=stars);
+  $('#meter').style.width=Math.min(100,stars/20*100)+'%';
+  renderChips();renderCourses();renderBadges();renderSkills();renderRecent();renderSteps();renderRewards();
+  const last=chats[0][chats[0].length-1];$('#lastMsg').textContent=$('#lastMsg2').textContent=last?msgText(last):'';
+  [$('#navBadge'),$('#homeBadge'),$('#listBadge')].forEach(e=>{e.textContent=unread;e.style.display=unread?'':'none'});
+}
+const COURSES=[
+ {id:'maths',ic:'🔢',c:'blue',k:'cMaths',game:'count'},
+ {id:'reading',ic:'📖',c:'green',k:'cRead',go:'read'},
+ {id:'phonics',ic:'🔤',c:'yellow',k:'cPhon',game:'phonics'},
+ {id:'science',ic:'🔬',c:'teal',k:'cSci',game:'nature'},
+ {id:'lang',ic:'🗣️',c:'orange',k:'cLang',go:'langs',isNew:1},
+ {id:'feel',ic:'💛',c:'pink',k:'cFeel',go:'feel'}];
+function renderChips(){
+  $('#chips').innerHTML=[['all','✨','all'],...COURSES.map(c=>[c.id,c.ic,c.k])].map(([id,ic,k])=>`<button data-chip="${id}" class="${chip===id?'on':''}">${ic} ${t(k)}</button>`).join('');
+}
+function renderCourses(){
+  $('#courseList').innerHTML=COURSES.filter(c=>chip==='all'||chip===c.id).map(c=>`<button class="card row b-${c.c}" ${c.game?`data-game="${c.game}"`:`data-go="${c.go}"`}><span class="icb c-${c.c}">${c.ic}</span><span class="tx"><b>${t(c.k)}${c.isNew?' <span style="font-size:12px;background:var(--orange);color:#fff;border-radius:8px;padding:1px 7px;vertical-align:middle">NEW</span>':''}</b><small>${t(c.k+'Sub')}</small></span><span class="chev flip">›</span></button>`).join('');
+}
+const BADGES=[['b0','⭐','#FFF1C9','#F4B400'],['b1','📖','#DFF5E7','#22A95B'],['b2','🧩','#EEE7FF','#7C4DEB'],['b3','🔤','#E3EDFF','#2463EB'],['b4','🔥','#FFEBDC','#FF8A3D'],['b5','💛','#FFE4EE','#F0508A']];
+const badgeHTML=list=>list.map(([k,ic,bg,col])=>`<div class="bd ${earned.has(k)?'':'lock'}" style="color:${col}"><span class="m" style="background:${bg}">${earned.has(k)?ic:'🔒'}</span><span style="color:var(--ink)">${t(k)}</span></div>`).join('');
+function renderBadges(){$('#allBadges').innerHTML=badgeHTML(BADGES)}
 
-function applyLang() {
-  const rtl = lang !== "en";
-  document.documentElement.lang = lang;
-  $("#app").dir = rtl ? "rtl" : "ltr";
-  $$("[data-t]").forEach((el) => (el.textContent = t(el.dataset.t)));
-  $$(".langs button").forEach((b) => b.classList.toggle("on", b.dataset.lang === lang));
-  $("#chatIn").placeholder = t("typeMsg");
-  renderStreak(); renderSteps(); renderQuick();
+/* =============== REWARDS =============== */
+// Items unlock when the child reaches a star total. Stars are never spent.
+const REWARDS=[['hat','🎩',5],['glasses','🕶️',10],['flower','🌸',15],['crown','👑',20],['cape','🦸',30],['rainbow','🌈',40]];
+let chestOpened=false;
+function renderRewards(){
+  $('#rwBadges').innerHTML=badgeHTML(BADGES);
+  $('#shop').innerHTML=REWARDS.map(([k,ic,need],i)=>{
+    const open=stars>=need,on=kid.acc===k;
+    return `<button class="card item ${open?'':'lock'} ${on?'on':''}" data-rw="${i}"><span class="ic">${ic}</span><b>${t('items')[i]}</b><small>${on?t('chosen'):open?t('tapWear'):t('need')(need)}</small></button>`}).join('');
+  const nx=REWARDS.find(r=>stars<r[2]);
+  $('#rwMeter').style.width=(nx?Math.min(100,stars/nx[2]*100):100)+'%';
+  $('#rwNext').textContent=nx?t('nextAt')(nx[2]-stars,t('items')[REWARDS.indexOf(nx)]):t('allDone');
+  $('#chest').disabled=chestOpened;$('#chest').classList.toggle('open',chestOpened);
+  $('#chestSub').textContent=chestOpened?t('chestDone'):t('chestTap');
+}
+function renderSkills(){
+  const it=[['count','🔢','c-blue','cMaths'],['read','📖','c-green','cRead'],['phonics','🔤','c-yellow','cPhon'],['nature','🔬','c-teal','cSci'],['lang','🗣️','c-orange','cLang'],['feel','💛','c-pink','cFeel']];
+  $('#skills').innerHTML=it.map(([k,ic,c,l])=>`<div class="sk"><div class="m ${c}">${ic}</div>${t(l)}<small>(${SK[k]})</small></div>`).join('');
+}
+function renderRecent(){
+  const h=RECENT.slice(0,4).map(r=>`<div class="r"><span class="icb ${r.c}">${r.ic}</span><span class="tx"><b>${t(r.k)}</b><small>⏱ ${r.m} min</small></span><span>${'⭐'.repeat(r.s)}</span></div>`).join('');
+  $('#recent').innerHTML=h;
+}
+function renderSteps(){
+  const ic=['▶️','✏️','🏷️','📷'];
+  $('#steps').innerHTML=t('steps').map((s,i)=>`<button class="card step ${stepsDone.includes(i)?'on':''}" data-step="${i}"><span class="ck">✓</span><div class="ic">${ic[i]}</div><b>${s}</b></button>`).join('');
 }
 
-
-function go(name) {
-  stopSpeaking();
-  screen = name;
-  $$(".screen").forEach((s) => s.classList.toggle("on", s.dataset.screen === name));
-  const tab = $(`.screen[data-screen="${name}"]`).dataset.tab;
-  $$("[data-tabbtn]").forEach((b) => b.classList.toggle("on", b.dataset.tabbtn === tab));
-  $("#screens").scrollTop = 0;
-  if (name === "game") newRound();
-  if (name === "chat" && !$("#chat").children.length) addMsg(t("c1"), "them");
+/* =============== NAV =============== */
+const TAB={home:'home',courses:'courses',langs:'courses',games:'home',read:'home',story:'home',progress:'progress',msgs:'msgs',chat:'msgs',rewards:'rewards',hw:'home',feel:'home'};
+function go(v){
+  if(v==='back'){v=hist.pop()||'home'}
+  else if(v==='back2'){v=hist.pop()||'home'}
+  else if(!['act','reward','who','splash'].includes(view)&&view!==v) hist.push(view);
+  if(hist.length>20)hist.shift();
+  view=v;
+  $$('.view').forEach(x=>x.classList.remove('on'));
+  const el=$('#v-'+v);el.classList.add('on');el.scrollTop=0;
+  document.body.classList.toggle('nonav',el.hasAttribute('data-nonav'));
+  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===TAB[v]));
+  if(v==='story'){page=0;renderPage()}
+  if(v==='chat'){if(chatWho===0){unread=0;renderAll()}renderChat()}
+  if(v==='feel')$('#feelMsg').style.opacity=0;
+  if('speechSynthesis' in window)speechSynthesis.cancel();
 }
 
-function toast(msg) {
-  const el = $("#toast"); el.textContent = msg; el.classList.add("show");
-  clearTimeout(toast.tm); toast.tm = setTimeout(() => el.classList.remove("show"), 2200);
+/* =============== VOICE =============== */
+function say(text,auto){
+  if(!('speechSynthesis' in window)){if(!auto)toast(t('toasts').voice);return}
+  speechSynthesis.cancel();
+  const code=lang==='en'?'en':lang;
+  const v=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(code));
+  if(!v&&lang!=='en'){if(!auto)toast(t('toasts').voice);return}
+  const u=new SpeechSynthesisUtterance(text.replace(/[^\p{L}\p{N}\s.,!?؟،'«»]/gu,''));
+  if(v)u.voice=v;u.lang=v?v.lang:'en-GB';u.rate=.9;u.pitch=1.1;speechSynthesis.speak(u);
 }
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2600)}
 
-// ---------- Home ----------
-function renderStreak() {
-  $("#streak").innerHTML = t("days").map((d, i) => `<span class="${i < 4 ? "done" : ""}">${i < 4 ? "🔥" : d}</span>`).join("");
+/* =============== GAMES =============== */
+const rnd=n=>Math.floor(Math.random()*n),shuffle=a=>a.map(x=>[Math.random(),x]).sort((p,q)=>p[0]-q[0]).map(x=>x[1]);
+const SHAPES=['<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#F0508A"/></svg>','<svg viewBox="0 0 64 64"><path d="M32 4 L60 58 H4 Z" fill="#FFC83D"/></svg>','<svg viewBox="0 0 64 64"><rect x="6" y="6" width="52" height="52" rx="6" fill="#2463EB"/></svg>','<svg viewBox="0 0 64 64"><path d="M32 3 L40 23 L62 24 L45 38 L51 60 L32 47 L13 60 L19 38 L2 24 L24 23 Z" fill="#22A95B"/></svg>'];
+const ITEMS=['🍎','⭐','🎈','🐟','🌸','🧁'];
+const EN_L=[['A','🍎'],['B','⚽'],['C','🐱'],['D','🐶'],['F','🐟'],['S','☀️'],['M','🌙'],['H','🏠']];
+const FA_L=[['پ','🐱','پشک'],['س','🍎','سیب'],['ک','📖','کتاب'],['گ','🌸','گل'],['م','🐟','ماهی'],['د','🌳','درخت']];
+const PS_L=[['پ','🐱','پیشو'],['م','🍎','مڼه'],['ک','📖','کتاب'],['ګ','🌸','ګل'],['س','🐶','سپی'],['و','🌳','ونه']];
+const EN_W=[['🐱','cat'],['🐶','dog'],['☀️','sun'],['🍎','apple'],['🏠','house'],['🐟','fish'],['📖','book'],['🌳','tree']];
+const ANIMALS=['🐶','🐱','🐰','🐘','🐢','🐦','🐟','🐄'],PLANTS=['🌻','🌳','🌵','🌷','🍀'],THINGS=['🚗','⚽','✏️','🎈','🪑','👟'];
+const META={count:['cMaths','subCount','count'],shape:['cMaths','subShape','count'],phonics:['cPhon','subPhon','phonics'],nature:['cSci','subNature','nature'],enword:['cLang','subEn','lang'],dari:['cLang','subFa','lang'],pashto:['cLang','subPs','lang']};
+function makeQs(g){
+  const band=+($('#ages .on')?.dataset.age??1),max=band===0?5:band===1?9:12;
+  return Array.from({length:5},(_,i)=>{
+    if(g==='count'){const n=2+rnd(max-1),o=shuffle([...new Set([n,n+1,Math.max(1,n-1),n+2])]);return{t:g,n,it:i%ITEMS.length,opts:shuffle(o.slice(0,4).includes(n)?o.slice(0,4):[n,...o.slice(0,3)]),ans:n}}
+    if(g==='shape'){const k=rnd(4);return{t:g,k,opts:shuffle([0,1,2,3]),ans:k}}
+    if(g==='phonics'||g==='dari'||g==='pashto'){const src=g==='phonics'?EN_L:g==='dari'?FA_L:PS_L;const p=shuffle(src).slice(0,3);return{t:'letter',L:p[0][0],w:p[0][2],opts:shuffle(p.map(x=>x[1])),ans:p[0][1],rtl:g!=='phonics'}}
+    if(g==='enword'){const p=shuffle(EN_W).slice(0,3);return{t:g,pic:p[0][0],opts:shuffle(p.map(x=>x[1])),ans:p[0][1]}}
+    const wa=i%2===0,good=wa?ANIMALS[rnd(ANIMALS.length)]:PLANTS[rnd(PLANTS.length)];
+    return{t:'nature',wa,opts:shuffle([good,THINGS[rnd(THINGS.length)],wa?PLANTS[rnd(PLANTS.length)]:ANIMALS[rnd(ANIMALS.length)]]),ans:good};
+  });
 }
+function startGame(g){game=g;qs=makeQs(g);qi=0;firstTry=0;wrong=false;go('act');renderQ();setTimeout(()=>say($('#qText').textContent,1),350)}
+function qText(q){
+  if(q.t==='count')return t('qCount')(t('objs')[q.it]);
+  if(q.t==='shape')return t('qShape')(t('shapes')[q.k]);
+  if(q.t==='letter')return t('qLetter')(q.L);
+  if(q.t==='enword')return t('qWord');
+  return q.wa?t('qAnimal'):t('qPlant');
+}
+function renderQ(){
+  const q=qs[qi],[tk,sk]=META[game];
+  $('#aTitle').textContent=t(tk);$('#aSub').textContent=t(sk);
+  $('#prog').innerHTML=qs.map((_,i)=>`<i class="${i<qi?'f':''}"></i>`).join('');
+  $('#qText').textContent=qText(q);
+  let st='';
+  if(q.t==='count')st=Array.from({length:q.n},(_,i)=>`<span class="it" style="animation-delay:${i*60}ms">${ITEMS[q.it]}</span>`).join('');
+  else if(q.t==='letter')st=`<span class="letter" style="${q.rtl?'font-family:Vazirmatn':''}">${q.L}</span>`;
+  else if(q.t==='enword')st=`<span class="word">${q.pic}</span>`;
+  else if(q.t==='shape')st=`<span class="word">🔍</span>`;
+  else st=`<span class="word">${q.wa?'🐾':'🌿'}</span>`;
+  $('#stage').innerHTML=st;
+  const o=$('#opts');o.className='opts'+(q.opts.length===3?' three':'');
+  o.innerHTML=q.opts.map(x=>`<button class="opt ${q.t==='enword'?'small':''}" data-a="${x}" dir="ltr">${q.t==='shape'?SHAPES[x]:x}</button>`).join('');
+  $('#fbk').className='fbk';$('#fbk').textContent='';$('#nextBtn').disabled=true;
+}
+function answer(b){
+  const q=qs[qi];if($('#nextBtn').disabled===false)return;
+  if(String(b.dataset.a)===String(q.ans)){
+    b.classList.add('ok');const g=t('good');$('#fbk').textContent='✅ '+g[qi%g.length];$('#fbk').className='fbk show good';
+    if(q.t==='letter'&&q.w)$('#fbk').textContent+=`  ${q.ans} ${q.w}`;
+    if(!wrong)firstTry++;wrong=false;$('#nextBtn').disabled=false;say(g[qi%g.length],1);
+  }else{wrong=true;b.classList.remove('no');void b.offsetWidth;b.classList.add('no');$('#fbk').textContent='🤔 '+t('try');$('#fbk').className='fbk show try'}
+}
+$('#nextBtn').onclick=()=>{qi++;if(qi<qs.length){renderQ();say($('#qText').textContent,1)}else finish()};
+function finish(){
+  const s=firstTry>=5?3:firstTry>=3?2:1;stars+=s;const sk=META[game][2];SK[sk]++;
+  const nb={count:'b0',phonics:'b3',enword:'b3',dari:'b3',pashto:'b3',nature:'b2',read:'b1'}[game]||'b2';earned.add(nb);
+  RECENT.unshift({ic:{count:'🔢',shape:'🔷',phonics:'🔤',nature:'🔬',enword:'🗣️',dari:'🗣️',pashto:'🗣️'}[game],c:'c-blue',k:META[game][1],m:5,s});
+  showReward(s,nb);
+}
+function showReward(s,nb){
+  $('#rStars').textContent='⭐'.repeat(s);
+  const order=[BADGES.find(b=>b[0]===nb),...BADGES.filter(b=>b[0]!==nb)].slice(0,3);
+  $('#rBadges').innerHTML=badgeHTML(order);
+  renderAll();go('reward');confetti();say(t('great'),1);
+}
+function confetti(){const c=$('#confetti'),cols=['#F0508A','#2463EB','#FFC83D','#22A95B','#7C4DEB','#FF8A3D'];c.innerHTML=Array.from({length:44},()=>`<i style="left:${rnd(100)}%;background:${cols[rnd(6)]};animation-delay:${Math.random()*.7}s;animation-duration:${2+Math.random()*1.4}s"></i>`).join('');setTimeout(()=>c.innerHTML='',4200)}
 
-// ---------- Homework steps ----------
-const doneSteps = new Set();
-function renderSteps() {
-  $("#steps").innerHTML = ["s1", "s2", "s3"].map((k, i) => `
-    <li class="${doneSteps.has(i) ? "done" : ""}"><button class="n" data-step="${i}" aria-label="Step ${i + 1}">${doneSteps.has(i) ? "✓" : i + 1}</button><p>${t(k)}</p></li>`).join("");
-  $("#hwBar").style.width = `${(doneSteps.size / 3) * 100}%`;
+/* =============== STORY =============== */
+const SCENES=['🐦🌳','🌬️🍃🌳','🐦☁️🏙️','🐦🤝🐿️🏠'];
+function renderPage(){$('#scene').textContent=SCENES[page];$('#sent').textContent=t('pages')[page];$('#pDots').innerHTML=SCENES.map((_,i)=>`<i class="${i===page?'on':''}"></i>`).join('');$('#pPrev').style.visibility=page?'visible':'hidden'}
+$('#pPrev').onclick=()=>{if(page){page--;renderPage()}};
+$('#pNext').onclick=()=>{if(page<SCENES.length-1){page++;renderPage();say(t('pages')[page],1)}else{stars+=2;SK.read++;earned.add('b1');RECENT.unshift({ic:'📖',c:'c-purple',k:'storyTitle',m:3,s:2});game='read';showReward(2,'b1')}};
+$('#sayPage').onclick=()=>say(t('pages')[page]);
+
+/* =============== CHAT =============== */
+const WHO=[{face:'👩🏽‍🏫',bg:'var(--teal-l)',k:'tSara'},{face:'🧑🏻‍🏫',bg:'var(--green-l)',k:'tAli'}];
+function renderChat(){
+  const w=WHO[chatWho];$('#cAv').textContent=w.face;$('#cAv').style.background=w.bg;$('#cName').textContent=t(w.k);
+  const th=$('#thread'),typing=$('#typing');
+  th.innerHTML='';chats[chatWho].forEach(m=>{
+    const d=document.createElement('div');d.className='msg '+m.f+(m.voice?' voice':'');
+    d.innerHTML=m.voice?`▶ <span class="wave">${[8,14,20,12,18,10,16,8,12].map(h=>`<i style="height:${h}px"></i>`).join('')}</span> 0:0${m.voice}`:'';
+    if(!m.voice)d.textContent=msgText(m);
+    th.appendChild(d)});
+  th.appendChild(typing);
+  $('#quick').innerHTML=t('quick').map((q,i)=>`<button data-qr="${i}">${q}</button>`).join('');
+  requestAnimationFrame(()=>{const v=$('#v-chat');v.scrollTop=v.scrollHeight});
 }
-$("#steps").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-step]"); if (!b) return;
-  const i = +b.dataset.step; doneSteps.has(i) ? doneSteps.delete(i) : doneSteps.add(i);
-  renderSteps();
-  if (doneSteps.size === 3) { toast(t("great")[0]); $$(".task")[0].classList.add("done"); }
+function send(m,replyIdx){
+  chats[chatWho].push(m);renderChat();
+  $('#typing').classList.add('on');requestAnimationFrame(()=>{const v=$('#v-chat');v.scrollTop=v.scrollHeight});
+  setTimeout(()=>{$('#typing').classList.remove('on');chats[chatWho].push(replyIdx===-1?{f:'them',k:'voiceReply'}:{f:'them',r:replyIdx});renderChat();renderAll();say(msgText(chats[chatWho].at(-1)),1)},1400);
+}
+$('#sendBtn').onclick=()=>{const v=$('#inp').value.trim();if(!v)return;$('#inp').value='';send({f:'me',txt:v},0)};
+$('#inp').addEventListener('keydown',e=>{if(e.key==='Enter')$('#sendBtn').click()});
+let recT=null;
+$('#micBtn').onclick=()=>{const b=$('#micBtn');if(recT){clearTimeout(recT);recT=null;b.classList.remove('rec');b.textContent='🎤';send({f:'me',voice:4},-1);return}b.classList.add('rec');b.textContent='⏹';recT=setTimeout(()=>$('#micBtn').click(),3000)};
+$('#sayLast').onclick=()=>{const m=chats[chatWho].filter(x=>x.f==='them').at(-1);if(m)say(msgText(m))};
+
+/* =============== CLICKS =============== */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('button');if(!el)return;const d=el.dataset;
+  if(d.lang){lang=d.lang;applyLang();return}
+  if(el.id==='langBtn'){lang={en:'fa',fa:'ps',ps:'en'}[lang];applyLang();toast({en:'English',fa:'دری',ps:'پښتو'}[lang]);return}
+  if(d.kid!==undefined){kid=KIDS[+d.kid];const band=kid.age<=6?0:kid.age<=9?1:2;$$('#ages button').forEach(b=>b.classList.toggle('on',+b.dataset.age===band));seedChat();renderAll();hist=[];go('home');return}
+  if(d.age!==undefined){$$('#ages button').forEach(b=>b.classList.toggle('on',b===el));return}
+  if(d.chip){chip=d.chip;renderChips();renderCourses();return}
+  if(d.game){startGame(d.game);return}
+  if(d.quick!==undefined){chatWho=0;go('chat');setTimeout(()=>send({f:'me',q:+d.quick},+d.quick),250);return}
+  if(d.qr!==undefined){send({f:'me',q:+d.qr},+d.qr);return}
+  if(d.who!==undefined){chatWho=+d.who;go('chat');if(d.rec)setTimeout(()=>$('#micBtn').click(),300);return}
+  if(d.go){go(d.go);return}
+  if(d.say){say(t(d.say));return}
+  if(d.toast){toast(t('toasts')[d.toast]);return}
+  if(d.rw!==undefined){const [k,,need]=REWARDS[+d.rw];if(stars<need){toast(t('moreStars')(need-stars));return}kid.acc=kid.acc===k?null:k;renderAll();return}
+  if(el.id==='chest'){if(chestOpened)return;chestOpened=true;stars++;renderAll();confetti();say(t('chestDone'),1);toast(t('chestDone'));return}
+  if(d.feel!==undefined){const m=$('#feelMsg');m.textContent=t('feelA')[+d.feel];m.style.opacity=1;say(t('feelA')[+d.feel],1);return}
+  if(d.step!==undefined){const i=+d.step;stepsDone=stepsDone.includes(i)?stepsDone.filter(x=>x!==i):[...stepsDone,i];renderSteps();return}
+  if(el.classList.contains('opt')){answer(el);return}
+  if(el.id==='sayQ'){say($('#qText').textContent);return}
+  if(el.id==='againBtn'){if(game==='read')go('read');else startGame(game);return}
 });
-$("#hintBtn").addEventListener("click", () => $("#hint").classList.toggle("show"));
-$("#photoIn").addEventListener("change", (e) => {
-  const f = e.target.files[0]; if (!f) return;
-  const img = $("#photoPrev"); img.src = URL.createObjectURL(f); img.style.display = "block";
-  toast(t("photoSent"));
-});
-
-// ---------- Chat ----------
-function addMsg(text, who) {
-  const m = document.createElement("div"); m.className = `msg ${who}`; m.textContent = text;
-  $("#chat").appendChild(m); m.scrollIntoView({ block: "end", behavior: "smooth" });
-}
-function renderQuick() {
-  $("#quick").innerHTML = ["q1", "q2", "q3"].map((k, i) => `<button data-q="${i}">${t(k)}</button>`).join("");
-}
-function reply(i) { setTimeout(() => addMsg(t(["r1", "r2", "r3"][i] || "rDefault"), "them"), 900); }
-$("#quick").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-q]"); if (!b) return;
-  addMsg(b.textContent, "me"); reply(+b.dataset.q);
-});
-$("#composer").addEventListener("submit", (e) => {
-  e.preventDefault(); const v = $("#chatIn").value.trim(); if (!v) return;
-  addMsg(v, "me"); $("#chatIn").value = ""; reply(-1);
-});
-
-// ---------- Learn ----------
-$("#ages").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-age]"); if (!b) return;
-  $$("#ages button").forEach((x) => x.classList.toggle("on", x === b));
-});
-
-// ---------- Game ----------
-const COLORS = ["#4d9de0", "#2bb673", "#f26b4f", "#8b6fd6", "#ef6f9b", "#0d5c63"];
-let answer = 0, stars = 0;
-const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
-function newRound() {
-  const add = Math.random() < .5; let a, b, c;
-  if (add) { a = rand(1, 9); b = rand(1, 9); c = a + b; } else { a = rand(5, 15); b = rand(1, a - 1); c = a - b; }
-  answer = b; $("#ga").textContent = a; $("#gop").textContent = add ? "+" : "−"; $("#gc").textContent = c;
-  $("#gslot").textContent = "?"; $("#gfeed").textContent = "";
-  const start = Math.max(1, b - rand(0, 5));
-  $("#ganswers").innerHTML = Array.from({ length: 6 }, (_, i) => `<button style="background:${COLORS[i]}" data-ans="${start + i}">${start + i}</button>`).join("");
-  $("#stars").textContent = "★".repeat(stars) + "☆".repeat(5 - stars);
-}
-$("#ganswers").addEventListener("click", (e) => {
-  const b = e.target.closest("[data-ans]"); if (!b || b.disabled) return;
-  if (+b.dataset.ans === answer) {
-    $("#gslot").textContent = answer; stars = Math.min(5, stars + 1);
-    $("#stars").textContent = "★".repeat(stars) + "☆".repeat(5 - stars);
-    const g = t("great"); $("#gfeed").textContent = g[rand(0, g.length - 1)];
-    $$("#ganswers button").forEach((x) => (x.disabled = true));
-    if (stars === 5) { $$(".task")[2].classList.add("done"); stars = 0; }
-    setTimeout(newRound, 1100);
-  } else { b.classList.add("wrong"); b.disabled = true; $("#gfeed").textContent = t("tryAgain"); }
-});
-
-// ---------- Calm ----------
-$("#feelings").addEventListener("click", (e) => {
-  const b = e.target.closest("button"); if (!b) return;
-  $$("#feelings button").forEach((x) => x.classList.toggle("on", x === b));
-  const i = $$("#feelings button").indexOf(b);
-  $("#feelMsg").textContent = i < 2 ? t("feelOk") : t("feelHard");
-});
-let breathTimer = null;
-$("#breatheBtn").addEventListener("click", () => {
-  const el = $("#breathe");
-  if (breathTimer) { clearInterval(breathTimer); breathTimer = null; el.classList.remove("big"); el.textContent = t("breatheIn"); return; }
-  let inhale = true;
-  const step = () => { el.classList.toggle("big", inhale); el.textContent = t(inhale ? "breatheIn" : "breatheOut"); inhale = !inhale; };
-  step(); breathTimer = setInterval(step, 4000);
-});
-
-// ---------- Read aloud ----------
-const VOICE_LANG = { en: "en-GB", fa: "fa", ps: "ps" };
-function stopSpeaking() { speechSynthesis?.cancel(); $("#readBtn").classList.remove("speaking"); }
-function speak(text) {
-  if (!("speechSynthesis" in window)) return toast(t("noVoice"));
-  if (speechSynthesis.speaking) return stopSpeaking();
-  const want = VOICE_LANG[lang];
-  const voice = speechSynthesis.getVoices().find((v) => v.lang.toLowerCase().startsWith(want));
-  if (!voice && lang !== "en") return toast(t("noVoice"));
-  const u = new SpeechSynthesisUtterance(text);
-  if (voice) u.voice = voice; u.lang = voice ? voice.lang : "en-GB"; u.rate = .9;
-  u.onend = () => $("#readBtn").classList.remove("speaking");
-  $("#readBtn").classList.add("speaking");
-  speechSynthesis.speak(u);
-}
-const screenText = () => $$(".screen.on [data-t], .screen.on .story-text")
-  .filter((el) => el.offsetParent !== null).map((el) => el.textContent).join(". ");
-$("#readBtn").addEventListener("click", () => speak(screenText()));
-$("#readHome").addEventListener("click", () => speak(screenText()));
-$("#readStory").addEventListener("click", () => speak(t("storyTitle") + ". " + t("storyText")));
-speechSynthesis?.getVoices();
-
-// ---------- Global clicks ----------
-document.addEventListener("click", (e) => {
-  const l = e.target.closest("[data-lang]"); if (l) { lang = l.dataset.lang; stopSpeaking(); applyLang(); return; }
-  const g = e.target.closest("[data-go]"); if (g) { go(g.dataset.go); return; }
-  const ts = e.target.closest("[data-toast]"); if (ts) { toast(t(ts.dataset.toast)); return; }
-  const d = e.target.closest("[data-device]"); if (d) { setDevice(d.dataset.device); return; }
-});
-
-// ---------- Device switcher ----------
-let device = "phone";
-function setDevice(name) {
-  device = name;
-  $("#device").className = `device ${name}`;
-  $$("[data-device]").forEach((b) => b.classList.toggle("on", b.dataset.device === name));
-  try { localStorage.setItem("hlk-device", name); } catch (e) {}
-  fit();
-}
-function fit() {
-  const dev = $("#device"), sc = $("#scaler"), stage = $("#stage");
-  const native = device === "phone" && innerWidth < 600;
-  document.body.classList.toggle("native", native);
-  if (native) { dev.style.transform = ""; return; }
-  const w = dev.offsetWidth, h = dev.offsetHeight + (device === "laptop" ? 26 : 0);
-  const cs = getComputedStyle(stage);
-  const aw = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-  const ah = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-  const pad = device === "laptop" ? 180 : 0; // room for the laptop base
-  const k = Math.min(aw / (w + pad), ah / h, 1);
-  dev.style.transform = `scale(${k})`;
-  dev.style.left = `${(pad / 2) * k}px`;
-  sc.style.width = `${(w + pad) * k}px`;
-  sc.style.height = `${h * k}px`;
-}
-addEventListener("resize", fit);
-try { const saved = localStorage.getItem("hlk-device"); if (saved) device = saved; } catch (e) {}
-
-applyLang();
-setDevice(device);
+seedChat();applyLang();
+if('speechSynthesis' in window)speechSynthesis.getVoices();
 </script>
 </body>
 </html>
