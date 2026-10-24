@@ -27,6 +27,8 @@ a{color:inherit}
 h1,h2,h3{font-family:var(--display);line-height:1.12}
 .wrap{width:min(1120px,100% - 32px);margin-inline:auto}
 section{padding:72px 0}
+/* each section has its own colour band */
+.b-yellow{background:#FFF3CC}.b-navy{background:var(--ink)}.b-mint{background:#DDF4E6}.b-peach{background:#FFE6D3}.b-lilac{background:#ECE5FF}.b-pink{background:#FFE1EC}
 .kicker{font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
 .title{font-size:clamp(28px,4vw,40px);margin-bottom:10px}
 .lead{color:var(--muted);font-weight:700;font-size:18px;max-width:60ch}
@@ -207,7 +209,7 @@ footer small{display:block;margin-top:24px;opacity:.7}
   </div></div>
 
   <!-- ABOUT / OFFER -->
-  <section class="offer" id="about"><div class="wrap">
+  <section class="offer b-yellow" id="about"><div class="wrap">
     <p class="kicker" data-t="aboutKicker"></p>
     <h2 class="title" data-t="aboutTitle"></h2>
     <p class="lead" data-t="aboutLead"></p>
@@ -215,7 +217,7 @@ footer small{display:block;margin-top:24px;opacity:.7}
   </div></section>
 
   <!-- APP -->
-  <section id="app" style="padding-top:0"><div class="wrap"><div class="app">
+  <section id="app" class="b-navy"><div class="wrap"><div class="app">
     <div>
       <p class="kicker" data-t="appKicker"></p>
       <h2 class="title" data-t="appTitle"></h2>
@@ -231,7 +233,7 @@ footer small{display:block;margin-top:24px;opacity:.7}
   </div></div></section>
 
   <!-- NEWS -->
-  <section id="news" style="padding-top:0"><div class="wrap">
+  <section id="news" class="b-mint"><div class="wrap">
     <p class="kicker" data-t="newsKicker"></p>
     <h2 class="title" data-t="newsTitle"></h2>
     <div class="chips" id="chips">
@@ -241,21 +243,21 @@ footer small{display:block;margin-top:24px;opacity:.7}
   </div></section>
 
   <!-- EVENTS -->
-  <section id="events" style="padding-top:0"><div class="wrap">
+  <section id="events" class="b-peach"><div class="wrap">
     <p class="kicker" data-t="evKicker"></p>
     <h2 class="title" data-t="evTitle"></h2>
     <div class="grid g2" id="eventList" style="margin-top:20px"></div>
   </div></section>
 
   <!-- HOW IT WORKS -->
-  <section style="padding-top:0"><div class="wrap">
+  <section class="b-lilac"><div class="wrap">
     <p class="kicker" data-t="howKicker"></p>
     <h2 class="title" data-t="howTitle"></h2>
     <div class="grid g3 steps" style="margin-top:34px" id="steps"></div>
   </div></section>
 
   <!-- CONTACT -->
-  <section class="contact" id="contact" style="background:#fff"><div class="wrap">
+  <section class="contact b-pink" id="contact"><div class="wrap">
     <div>
       <p class="kicker" data-t="cKicker"></p>
       <h2 class="title" data-t="cTitle"></h2>
