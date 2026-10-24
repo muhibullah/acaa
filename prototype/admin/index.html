@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E4F0FF">
+<title>HomeLearn Bridge — Admin Dashboard Prototype</title>
+<meta name="description" content="Prototype of the HomeLearn Bridge admin dashboard: website posts, users, families, learning content, kits, safeguarding, reports and settings.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2463EB;--blue-d:#1A4BC0;--blue-l:#E3EDFF;--green:#22A95B;--green-d:#178245;--green-l:#DFF5E7;--orange:#FF8A3D;--orange-l:#FFEBDC;
+  --yellow:#FFC83D;--yellow-l:#FFF6D8;--purple:#7C4DEB;--purple-l:#EEE7FF;--pink:#F0508A;--pink-l:#FFE4EE;--teal:#14A3B8;--teal-l:#DDF5F8;--red:#E5484D;--red-l:#FDE8E8;
+  --ink:#16244A;--muted:#66708C;--line:#E3EAF5;--bg1:#E4F0FF;--bg2:#F6FAFF;
+  --font:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;--display:"Baloo 2",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2) 60%);display:flex;flex-direction:column;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit;border:none;background:none}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--display);line-height:1.15}
+a{color:inherit}
+
+.top{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px;font-family:var(--display);font-weight:800;font-size:18px;line-height:1;text-decoration:none}
+.brand svg{width:34px;height:34px}
+.tag{font-family:var(--font);font-size:11px;font-weight:800;background:var(--yellow);padding:3px 8px;border-radius:99px;letter-spacing:.05em}
+.top .sp{flex:1}
+.top a.lnk{font-weight:800;font-size:14px;color:var(--blue);text-decoration:none}
+
+.shell{flex:1;display:flex;min-height:0}
+.nav{flex-shrink:0;width:236px;background:#fff;border-right:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:3px;overflow-y:auto}
+.nav .who{display:flex;align-items:center;gap:10px;padding:6px 10px 14px;font-weight:800}
+.nav .who small{display:block;color:var(--muted);font-size:12px}
+.nav button{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;font-weight:800;color:var(--muted);text-align:left}
+.nav button .i{font-size:19px;width:24px;text-align:center}
+.nav button.on{background:var(--blue-l);color:var(--blue)}
+.nav .badge{margin-left:auto;background:var(--pink);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px}
+.main{flex:1;overflow-y:auto;min-width:0}
+.wrap{max-width:1120px;margin:0 auto;padding:22px 24px 40px}
+.screen{display:none;animation:in .2s}.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+
+.head{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.head h2{font-size:28px}
+.head p{color:var(--muted);font-weight:700}
+.head .sp{flex:1;min-width:200px}
+.card{background:#fff;border-radius:20px;box-shadow:0 4px 16px rgba(22,36,74,.06);padding:16px}
+.sec{font-family:var(--display);font-size:19px;font-weight:800;margin:22px 0 10px}
+.grid{display:grid;gap:12px}.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.row{display:flex;align-items:center;gap:12px}
+.ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.stat b{display:block;font-family:var(--display);font-size:30px;line-height:1.1}
+.stat small{color:var(--muted);font-weight:700;font-size:13px}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:12.5px;font-weight:800;white-space:nowrap}
+.p-green{background:var(--green-l);color:var(--green-d)}.p-orange{background:var(--orange-l);color:#B65A14}.p-red{background:var(--red-l);color:#B42318}.p-blue{background:var(--blue-l);color:var(--blue)}.p-purple{background:var(--purple-l);color:var(--purple)}.p-grey{background:#EEF1F7;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:99px;font-family:var(--display);font-size:17px;font-weight:800;color:#fff;background:var(--blue);box-shadow:0 4px 0 var(--blue-d);white-space:nowrap}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--blue-d)}
+.btn.ghost{background:#fff;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue-l)}
+.btn.sm{padding:5px 12px;font-size:14.5px;box-shadow:none}
+.btn.red{background:#fff;color:var(--red);box-shadow:inset 0 0 0 2px var(--red-l)}
+.lrow{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line);width:100%;text-align:left}
+.lrow:last-child{border-bottom:none}
+.lrow .tx{flex:1;min-width:0}
+.lrow b{display:block}.lrow small{color:var(--muted);font-weight:700}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{padding:6px 14px;border-radius:99px;background:#fff;font-weight:800;font-size:14px;color:var(--muted);box-shadow:0 1px 4px rgba(22,36,74,.06)}
+.chips button.on{background:var(--ink);color:#fff}
+.tscroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:10px;border-bottom:1px solid var(--line);font-weight:700;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+td .acts{display:flex;gap:6px;flex-wrap:wrap}
+.example{display:inline-block;background:var(--yellow-l);color:#8A6200;font-weight:800;font-size:12px;padding:3px 10px;border-radius:99px;margin-left:8px;vertical-align:middle;font-family:var(--font)}
+.chart{display:flex;align-items:flex-end;gap:12px;height:160px;padding:8px 4px 0}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;font-size:12.5px;font-weight:800;color:var(--muted)}
+.chart span{width:100%;max-width:52px;border-radius:10px 10px 4px 4px}
+.bar{height:10px;background:var(--bg1);border-radius:10px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:10px;background:var(--blue)}
+.hbar{display:grid;grid-template-columns:110px 1fr 40px;gap:10px;align-items:center;font-weight:800;font-size:14px;margin:8px 0}
+
+/* login */
+.login{max-width:420px;margin:40px auto;text-align:center}
+.login .logo{width:80px;height:80px;margin:0 auto 10px;display:block}
+.field{width:100%;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:700;margin:4px 0 12px}
+label.lbl{display:block;text-align:left;font-weight:800;font-size:14px}
+
+/* editor */
+.editor{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:start}
+.form label{display:block;font-weight:800;font-size:14px;margin-top:12px}
+.form .field{margin-top:6px}
+.form textarea.field{min-height:130px;resize:vertical}
+.icons{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.icons button{width:44px;height:44px;border-radius:12px;background:var(--bg2);font-size:22px;border:2px solid transparent}
+.icons button.on{border-color:var(--blue);background:var(--blue-l)}
+.colors{display:flex;gap:8px;margin-top:6px}
+.colors button{width:32px;height:32px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px var(--line)}
+.colors button.on{box-shadow:0 0 0 3px var(--blue)}
+.preview{padding:0;overflow:hidden}
+.preview .cover{height:110px;display:grid;place-items:center;font-size:50px}
+.preview .in{padding:14px 16px 18px}
+.preview h3{font-size:20px;margin:6px 0}
+.preview p{color:var(--muted);font-weight:700;font-size:14.5px}
+.c-blue{background:var(--blue-l)}.c-green{background:var(--green-l)}.c-orange{background:var(--orange-l)}.c-purple{background:var(--purple-l)}.c-pink{background:var(--pink-l)}.c-teal{background:var(--teal-l)}
+.t-activity{background:var(--green-l);color:var(--green-d)}.t-update{background:var(--blue-l);color:var(--blue)}.t-event{background:var(--orange-l);color:#B65A14}
+
+.switch{position:relative;width:46px;height:26px;border-radius:99px;background:#D5DCEA;flex-shrink:0;transition:.2s}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.switch.on{background:var(--green)}.switch.on::after{left:23px}
+
+.modal{position:fixed;inset:0;background:rgba(22,36,74,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:40}
+.modal.on{display:flex}
+.modal .box{background:#fff;border-radius:24px;padding:22px;width:min(480px,100%);max-height:88vh;overflow-y:auto;animation:in .2s}
+.modal h3{font-size:24px;margin-bottom:10px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-weight:800;opacity:0;transition:.25s;pointer-events:none;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+@media (max-width:960px){.g4{grid-template-columns:repeat(2,1fr)}.g3,.editor{grid-template-columns:1fr}}
+@media (max-width:820px){
+  .shell{flex-direction:column-reverse}
+  .nav{width:100%;flex-direction:row;padding:6px;border-right:none;border-top:1px solid var(--line);overflow-x:auto;gap:2px}
+  .nav .who{display:none}
+  .nav button{flex-direction:column;gap:2px;font-size:11px;padding:6px 8px;min-width:68px;position:relative}
+  .nav .badge{position:absolute;top:2px;right:8px;margin:0}
+  .wrap{padding:16px 14px 30px}
+  .g2{grid-template-columns:1fr}
+  .top .lbltxt{display:none}
+}
+@media (max-width:480px){.g4{grid-template-columns:1fr 1fr}.head h2{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand" href="../"><svg viewBox="0 0 120 120" class="logo"></svg><span class="lbltxt">HomeLearn Bridge</span><span class="tag">ADMIN · PROTOTYPE</span></a>
+  <span class="sp"></span>
+  <a class="lnk" href="../" target="_blank" rel="noopener">View website ↗</a>
+  <a class="lnk" href="#" id="logout" hidden>Sign out</a>
+</header>
+
+<!-- LOGIN -->
+<div class="main" id="loginView"><div class="wrap"><div class="login card">
+  <svg viewBox="0 0 120 120" class="logo"></svg>
+  <h2>Staff sign in</h2>
+  <p class="muted" style="font-weight:700;margin-bottom:16px">Admin dashboard for the HomeLearn Bridge team</p>
+  <label class="lbl">Email</label><input class="field" value="admin@homelearnbridge.example">
+  <label class="lbl">Password</label><input class="field" type="password" value="prototype">
+  <button class="btn" style="width:100%" id="loginBtn">Sign in</button>
+  <p style="margin-top:12px"><button style="color:var(--blue);font-weight:800" data-toast="📧 A password reset link was sent to your email.">Forgot your password?</button></p>
+</div></div></div>
+
+<div class="shell" id="app" hidden>
+  <nav class="nav">
+    <div class="who"><span class="ic" style="background:var(--purple-l)">🛠️</span><div>Project team<small>Administrator</small></div></div>
+    <button data-go="dash" class="on"><span class="i">📊</span><span>Dashboard</span></button>
+    <button data-go="posts"><span class="i">📰</span><span>Website posts</span></button>
+    <button data-go="users"><span class="i">👥</span><span>Users</span></button>
+    <button data-go="families"><span class="i">👪</span><span>Families</span></button>
+    <button data-go="content"><span class="i">📚</span><span>Learning content</span></button>
+    <button data-go="kits"><span class="i">📦</span><span>Kits</span><span class="badge">2</span></button>
+    <button data-go="inbox"><span class="i">✉️</span><span>Inbox</span><span class="badge">3</span></button>
+    <button data-go="safe"><span class="i">🛡️</span><span>Safeguarding</span><span class="badge">1</span></button>
+    <button data-go="reports"><span class="i">📄</span><span>Reports</span></button>
+    <button data-go="settings"><span class="i">⚙️</span><span>Settings</span></button>
+  </nav>
+  <div class="main"><div class="wrap">
+
+    <!-- DASHBOARD -->
+    <div class="screen on" id="s-dash">
+      <div class="head"><div class="sp"><h2>Dashboard <span class="example">Example data</span></h2><p>Everything at a glance · this month</p></div><button class="btn" data-go="editor" data-new>＋ New post</button></div>
+      <div class="grid g4">
+        <div class="card stat"><b style="color:var(--blue)">30</b><small>Families registered</small></div>
+        <div class="card stat"><b style="color:var(--green)">58</b><small>Children active</small></div>
+        <div class="card stat"><b style="color:var(--purple)">5</b><small>Learning coaches</small></div>
+        <div class="card stat"><b style="color:var(--orange)">16</b><small>Kits given out</small></div>
+      </div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card"><b>✅ To do</b>
+          <button class="lrow" data-go="kits"><span class="ic" style="background:var(--blue-l)">📦</span><span class="tx"><b>2 kit requests waiting</b><small>From learning coaches</small></span><span class="pill p-orange">Review</span></button>
+          <button class="lrow" data-go="inbox"><span class="ic" style="background:var(--yellow-l)">✉️</span><span class="tx"><b>3 new messages from the website</b><small>Contact form</small></span><span class="pill p-orange">Reply</span></button>
+          <button class="lrow" data-go="safe"><span class="ic" style="background:var(--red-l)">🛡️</span><span class="tx"><b>1 safeguarding follow-up</b><small>Safeguarding lead</small></span><span class="pill p-red">Open</span></button>
+          <button class="lrow" data-go="families"><span class="ic" style="background:var(--green-l)">👪</span><span class="tx"><b>1 family without a coach</b><small>F-12 · Harrow</small></span><span class="pill p-orange">Assign</span></button>
+        </div>
+        <div class="card"><b>Activities by subject</b>
+          <div class="chart">
+            <div><span style="height:85%;background:var(--blue)"></span>English</div><div><span style="height:78%;background:var(--green)"></span>Maths</div>
+            <div><span style="height:42%;background:var(--teal)"></span>Science</div><div><span style="height:66%;background:var(--purple)"></span>Videos</div>
+            <div><span style="height:55%;background:var(--orange)"></span>Stories</div><div><span style="height:38%;background:var(--pink)"></span>Homework</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card"><b>Platform checks</b> <span class="muted" style="font-size:13px;font-weight:700">(from the forum's evaluation measures)</span>
+          <div class="hbar"><span>Signed in alone</span><div class="bar"><span style="width:86%"></span></div><span>86%</span></div>
+          <div class="hbar"><span>Got back in</span><div class="bar"><span style="width:97%;background:var(--purple)"></span></div><span>97%</span></div>
+          <div class="hbar"><span>Resumed learning</span><div class="bar"><span style="width:74%;background:var(--green)"></span></div><span>74%</span></div>
+          <div class="hbar"><span>Used offline</span><div class="bar"><span style="width:41%;background:var(--orange)"></span></div><span>41%</span></div>
+        </div>
+        <div class="card"><b>Latest website posts</b><div id="dashPosts"></div></div>
+      </div>
+    </div>
+
+    <!-- POSTS -->
+    <div class="screen" id="s-posts">
+      <div class="head"><div class="sp"><h2>Website posts</h2><p>Activities, updates and events shown on the website</p></div><button class="btn ghost" id="resetPosts">↺ Reset examples</button><button class="btn" data-go="editor" data-new>＋ New post</button></div>
+      <div class="chips" id="postChips"><button class="on" data-pf="all">All</button><button data-pf="activity">Activities</button><button data-pf="update">Updates</button><button data-pf="event">Events</button><button data-pf="draft">Drafts</button></div>
+      <div class="card tscroll"><table id="postTable"></table></div>
+      <p class="muted" style="font-size:13px;font-weight:700;margin-top:10px">Prototype: posts are saved in this browser only. Open the website in the same browser to see your changes.</p>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="screen" id="s-editor">
+      <div class="head"><div class="sp"><h2 id="edTitle">New post</h2><p>Write it once. It appears on the website when you publish.</p></div></div>
+      <div class="editor">
+        <div class="card form">
+          <label>Title<input class="field" id="fTitle" placeholder="e.g. Family workshop in Ealing"></label>
+          <label>Type<select class="field" id="fCat"><option value="activity">Activity</option><option value="update">Update / news</option><option value="event">Event</option></select></label>
+          <div class="grid g2"><label>Date<input class="field" type="date" id="fDate"></label><label id="whenWrap">Time and place<input class="field" id="fWhen" placeholder="Sat 11:00 · Hounslow library"></label></div>
+          <label>Short summary<input class="field" id="fSummary" placeholder="One sentence for the card"></label>
+          <label>Full text<textarea class="field" id="fBody" placeholder="Write the full post…"></textarea></label>
+          <label>Picture</label><div class="icons" id="fIcons"></div>
+          <label>Colour</label><div class="colors" id="fColors"></div>
+          <div class="row" style="margin-top:18px;flex-wrap:wrap"><button class="btn" data-save="published">Publish</button><button class="btn ghost" data-save="draft">Save as draft</button><button class="btn ghost" data-go="posts">Cancel</button></div>
+        </div>
+        <div><p class="muted" style="font-weight:800;margin-bottom:8px">Preview on the website</p><div class="card preview" id="preview"></div></div>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="screen" id="s-users">
+      <div class="head"><div class="sp"><h2>Users</h2><p>Who can sign in, and what they can do</p></div><button class="btn" data-modal="addUser">＋ Add user</button></div>
+      <div class="chips" id="userChips"><button class="on" data-uf="all">All</button><button data-uf="Parent">Parents</button><button data-uf="Coach">Coaches</button><button data-uf="Admin">Admins</button></div>
+      <div class="card tscroll"><table id="userTable"></table></div>
+    </div>
+
+    <!-- FAMILIES -->
+    <div class="screen" id="s-families">
+      <div class="head"><div class="sp"><h2>Families</h2><p>Family codes protect privacy. Only staff who need details can see them.</p></div><button class="btn" data-modal="addFam">＋ Add family</button></div>
+      <div class="card tscroll"><table>
+        <tr><th>Family</th><th>Borough</th><th>Language</th><th>Children</th><th>Coach</th><th>Kit</th><th>Status</th></tr>
+        <tr><td>F-01</td><td>Hounslow</td><td>Dari</td><td>3</td><td>Sara</td><td><span class="pill p-green">Yes</span></td><td><span class="pill p-green">Active</span></td></tr>
+        <tr><td>F-03</td><td>Hounslow</td><td>Farsi</td><td>2</td><td>Sara</td><td><span class="pill p-green">Yes</span></td><td><span class="pill p-green">Active</span></td></tr>
+        <tr><td>F-07</td><td>Hillingdon</td><td>Dari</td><td>4</td><td>Sara</td><td><span class="pill p-blue">Books</span></td><td><span class="pill p-orange">Moved recently</span></td></tr>
+        <tr><td>F-09</td><td>Ealing</td><td>Farsi</td><td>2</td><td>Ali</td><td><span class="pill p-grey">No</span></td><td><span class="pill p-green">Active</span></td></tr>
+        <tr><td>F-12</td><td>Harrow</td><td>Pashto</td><td>2</td><td><button class="btn sm" data-assign>Assign coach</button></td><td><span class="pill p-orange">Requested</span></td><td><span class="pill p-grey">New</span></td></tr>
+      </table></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="screen" id="s-content">
+      <div class="head"><div class="sp"><h2>Learning content</h2><p>What children and parents see in the apps</p></div><button class="btn" data-modal="addRes">＋ Add resource</button></div>
+      <div class="chips" id="libChips"><button class="on" data-lf="all">All</button><button data-lf="English">English</button><button data-lf="Maths">Maths</button><button data-lf="Science">Science</button><button data-lf="Videos">Videos</button><button data-lf="Stories">Books &amp; stories</button><button data-lf="Homework">Homework help</button><button data-lf="Parents">Parent guides</button></div>
+      <div class="card tscroll"><table id="libTable"></table></div>
+    </div>
+
+    <!-- KITS -->
+    <div class="screen" id="s-kits">
+      <div class="head"><div class="sp"><h2>HomeLearn Kits</h2><p>Stock and requests from coaches</p></div></div>
+      <div class="grid g4">
+        <div class="card stat"><b>20 <span style="font-size:14px;color:var(--muted)">/ 32</span></b><small>💻 Tablets given out</small></div>
+        <div class="card stat"><b>27 <span style="font-size:14px;color:var(--muted)">/ 50</span></b><small>🎧 Headphones</small></div>
+        <div class="card stat"><b>18 <span style="font-size:14px;color:var(--muted)">/ 40</span></b><small>✏️ Stationery packs</small></div>
+        <div class="card stat"><b>35 <span style="font-size:14px;color:var(--muted)">/ 120</span></b><small>📚 Books</small></div>
+      </div>
+      <div class="sec">📥 Requests waiting</div>
+      <div class="card">
+        <div class="lrow"><span class="ic" style="background:var(--blue-l)">💻</span><span class="tx"><b>F-12 · tablet, headphones, stationery</b><small>Requested by Sara · 2 days ago</small></span><button class="btn sm" data-approve>Approve</button></div>
+        <div class="lrow"><span class="ic" style="background:var(--orange-l)">🔌</span><span class="tx"><b>F-05 · replacement charger</b><small>Requested by Ali · today</small></span><button class="btn sm" data-approve>Approve</button></div>
+      </div>
+    </div>
+
+    <!-- INBOX -->
+    <div class="screen" id="s-inbox">
+      <div class="head"><div class="sp"><h2>Inbox</h2><p>Messages sent from the website contact form</p></div></div>
+      <div class="card">
+        <div class="lrow"><span class="ic" style="background:var(--yellow-l)">✉️</span><span class="tx"><b>“How can my family join?”</b><small>Parent · Dari · today</small></span><button class="btn sm" data-reply>Reply</button></div>
+        <div class="lrow"><span class="ic" style="background:var(--blue-l)">🏫</span><span class="tx"><b>“Can our school refer families?”</b><small>School · yesterday</small></span><button class="btn sm" data-reply>Reply</button></div>
+        <div class="lrow"><span class="ic" style="background:var(--green-l)">🙋</span><span class="tx"><b>“I'd like to volunteer as a coach”</b><small>Volunteer · 2 days ago</small></span><button class="btn sm" data-reply>Reply</button></div>
+      </div>
+    </div>
+
+    <!-- SAFEGUARDING -->
+    <div class="screen" id="s-safe">
+      <div class="head"><div class="sp"><h2>Safeguarding</h2><p>Only the safeguarding lead and admins can see this page.</p></div></div>
+      <div class="card">
+        <div class="lrow"><span class="ic" style="background:var(--red-l)">💛</span><span class="tx"><b>Child in family F-03 · “worried” 3 times this week</b><small>Raised by Sara · 22 Oct</small></span><span class="pill p-red">Open</span><button class="btn sm" data-resolve>Mark resolved</button></div>
+        <div class="lrow"><span class="ic" style="background:var(--green-l)">✅</span><span class="tx"><b>Family F-05 · housing concern passed to council</b><small>Closed 15 Oct</small></span><span class="pill p-green">Closed</span></div>
+      </div>
+      <div class="grid g3" style="margin-top:12px">
+        <div class="card"><b>💬 Messages</b><p class="muted" style="font-weight:700;margin-top:6px">Parents can see all messages to and from their children. Every message is kept.</p></div>
+        <div class="card"><b>📝 Consent</b><p class="muted" style="font-weight:700;margin-top:6px">30 of 30 families have signed consent forms.</p></div>
+        <div class="card"><b>🧾 Staff checks</b><p class="muted" style="font-weight:700;margin-top:6px">5 of 5 coaches have a DBS check.</p></div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div class="screen" id="s-reports">
+      <div class="head"><div class="sp"><h2>Reports <span class="example">Example data</span></h2><p>For the project team and the funder</p></div></div>
+      <div class="grid g2">
+        <div class="card">
+          <button class="lrow" data-toast="⬇️ The report would download here."><span class="ic" style="background:var(--blue-l)">📄</span><span class="tx"><b>Monthly progress report</b><small>Families, activity, kits · PDF</small></span><span>⬇</span></button>
+          <button class="lrow" data-toast="⬇️ The report would download here."><span class="ic" style="background:var(--green-l)">🏛️</span><span class="tx"><b>UKRI / Innovate UK report</b><small>Evaluation measures · PDF</small></span><span>⬇</span></button>
+          <button class="lrow" data-toast="⬇️ The export would download here."><span class="ic" style="background:var(--purple-l)">📊</span><span class="tx"><b>Anonymous data export</b><small>No names or contact details · CSV</small></span><span>⬇</span></button>
+        </div>
+        <div class="card"><b>Parent language</b>
+          <div class="hbar"><span>Dari / Farsi</span><div class="bar"><span style="width:72%;background:var(--purple)"></span></div><span>72%</span></div>
+          <div class="hbar"><span>English</span><div class="bar"><span style="width:21%"></span></div><span>21%</span></div>
+          <div class="hbar"><span>Pashto</span><div class="bar"><span style="width:7%;background:var(--orange)"></span></div><span>7%</span></div>
+          <b style="display:block;margin-top:14px">Families by borough</b>
+          <div class="hbar"><span>Hounslow</span><div class="bar"><span style="width:60%;background:var(--teal)"></span></div><span>18</span></div>
+          <div class="hbar"><span>Ealing</span><div class="bar"><span style="width:13%;background:var(--teal)"></span></div><span>4</span></div>
+          <div class="hbar"><span>Other</span><div class="bar"><span style="width:27%;background:var(--teal)"></span></div><span>8</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="screen" id="s-settings">
+      <div class="head"><div class="sp"><h2>Settings</h2><p>Website and app settings</p></div></div>
+      <div class="grid g2">
+        <div class="card"><b>🌐 Languages</b>
+          <div class="lrow"><span class="tx"><b>English</b></span><button class="switch on" data-switch></button></div>
+          <div class="lrow"><span class="tx"><b>Dari / Farsi</b></span><button class="switch on" data-switch></button></div>
+          <div class="lrow"><span class="tx"><b>Pashto</b></span><button class="switch on" data-switch></button></div>
+        </div>
+        <div class="card"><b>📱 Children's app download links</b>
+          <label class="lbl" style="margin-top:10px">App Store</label><input class="field" value="https://apps.apple.com/…">
+          <label class="lbl">Google Play</label><input class="field" value="https://play.google.com/…">
+          <label class="lbl">Windows</label><input class="field" value="https://apps.microsoft.com/…">
+        </div>
+        <div class="card"><b>✉️ Contact</b>
+          <label class="lbl" style="margin-top:10px">Website contact email</label><input class="field" value="hello@example.org">
+          <div class="lrow"><span class="tx"><b>Show a notice banner on the website</b><small>For closures or urgent news</small></span><button class="switch" data-switch></button></div>
+        </div>
+        <div class="card"><b>🔐 Roles</b>
+          <div class="lrow"><span class="tx"><b>Parent</b><small>Own children's progress, guides, messages</small></span></div>
+          <div class="lrow"><span class="tx"><b>Learning coach</b><small>Assigned families, visits, kit requests</small></span></div>
+          <div class="lrow"><span class="tx"><b>Admin</b><small>Everything, including website posts and users</small></span></div>
+        </div>
+      </div>
+      <div style="margin-top:16px"><button class="btn" data-toast="✅ Settings saved.">Save settings</button></div>
+    </div>
+
+  </div></div>
+</div>
+
+<div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="../shared/posts.js"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const LOGO=`<rect x="2" y="2" width="116" height="116" rx="30" fill="#FFF7E6"/><circle cx="95" cy="24" r="10" fill="#FFC83D"/><path d="M18 56 L60 20 L102 56" fill="none" stroke="#2F6FED" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 60 C49 53 35 53 26 57 L26 87 C35 83 49 83 60 90 Z" fill="#FF8A3D"/><path d="M60 60 C71 53 85 53 94 57 L94 87 C85 83 71 83 60 90 Z" fill="#3CC37A"/><path d="M20 106 Q60 84 100 106" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/>`;
+$$('svg.logo').forEach(s=>s.innerHTML=LOGO);
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2600)}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const M=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const fmt=d=>{if(!d)return'';const x=new Date(d+'T12:00:00');return `${x.getDate()} ${M[x.getMonth()]} ${x.getFullYear()}`};
+const CAT={activity:"Activity",update:"Update",event:"Event"};
+
+/* ---------- login + navigation ---------- */
+function signIn(){$('#loginView').hidden=true;$('#app').hidden=false;$('#logout').hidden=false;try{sessionStorage.setItem('hlb-admin','1')}catch(e){}}
+$('#loginBtn').onclick=signIn;
+$('#logout').onclick=e=>{e.preventDefault();try{sessionStorage.removeItem('hlb-admin')}catch(x){}location.reload()};
+try{if(sessionStorage.getItem('hlb-admin'))signIn()}catch(e){}
+function go(s){
+  $$('.screen').forEach(x=>x.classList.toggle('on',x.id==='s-'+s));
+  const tab=s==='editor'?'posts':s;
+  $$('.nav [data-go]').forEach(b=>b.classList.toggle('on',b.dataset.go===tab));
+  $('#app .main').scrollTop=0;
+}
+
+/* ---------- posts ---------- */
+let posts=HLB_POSTS.load(),pf='all',editing=null;
+const ICONS=["📢","👪","🧑‍🎓","📚","🎉","🗣️","📱","🎒","💛","🏫","🧪","⚽"],COLORS=["blue","green","orange","purple","pink","teal"];
+let draft={icon:"📢",color:"blue"};
+function renderPosts(){
+  const list=posts.slice().sort((a,b)=>b.date.localeCompare(a.date)).filter(p=>pf==='all'||(pf==='draft'?p.status==='draft':p.cat===pf));
+  $('#postTable').innerHTML='<tr><th>Post</th><th>Type</th><th>Date</th><th>Status</th><th></th></tr>'+list.map(p=>`<tr>
+    <td><div class="row"><span class="ic c-${p.color}" style="width:38px;height:38px;font-size:19px">${p.icon}</span><span>${esc(p.title)}${p.example?' <span class="pill" style="background:var(--yellow-l);color:#8A6200">Example</span>':''}</span></div></td>
+    <td><span class="pill t-${p.cat}">${CAT[p.cat]}</span></td><td style="white-space:nowrap">${fmt(p.date)}</td>
+    <td>${p.status==='published'?'<span class="pill p-green">Published</span>':'<span class="pill p-grey">Draft</span>'}</td>
+    <td><div class="acts"><button class="btn sm ghost" data-edit="${p.id}">Edit</button><button class="btn sm ghost" data-toggle="${p.id}">${p.status==='published'?'Unpublish':'Publish'}</button><button class="btn sm red" data-del="${p.id}">Delete</button></div></td></tr>`).join('');
+  $('#dashPosts').innerHTML=posts.slice().sort((a,b)=>b.date.localeCompare(a.date)).slice(0,4).map(p=>`<button class="lrow" data-edit="${p.id}"><span class="ic c-${p.color}">${p.icon}</span><span class="tx"><b>${esc(p.title)}</b><small>${CAT[p.cat]} · ${fmt(p.date)}</small></span>${p.status==='published'?'<span class="pill p-green">Live</span>':'<span class="pill p-grey">Draft</span>'}</button>`).join('');
+}
+function persist(msg){if(!HLB_POSTS.save(posts))msg+=' (not saved: this browser blocks storage)';renderPosts();toast(msg)}
+function openEditor(id){
+  editing=id?posts.find(p=>p.id===id):null;
+  const p=editing||{title:'',cat:'activity',date:new Date().toISOString().slice(0,10),when:'',summary:'',body:'',icon:'📢',color:'blue'};
+  draft={icon:p.icon,color:p.color};
+  $('#edTitle').textContent=editing?'Edit post':'New post';
+  $('#fTitle').value=p.title;$('#fCat').value=p.cat;$('#fDate').value=p.date;$('#fWhen').value=p.when||'';$('#fSummary').value=p.summary;$('#fBody').value=p.body;
+  renderPickers();preview();go('editor');
+}
+function renderPickers(){
+  $('#fIcons').innerHTML=ICONS.map(i=>`<button class="${i===draft.icon?'on':''}" data-icon="${i}">${i}</button>`).join('');
+  $('#fColors').innerHTML=COLORS.map(c=>`<button class="c-${c} ${c===draft.color?'on':''}" data-color="${c}" aria-label="${c}"></button>`).join('');
+}
+function preview(){
+  const cat=$('#fCat').value;$('#whenWrap').hidden=cat!=='event';
+  $('#preview').innerHTML=`<div class="cover c-${draft.color}">${draft.icon}</div><div class="in"><span class="pill t-${cat}">${CAT[cat]}</span> <span class="muted" style="font-size:13px;font-weight:800">${fmt($('#fDate').value)}</span>
+    <h3>${esc($('#fTitle').value)||'Your title'}</h3>${cat==='event'&&$('#fWhen').value?`<p style="color:var(--orange)">📅 ${esc($('#fWhen').value)}</p>`:''}<p>${esc($('#fSummary').value)||'Your short summary'}</p></div>`;
+}
+['#fTitle','#fCat','#fDate','#fWhen','#fSummary'].forEach(s=>$(s).addEventListener('input',preview));
+function savePost(status){
+  const title=$('#fTitle').value.trim();
+  if(!title){toast('Please add a title.');$('#fTitle').focus();return}
+  const data={title,cat:$('#fCat').value,date:$('#fDate').value||new Date().toISOString().slice(0,10),when:$('#fCat').value==='event'?$('#fWhen').value.trim():'',
+    summary:$('#fSummary').value.trim(),body:$('#fBody').value.trim()||$('#fSummary').value.trim(),icon:draft.icon,color:draft.color,status,example:false};
+  if(editing)Object.assign(editing,data);else posts.push({id:'p'+Date.now(),...data});
+  go('posts');persist(status==='published'?'✅ Published. It is now on the website.':'💾 Saved as a draft.');
+}
+$('#resetPosts').onclick=()=>{posts=HLB_POSTS.reset();renderPosts();toast('↺ Example posts restored.')};
+
+/* ---------- users ---------- */
+const USERS=[["Fatima","Parent","F-01 · Dari","Active","Text code"],["Parent, F-03","Parent","F-03 · Farsi","Active","Text code"],["Parent, F-09","Parent","F-09 · Farsi","Not signed in yet","Text code"],
+  ["Sara Ahmadi","Coach","8 families","Active","Email + password"],["Ali Rahimi","Coach","4 families","Active","Email + password"],["Project team","Admin","All","Active","Email + password"]];
+let uf='all';
+function renderUsers(){
+  $('#userTable').innerHTML='<tr><th>Name</th><th>Role</th><th>Details</th><th>Sign-in</th><th>Status</th><th></th></tr>'+USERS.filter(u=>uf==='all'||u[1]===uf).map(([n,r,d,s,l],i)=>`<tr><td>${n}</td>
+    <td><span class="pill ${r==='Parent'?'p-blue':r==='Coach'?'p-green':'p-purple'}">${r}</span></td><td>${d}</td><td class="muted">${l}</td>
+    <td><span class="pill ${s==='Active'?'p-green':s==='Deactivated'?'p-red':'p-grey'}">${s}</span></td>
+    <td><div class="acts"><button class="btn sm ghost" data-toast="${r==='Parent'?'📲 A new sign-in code was sent by text.':'📧 A password reset link was sent.'}">${r==='Parent'?'Send new code':'Reset password'}</button><button class="btn sm red" data-deact="${n}">${s==='Deactivated'?'Reactivate':'Deactivate'}</button></div></td></tr>`).join('');
+}
+
+/* ---------- content ---------- */
+const LIB=[["Letter sounds a–m","English","5–7","EN · Dari","Game"],["Counting to 20","Maths","5–7","EN · Dari · Pashto","Game"],["Times tables","Maths","8–11","EN","Game"],
+ ["Parts of a plant","Science","5–9","EN · Dari","Video"],["The water cycle","Videos","8–11","EN · Farsi captions","Cartoon"],["The little bird","Stories","5–7","EN · Dari · Pashto","Book"],
+ ["Writing a diary","Homework","7–11","EN","Help sheet"],["How UK schools work","Parents","Parents","EN · Dari · Pashto","Guide + audio"],["Catch-up: Year 4 maths","Maths","8–9","EN","Revision pack"]];
+let lf='all';
+function renderLib(){
+  $('#libTable').innerHTML='<tr><th>Resource</th><th>Category</th><th>Age</th><th>Languages</th><th>Type</th><th>Offline</th></tr>'+
+    LIB.filter(r=>lf==='all'||r[1]===lf).map(r=>`<tr><td>${r[0]}</td><td><span class="pill p-blue">${r[1]}</span></td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>✅</td></tr>`).join('');
+}
+
+/* ---------- modals ---------- */
+const sel=(label,opts)=>`<label class="lbl" style="margin-top:8px">${label}</label><select class="field">${opts.map(o=>`<option>${o}</option>`).join('')}</select>`;
+const foot=(ok,msg)=>`<div class="row" style="justify-content:flex-end;margin-top:8px"><button class="btn ghost sm" data-close>Cancel</button><button class="btn sm" data-done="${msg}">${ok}</button></div>`;
+const MODALS={
+  addUser:()=>`<h3>👥 Add a user</h3>${sel('Role',['Parent','Learning coach','Admin'])}<label class="lbl">Name</label><input class="field"><label class="lbl">Phone (parents) or email (staff)</label><input class="field">${foot('Add user','✅ User added. Sign-in details were sent.')}`,
+  addFam:()=>`<h3>👪 Add a family</h3><p class="muted" style="font-weight:700">Only what's needed. Consent comes first.</p>${sel('Borough',['Hounslow','Ealing','Hillingdon','Harrow','Other'])}${sel('Parent language',['Dari / Farsi','Pashto','English'])}${sel('Learning coach',['Sara Ahmadi','Ali Rahimi'])}<label class="lbl"><input type="checkbox"> Consent form signed</label>${foot('Add family','✅ Family added. A sign-in code was sent by text.')}`,
+  addRes:()=>`<h3>📚 Add a resource</h3><label class="lbl">Title</label><input class="field">${sel('Category',['English','Maths','Science','Videos','Books & stories','Homework help','Parent guides'])}${sel('Age',['5–7','8–11','12–16','Parents'])}<label class="lbl"><input type="checkbox" checked> Available offline</label>${foot('Add','✅ Resource added. It will appear in the apps.')}`,
+};
+
+/* ---------- clicks ---------- */
+document.addEventListener('click',e=>{
+  if(e.target.id==='modal'){$('#modal').classList.remove('on');return}
+  const el=e.target.closest('button');if(!el)return;const d=el.dataset;
+  if(d.go){if(d.new!==undefined){openEditor(null);return}go(d.go);return}
+  if(d.edit){openEditor(d.edit);return}
+  if(d.toggle){const p=posts.find(x=>x.id===d.toggle);p.status=p.status==='published'?'draft':'published';persist(p.status==='published'?'✅ Published on the website.':'Hidden from the website.');return}
+  if(d.del){if(!confirm('Delete this post?'))return;posts=posts.filter(x=>x.id!==d.del);persist('🗑️ Post deleted.');return}
+  if(d.save){savePost(d.save);return}
+  if(d.icon){draft.icon=d.icon;renderPickers();preview();return}
+  if(d.color){draft.color=d.color;renderPickers();preview();return}
+  if(d.pf){pf=d.pf;$$('#postChips button').forEach(b=>b.classList.toggle('on',b===el));renderPosts();return}
+  if(d.uf){uf=d.uf;$$('#userChips button').forEach(b=>b.classList.toggle('on',b===el));renderUsers();return}
+  if(d.lf){lf=d.lf;$$('#libChips button').forEach(b=>b.classList.toggle('on',b===el));renderLib();return}
+  if(d.deact){const u=USERS.find(x=>x[0]===d.deact);u[3]=u[3]==='Deactivated'?'Active':'Deactivated';renderUsers();toast(u[3]==='Deactivated'?'User deactivated. They can no longer sign in.':'User reactivated.');return}
+  if(d.approve!==undefined){el.outerHTML='<span class="pill p-green">Approved ✓</span>';toast('✅ Approved. The coach has been told.');return}
+  if(d.assign!==undefined){el.outerHTML='Ali';toast('✅ Coach assigned.');return}
+  if(d.reply!==undefined){el.outerHTML='<span class="pill p-green">Replied</span>';toast('✉️ The reply window would open here.');return}
+  if(d.resolve!==undefined){el.previousElementSibling.outerHTML='<span class="pill p-green">Resolved</span>';el.remove();toast('✅ Marked as resolved and recorded.');return}
+  if(d.switch!==undefined){el.classList.toggle('on');return}
+  if(d.modal){$('#modalBox').innerHTML=MODALS[d.modal]();$('#modal').classList.add('on');return}
+  if(d.close!==undefined){$('#modal').classList.remove('on');return}
+  if(d.done){$('#modal').classList.remove('on');toast(d.done);return}
+  if(d.toast){toast(d.toast);return}
+});
+renderPosts();renderUsers();renderLib();
+</script>
+</body>
+</html>

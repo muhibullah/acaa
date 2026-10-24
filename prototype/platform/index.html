@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#E4F0FF">
-<title>HomeLearn Bridge — Parent, Coach &amp; Admin Prototype</title>
-<meta name="description" content="Clickable prototype of the HomeLearn Bridge parent dashboard, learning coach dashboard and admin panel. Concept for discussion.">
+<title>HomeLearn Bridge — Parent &amp; Coach Dashboards</title>
+<meta name="description" content="Clickable prototype of the HomeLearn Bridge parent and learning coach dashboards. Concept for discussion.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&family=Vazirmatn:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -191,13 +191,9 @@ tr:last-child td{border-bottom:none}
 <body>
 
 <header class="top">
-  <div class="brand"><svg viewBox="0 0 120 120" class="logo"></svg><span class="t">HomeLearn Bridge</span><small>PROTOTYPE</small></div>
-  <div class="parts" role="group" aria-label="Choose a part">
-    <button data-part="parent" class="on">👪 Parent</button>
-    <button data-part="coach">🧑‍🏫 Learning Coach</button>
-    <button data-part="admin">🛠️ Admin</button>
-  </div>
-  <a class="kidlink" href="../children/" target="_blank" rel="noopener">🧒 Children's app ↗</a>
+  <a class="brand" href="../" style="text-decoration:none;color:inherit"><svg viewBox="0 0 120 120" class="logo"></svg><span class="t">HomeLearn Bridge</span><small>PROTOTYPE</small></a>
+  <span class="kidlink" style="margin-inline-start:auto;color:var(--muted)" id="whoTop"></span>
+  <a class="kidlink" href="../" id="signOutTop">Sign out</a>
 </header>
 
 <!-- ======================= PARENT ======================= -->
@@ -387,108 +383,6 @@ tr:last-child td{border-bottom:none}
   </div></div>
 </section>
 
-<!-- ======================= ADMIN ======================= -->
-<section class="part" id="part-admin">
-  <nav class="nav">
-    <div class="who"><span class="av" style="background:var(--purple-l)">🛠️</span><div>Project team<small>Admin</small></div></div>
-    <button data-ago="overview" class="on"><span class="i">📊</span><span>Overview</span></button>
-    <button data-ago="families"><span class="i">👪</span><span>Families</span></button>
-    <button data-ago="kits"><span class="i">📦</span><span>Kits</span></button>
-    <button data-ago="library"><span class="i">📚</span><span>Library</span></button>
-    <button data-ago="reports"><span class="i">📄</span><span>Reports</span></button>
-  </nav>
-  <div class="main"><div class="wrap">
-
-    <div class="screen on" id="as-overview">
-      <div class="head"><div class="sp"><h2>Overview <span class="example">Example data</span></h2><p>This month · all boroughs</p></div></div>
-      <div class="grid g4">
-        <div class="card stat"><b style="color:var(--blue)">30</b><small>Families registered</small></div>
-        <div class="card stat"><b style="color:var(--green)">58</b><small>Children active</small></div>
-        <div class="card stat"><b style="color:var(--purple)">1,240</b><small>Activities completed</small></div>
-        <div class="card stat"><b style="color:var(--orange)">16</b><small>Kits given out</small></div>
-      </div>
-      <div class="grid g2" style="margin-top:12px">
-        <div class="card"><b>Activities by subject</b>
-          <div class="chart">
-            <div><span style="height:85%;background:var(--blue)"></span>English</div>
-            <div><span style="height:78%;background:var(--green)"></span>Maths</div>
-            <div><span style="height:42%;background:var(--teal)"></span>Science</div>
-            <div><span style="height:66%;background:var(--purple)"></span>Videos</div>
-            <div><span style="height:55%;background:var(--orange)"></span>Stories</div>
-            <div><span style="height:38%;background:var(--pink)"></span>Homework</div>
-          </div>
-        </div>
-        <div class="card"><b>Platform checks</b> <span class="muted small b">(from the forum's evaluation measures)</span>
-          <div class="measure"><span class="ic" style="background:var(--blue-l)">🔑</span><span class="tx b">Signed in without help</span><b class="n">86%</b></div>
-          <div class="measure"><span class="ic" style="background:var(--purple-l)">📲</span><span class="tx b">Got back in with a new code</span><b class="n">97%</b></div>
-          <div class="measure"><span class="ic" style="background:var(--green-l)">↩️</span><span class="tx b">Carried on after a break</span><b class="n">74%</b></div>
-          <div class="measure"><span class="ic" style="background:var(--yellow-l)">📶</span><span class="tx b">Used offline this week</span><b class="n">41%</b></div>
-        </div>
-      </div>
-      <div class="grid g2" style="margin-top:12px">
-        <div class="card"><b>Parent language</b>
-          <div class="hbar"><span>Dari / Farsi</span><div class="bar"><span style="width:72%;background:var(--purple)"></span></div><span>72%</span></div>
-          <div class="hbar"><span>English</span><div class="bar"><span style="width:21%"></span></div><span>21%</span></div>
-          <div class="hbar"><span>Pashto</span><div class="bar"><span style="width:7%;background:var(--orange)"></span></div><span>7%</span></div>
-        </div>
-        <div class="card"><b>Families by borough</b>
-          <div class="hbar"><span>Hounslow</span><div class="bar"><span style="width:60%;background:var(--teal)"></span></div><span>18</span></div>
-          <div class="hbar"><span>Ealing</span><div class="bar"><span style="width:13%;background:var(--teal)"></span></div><span>4</span></div>
-          <div class="hbar"><span>Hillingdon</span><div class="bar"><span style="width:10%;background:var(--teal)"></span></div><span>3</span></div>
-          <div class="hbar"><span>Other</span><div class="bar"><span style="width:17%;background:var(--teal)"></span></div><span>5</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="screen" id="as-families">
-      <div class="head"><div class="sp"><h2>Families &amp; users</h2><p>Only staff who need it can see family details.</p></div><button class="btn" data-modal="addFam">＋ Add family</button></div>
-      <div class="card tscroll"><table>
-        <tr><th>Family</th><th>Borough</th><th>Language</th><th>Children</th><th>Coach</th><th>Kit</th><th></th></tr>
-        <tr><td>F-01</td><td>Hounslow</td><td>Dari</td><td>3</td><td>Sara</td><td><span class="pill p-green">Yes</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
-        <tr><td>F-03</td><td>Hounslow</td><td>Farsi</td><td>2</td><td>Sara</td><td><span class="pill p-green">Yes</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
-        <tr><td>F-07</td><td>Hillingdon</td><td>Dari</td><td>4</td><td>Sara</td><td><span class="pill p-blue">Books</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
-        <tr><td>F-09</td><td>Ealing</td><td>Farsi</td><td>2</td><td>Ali</td><td><span class="pill p-grey">No</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
-        <tr><td>F-12</td><td>Harrow</td><td>Pashto</td><td>2</td><td><span class="pill p-orange">Not assigned</span></td><td><span class="pill p-orange">Requested</span></td><td><button class="btn sm" data-toast="assigned">Assign coach</button></td></tr>
-      </table></div>
-    </div>
-
-    <div class="screen" id="as-kits">
-      <div class="head"><div class="sp"><h2>HomeLearn Kits</h2><p>Stock and requests</p></div></div>
-      <div class="grid g4">
-        <div class="card stat"><b>20 <span class="small muted">/ 32</span></b><small>💻 Tablets given out</small></div>
-        <div class="card stat"><b>27 <span class="small muted">/ 50</span></b><small>🎧 Headphones</small></div>
-        <div class="card stat"><b>18 <span class="small muted">/ 40</span></b><small>✏️ Stationery packs</small></div>
-        <div class="card stat"><b>35 <span class="small muted">/ 120</span></b><small>📚 Books</small></div>
-      </div>
-      <div class="sec">📥 Requests waiting</div>
-      <div class="card" id="kitReqs">
-        <div class="lrow"><span class="ic" style="background:var(--blue-l)">💻</span><span class="tx"><b>F-12 · tablet, headphones, stationery</b><small>Requested by Sara · 2 days ago</small></span><button class="btn sm" data-approve>Approve</button></div>
-        <div class="lrow"><span class="ic" style="background:var(--orange-l)">🔌</span><span class="tx"><b>F-05 · replacement charger</b><small>Requested by Ali · today</small></span><button class="btn sm" data-approve>Approve</button></div>
-      </div>
-    </div>
-
-    <div class="screen" id="as-library">
-      <div class="head"><div class="sp"><h2>Learning library</h2><p>Organised by subject, age and language</p></div><button class="btn" data-modal="addRes">＋ Add resource</button></div>
-      <div class="chips" id="libChips"><button class="on" data-lf="all">All</button><button data-lf="English">English</button><button data-lf="Maths">Maths</button><button data-lf="Science">Science</button><button data-lf="Videos">Videos</button><button data-lf="Stories">Books &amp; stories</button><button data-lf="Homework">Homework help</button><button data-lf="Parents">Parent guides</button></div>
-      <div class="card tscroll"><table id="libTable"></table></div>
-    </div>
-
-    <div class="screen" id="as-reports">
-      <div class="head"><div class="sp"><h2>Reports</h2><p>For the project team and the funder</p></div></div>
-      <div class="grid g2">
-        <div class="card"><button class="lrow" data-toast="download"><span class="ic" style="background:var(--blue-l)">📄</span><span class="tx"><b>Monthly progress report</b><small>Families, activity, kits · PDF</small></span><span class="chev">⬇</span></button>
-          <button class="lrow" data-toast="download"><span class="ic" style="background:var(--green-l)">🏛️</span><span class="tx"><b>UKRI / Innovate UK report</b><small>Evaluation measures · PDF</small></span><span class="chev">⬇</span></button>
-          <button class="lrow" data-toast="download"><span class="ic" style="background:var(--purple-l)">📊</span><span class="tx"><b>Anonymous data export</b><small>No names or contact details · CSV</small></span><span class="chev">⬇</span></button></div>
-        <div class="card"><b>🛡️ Safeguarding &amp; privacy</b>
-          <div class="lrow"><span class="tx"><b>Open safeguarding follow-ups</b><small>Handled by the safeguarding lead</small></span><span class="pill p-red">1</span></div>
-          <div class="lrow"><span class="tx"><b>Families with consent recorded</b><small>Needed before any data is used</small></span><span class="pill p-green">30 / 30</span></div>
-          <div class="lrow"><span class="tx"><b>Staff with DBS check</b></span><span class="pill p-green">5 / 5</span></div>
-        </div>
-      </div>
-    </div>
-
-  </div></div>
-</section>
 
 <!-- ======================= MODALS ======================= -->
 <div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
@@ -648,7 +542,7 @@ function pgo(s){
 $('#sendCode').onclick=()=>{$('#step1').hidden=true;$('#step2').hidden=false};
 $('#resend').onclick=()=>toast('📲 '+t('sendCode')+' ✓');
 $('#signIn').onclick=()=>pgo('home');
-$('#signOut').onclick=()=>{$('#step1').hidden=false;$('#step2').hidden=true;pgo('signin')};
+$('#signOut').onclick=()=>{location.href='../'};
 $('#pSend').onclick=()=>{const v=$('#pInp').value.trim();if(!v)return;$('#pInp').value='';pmsgs.coach.push(['me',v]);renderPThread();setTimeout(()=>{pmsgs.coach.push(['them',t('reply')]);renderPThread()},900)};
 $('#pInp').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pSend').click()});
 
@@ -702,23 +596,6 @@ $('#cSend').onclick=()=>{const v=$('#cInp').value.trim();if(!v)return;$('#cInp')
 $('#cInp').addEventListener('keydown',e=>{if(e.key==='Enter')$('#cSend').click()});
 
 /* =================================================================
-   ADMIN
-   ================================================================= */
-const LIB=[["Letter sounds a–m","English","5–7","EN · Dari","Game"],["Counting to 20","Maths","5–7","EN · Dari · Pashto","Game"],["Times tables","Maths","8–11","EN","Game"],
- ["Parts of a plant","Science","5–9","EN · Dari","Video"],["The water cycle","Videos","8–11","EN · Farsi captions","Cartoon"],["The little bird","Stories","5–7","EN · Dari · Pashto","Book"],
- ["Writing a diary","Homework","7–11","EN","Help sheet"],["How UK schools work","Parents","Parents","EN · Dari · Pashto","Guide + audio"],["Catch-up: Year 4 maths","Maths","8–9","EN","Revision pack"]];
-let lf='all';
-function renderLib(){
-  $('#libTable').innerHTML='<tr><th>Resource</th><th>Category</th><th>Age</th><th>Languages</th><th>Type</th><th>Offline</th></tr>'+
-    LIB.filter(r=>lf==='all'||r[1]===lf).map(r=>`<tr><td>${r[0]}</td><td><span class="pill p-blue">${r[1]}</span></td><td>${r[2]}</td><td class="small">${r[3]}</td><td class="small">${r[4]}</td><td>✅</td></tr>`).join('');
-}
-function ago(s){
-  $$('#part-admin .screen').forEach(x=>x.classList.toggle('on',x.id==='as-'+s));
-  $$('#part-admin .nav [data-ago]').forEach(b=>b.classList.toggle('on',b.dataset.ago===s));
-  $('#part-admin .main').scrollTop=0;
-}
-
-/* =================================================================
    MODALS
    ================================================================= */
 const close=lbl=>`<button class="btn ghost sm" data-close>${lbl||'Close'}</button>`;
@@ -759,9 +636,7 @@ const TOASTS={places:()=>t('places'),booked:()=>t('booked'),attend:"📋 Attenda
 document.addEventListener('click',e=>{
   if(e.target.id==='modal'){closeModal();return}
   const el=e.target.closest('button,a');if(!el)return;const d=el.dataset;
-  if(d.part){$$('.part').forEach(p=>p.classList.toggle('on',p.id==='part-'+d.part));$$('[data-part]').forEach(b=>b.classList.toggle('on',b===el));
-    document.documentElement.dir=d.part==='parent'&&lang!=='en'?'rtl':'ltr';stopSay();return}
-  if(d.lang){lang=d.lang;applyLang();return}
+  if(d.lang){lang=d.lang;try{localStorage.setItem('hlb-lang',lang)}catch(e){}applyLang();return}
   if(d.pgo){pgo(d.pgo);return}
   if(d.kid!==undefined){curKid=+d.kid;renderParent();pgo('child');return}
   if(d.thread){pthread=d.thread;renderPThread();return}
@@ -772,16 +647,23 @@ document.addEventListener('click',e=>{
   if(d.family!==undefined){openFam(+d.family);return}
   if(d.ff){ff=d.ff;$$('#famChips button').forEach(b=>b.classList.toggle('on',b===el));renderFams();return}
   if(d.cthread!==undefined){cth=+d.cthread;renderCT();return}
-  if(d.ago){ago(d.ago);return}
-  if(d.lf){lf=d.lf;$$('#libChips button').forEach(b=>b.classList.toggle('on',b===el));renderLib();return}
-  if(d.approve!==undefined){el.outerHTML='<span class="pill p-green">Approved ✓</span>';toast('✅ Approved. The coach has been told.');return}
   if(d.modal){$('#modalBox').innerHTML=MODALS[d.modal]();$('#modal').classList.add('on');return}
   if(d.close!==undefined){closeModal();return}
   if(d.done){closeModal();toast(d.done);return}
   if(d.toast){const v=TOASTS[d.toast];toast(typeof v==='function'?v():v);return}
 });
 
-applyLang();renderFams();renderCT();renderLib();
+// Open the part chosen at sign-in on the website (#parent or #coach).
+function showPart(part){
+  $$('.part').forEach(p=>p.classList.toggle('on',p.id==='part-'+part));
+  document.documentElement.dir=part==='parent'&&lang!=='en'?'rtl':'ltr';
+  $('#whoTop').textContent=part==='coach'?'🧑‍🏫 Sara Ahmadi · Learning coach':'👪 Fatima · Parent';
+  if(part==='parent')pgo(location.hash==='#parent'?'home':'signin');
+}
+try{const l=localStorage.getItem('hlb-lang');if(l&&T[l])lang=l}catch(e){}
+applyLang();renderFams();renderCT();
+showPart(location.hash==='#coach'?'coach':'parent');
+addEventListener('hashchange',()=>showPart(location.hash==='#coach'?'coach':'parent'));
 if('speechSynthesis' in window)speechSynthesis.getVoices();
 </script>
 </body>

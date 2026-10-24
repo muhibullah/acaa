@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E4F0FF">
+<title>HomeLearn Bridge — Website Prototype</title>
+<meta name="description" content="Prototype of the HomeLearn Bridge website: news and activities, the children's app, and sign-in for parents and learning coaches.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&family=Vazirmatn:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2463EB;--blue-d:#1A4BC0;--blue-l:#E3EDFF;--green:#22A95B;--green-l:#DFF5E7;--orange:#FF8A3D;--orange-l:#FFEBDC;
+  --yellow:#FFC83D;--yellow-l:#FFF6D8;--purple:#7C4DEB;--purple-l:#EEE7FF;--pink:#F0508A;--pink-l:#FFE4EE;--teal:#14A3B8;--teal-l:#DDF5F8;
+  --ink:#16244A;--muted:#66708C;--line:#E3EAF5;--bg1:#E4F0FF;--bg2:#F6FAFF;
+  --font:"Nunito","Vazirmatn",system-ui,-apple-system,"Segoe UI",sans-serif;--display:"Baloo 2","Vazirmatn",system-ui,sans-serif;
+}
+[dir=rtl]{--font:"Vazirmatn","Nunito",system-ui,sans-serif;--display:"Vazirmatn","Baloo 2",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);background:var(--bg2);line-height:1.55}
+button,input{font:inherit;color:inherit;border:none;background:none}
+button{cursor:pointer}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.12}
+.wrap{width:min(1120px,100% - 32px);margin-inline:auto}
+section{padding:72px 0}
+.kicker{font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.title{font-size:clamp(28px,4vw,40px);margin-bottom:10px}
+.lead{color:var(--muted);font-weight:700;font-size:18px;max-width:60ch}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:99px;font-family:var(--display);font-size:19px;font-weight:800;color:#fff;background:var(--blue);box-shadow:0 4px 0 var(--blue-d);text-decoration:none}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--blue-d)}
+.btn.ghost{background:#fff;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue-l)}
+.btn.sm{padding:8px 16px;font-size:16px;box-shadow:none}
+.card{background:#fff;border-radius:22px;box-shadow:0 4px 18px rgba(22,36,74,.06);padding:22px}
+.ic{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:28px;flex-shrink:0}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12.5px;font-weight:800}
+.muted{color:var(--muted)}
+
+/* header */
+header{position:sticky;top:0;z-index:20;background:rgba(246,250,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;gap:20px;height:70px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:800;font-size:22px;line-height:1}
+.brand svg{width:44px;height:44px}
+.brand b{color:var(--blue)}.brand i{font-style:normal;color:var(--orange)}
+.links{display:flex;gap:22px;margin-inline-start:auto}
+.links a{text-decoration:none;font-weight:800;color:var(--muted)}
+.links a:hover{color:var(--blue)}
+.langs{display:flex;background:#fff;border-radius:99px;padding:3px;box-shadow:0 1px 4px rgba(22,36,74,.08)}
+.langs button{padding:6px 10px;border-radius:99px;font-weight:800;font-size:13px;color:var(--muted)}
+.langs button.on{background:var(--ink);color:#fff}
+.menu{display:none;font-size:24px;width:42px;height:42px}
+.proto{background:var(--yellow);color:var(--ink);text-align:center;font-weight:800;font-size:13px;padding:5px 12px}
+
+/* hero */
+.hero{background:linear-gradient(180deg,var(--bg1),var(--bg2));padding:64px 0 80px}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(36px,6vw,62px);margin-bottom:16px}
+.hero h1 span+span{color:var(--orange);display:block}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.langnote{margin-top:18px;font-weight:800;color:var(--muted)}
+.show{position:relative;height:380px}
+.show .phone{position:absolute;inset:0 18% 0 18%;background:#0F1B3D;border-radius:38px;padding:10px;box-shadow:0 30px 60px rgba(22,36,74,.25)}
+.show .scr{height:100%;border-radius:30px;background:linear-gradient(180deg,#EAF4FF,#fff);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:16px}
+.show .scr svg{width:84px;height:84px}
+.show .scr b{font-family:var(--display);font-size:26px;color:var(--blue);line-height:1}
+.show .kids{font-size:38px}
+.float{position:absolute;background:#fff;border-radius:16px;padding:10px 14px;font-weight:800;box-shadow:0 10px 24px rgba(22,36,74,.12);display:flex;align-items:center;gap:8px;font-size:15px}
+.f1{top:30px;left:0}.f2{top:150px;right:0}.f3{bottom:40px;left:4%}
+[dir=rtl] .f1{left:auto;right:0}[dir=rtl] .f2{right:auto;left:0}[dir=rtl] .f3{left:auto;right:4%}
+
+/* offer */
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:repeat(2,1fr)}
+.offer .card{display:flex;flex-direction:column;gap:10px}
+.offer h3{font-size:21px}
+.offer p{color:var(--muted);font-weight:700}
+
+/* app */
+.app{background:linear-gradient(135deg,var(--blue),#5B8CF5);color:#fff;border-radius:32px;padding:44px;display:grid;grid-template-columns:1.2fr .8fr;gap:30px;align-items:center}
+.app .kicker{color:var(--yellow)}
+.app .lead{color:rgba(255,255,255,.9)}
+.app ul{list-style:none;margin:18px 0;display:grid;gap:8px;font-weight:800}
+.stores{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.store{display:flex;align-items:center;gap:10px;background:#0B1430;color:#fff;border-radius:14px;padding:9px 16px;text-align:start;min-width:170px}
+.store .g{font-size:26px;line-height:1}
+.store small{display:block;font-size:11px;opacity:.8;font-weight:700}
+.store b{display:block;font-size:17px;line-height:1.1}
+.app .art{font-size:110px;text-align:center;line-height:1}
+
+/* posts */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.chips button{padding:8px 16px;border-radius:99px;background:#fff;font-weight:800;color:var(--muted);box-shadow:0 1px 4px rgba(22,36,74,.06)}
+.chips button.on{background:var(--ink);color:#fff}
+.post{display:flex;flex-direction:column;text-align:start;padding:0;overflow:hidden;transition:transform .15s}
+.post:hover{transform:translateY(-3px)}
+.post .cover{height:120px;display:grid;place-items:center;font-size:54px}
+.post .in{padding:16px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.post h3{font-size:20px}
+.post p{color:var(--muted);font-weight:700;font-size:15px;flex:1}
+.post .meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:13px;font-weight:800;color:var(--muted)}
+.c-blue{background:var(--blue-l)}.c-green{background:var(--green-l)}.c-orange{background:var(--orange-l)}.c-purple{background:var(--purple-l)}.c-pink{background:var(--pink-l)}.c-teal{background:var(--teal-l)}.c-yellow{background:var(--yellow-l)}
+.t-activity{background:var(--green-l);color:#178245}.t-update{background:var(--blue-l);color:var(--blue)}.t-event{background:var(--orange-l);color:#B65A14}
+.ex{background:var(--yellow-l);color:#8A6200}
+.event{display:flex;gap:16px;align-items:center}
+.event .date{width:68px;text-align:center;background:var(--orange-l);border-radius:16px;padding:8px 0;font-family:var(--display);font-weight:800;line-height:1;flex-shrink:0}
+.event .date b{display:block;font-size:28px;color:var(--orange)}
+.event .date small{font-size:13px;color:#B65A14}
+.event .tx{flex:1}
+.event h3{font-size:19px}
+
+/* steps */
+.steps{counter-reset:s}
+.steps .card{position:relative;padding-top:30px}
+.steps .n{position:absolute;top:-16px;inset-inline-start:22px;width:38px;height:38px;border-radius:50%;background:var(--orange);color:#fff;font-family:var(--display);font-weight:800;font-size:20px;display:grid;place-items:center}
+.steps h3{font-size:20px;margin-bottom:6px}
+.steps p{color:var(--muted);font-weight:700}
+
+/* contact + footer */
+.contact .wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+.form{display:grid;gap:12px}
+.form input,.form textarea{width:100%;background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:700}
+.form textarea{min-height:100px;font:inherit;font-weight:700}
+footer{background:var(--ink);color:rgba(255,255,255,.8);padding:40px 0 24px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer a{text-decoration:none;font-weight:700;display:block;margin:6px 0}
+footer a:hover{color:#fff}
+footer .brand{color:#fff}
+footer small{display:block;margin-top:24px;opacity:.7}
+
+/* modals */
+.modal{position:fixed;inset:0;background:rgba(22,36,74,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal.on{display:flex}
+.box{background:#fff;border-radius:26px;padding:26px;width:min(460px,100%);max-height:92vh;overflow-y:auto;position:relative;animation:pop .2s}
+.box.wide{width:min(640px,100%)}
+@keyframes pop{from{opacity:0;transform:scale(.97)}}
+.x{position:absolute;top:14px;inset-inline-end:14px;width:38px;height:38px;border-radius:50%;background:var(--bg1);font-size:16px}
+.tabs{display:flex;background:var(--bg1);border-radius:99px;padding:4px;margin:16px 0}
+.tabs button{flex:1;padding:10px;border-radius:99px;font-weight:800;color:var(--muted)}
+.tabs button.on{background:#fff;color:var(--blue);box-shadow:0 1px 4px rgba(22,36,74,.1)}
+.field{width:100%;background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:13px 16px;font-weight:800;font-size:17px;margin:6px 0 12px}
+.lbl{font-weight:800;font-size:14px}
+.code{display:flex;gap:10px;justify-content:center;margin:12px 0 16px;direction:ltr}
+.code span{width:54px;height:62px;border-radius:14px;background:var(--bg1);display:grid;place-items:center;font-family:"Baloo 2";font-size:30px;font-weight:800}
+.small{font-size:13.5px;font-weight:700}
+.linkbtn{color:var(--blue);font-weight:800}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 20px;border-radius:99px;font-weight:800;opacity:0;transition:.25s;pointer-events:none;z-index:60;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+@media (max-width:960px){
+  .g4{grid-template-columns:repeat(2,1fr)}
+  .hero .wrap,.app,.contact .wrap{grid-template-columns:1fr}
+  .show{height:320px}
+  .app{padding:30px 22px}
+  .app .art{display:none}
+}
+@media (max-width:760px){
+  .links{display:none;position:absolute;top:70px;left:0;right:0;flex-direction:column;gap:0;background:#fff;padding:8px 16px 16px;border-bottom:1px solid var(--line)}
+  .links.open{display:flex}
+  .links a{padding:12px 0;border-bottom:1px solid var(--line)}
+  .menu{display:grid;place-items:center}
+  .nav{gap:10px}
+  .nav .signin{padding:8px 14px;font-size:15px}
+  .brand span.w{display:none}
+  .g3,.g2{grid-template-columns:1fr}
+  section{padding:52px 0}
+}
+@media (max-width:480px){.g4{grid-template-columns:1fr}.langs button{padding:6px 8px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="proto" data-t="proto"></div>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top"><svg viewBox="0 0 120 120" class="logo"></svg><span class="w"><b>HomeLearn</b> <i>Bridge</i></span></a>
+    <nav class="links" id="links">
+      <a href="#about" data-t="nAbout"></a><a href="#app" data-t="nApp"></a><a href="#news" data-t="nNews"></a><a href="#events" data-t="nEvents"></a><a href="#contact" data-t="nContact"></a>
+    </nav>
+    <div class="langs" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="fa">دری</button><button data-lang="ps">پښتو</button></div>
+    <button class="btn sm signin" data-open="signin" data-t="signIn"></button>
+    <button class="menu" id="menu" aria-label="Menu">☰</button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="hero"><div class="wrap">
+    <div>
+      <p class="kicker" data-t="heroKicker"></p>
+      <h1><span data-t="heroA"></span> <span data-t="heroB"></span></h1>
+      <p class="lead" data-t="heroLead"></p>
+      <div class="cta"><a class="btn" href="#app" data-t="getApp"></a><button class="btn ghost" data-open="signin" data-t="signInBtn"></button></div>
+      <p class="langnote">🌐 English · دری · پښتو &nbsp; 📶 <span data-t="offline"></span></p>
+    </div>
+    <div class="show" aria-hidden="true">
+      <div class="phone"><div class="scr"><svg viewBox="0 0 120 120" class="logo"></svg><b>HomeLearn<br>Bridge</b><div class="kids">👦🏽👧🏻👧🏾</div></div></div>
+      <div class="float f1">⭐ <span data-t="fl1"></span></div>
+      <div class="float f2">🔤 🔢 🔬</div>
+      <div class="float f3">💬 <span data-t="fl3"></span></div>
+    </div>
+  </div></div>
+
+  <!-- ABOUT / OFFER -->
+  <section class="offer" id="about"><div class="wrap">
+    <p class="kicker" data-t="aboutKicker"></p>
+    <h2 class="title" data-t="aboutTitle"></h2>
+    <p class="lead" data-t="aboutLead"></p>
+    <div class="grid g4" style="margin-top:28px" id="offer"></div>
+  </div></section>
+
+  <!-- APP -->
+  <section id="app" style="padding-top:0"><div class="wrap"><div class="app">
+    <div>
+      <p class="kicker" data-t="appKicker"></p>
+      <h2 class="title" data-t="appTitle"></h2>
+      <p class="lead" data-t="appLead"></p>
+      <ul id="appList"></ul>
+      <div class="stores">
+        <button class="store" data-store="App Store"><span class="g">🍏</span><span><small data-t="dlOn"></small><b>App Store</b></span></button>
+        <button class="store" data-store="Google Play"><span class="g">▶️</span><span><small data-t="getOn"></small><b>Google Play</b></span></button>
+        <button class="store" data-store="Windows"><span class="g">🪟</span><span><small data-t="getFor"></small><b>Windows</b></span></button>
+      </div>
+    </div>
+    <div class="art">🎒<br>📱</div>
+  </div></div></section>
+
+  <!-- NEWS -->
+  <section id="news" style="padding-top:0"><div class="wrap">
+    <p class="kicker" data-t="newsKicker"></p>
+    <h2 class="title" data-t="newsTitle"></h2>
+    <div class="chips" id="chips">
+      <button data-cat="all" class="on" data-t="all"></button><button data-cat="activity" data-t="activities"></button><button data-cat="update" data-t="updates"></button><button data-cat="event" data-t="eventsC"></button>
+    </div>
+    <div class="grid g3" id="posts"></div>
+  </div></section>
+
+  <!-- EVENTS -->
+  <section id="events" style="padding-top:0"><div class="wrap">
+    <p class="kicker" data-t="evKicker"></p>
+    <h2 class="title" data-t="evTitle"></h2>
+    <div class="grid g2" id="eventList" style="margin-top:20px"></div>
+  </div></section>
+
+  <!-- HOW IT WORKS -->
+  <section style="padding-top:0"><div class="wrap">
+    <p class="kicker" data-t="howKicker"></p>
+    <h2 class="title" data-t="howTitle"></h2>
+    <div class="grid g3 steps" style="margin-top:34px" id="steps"></div>
+  </div></section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact" style="background:#fff"><div class="wrap">
+    <div>
+      <p class="kicker" data-t="cKicker"></p>
+      <h2 class="title" data-t="cTitle"></h2>
+      <p class="lead" data-t="cLead"></p>
+      <p style="margin-top:18px;font-weight:800">✉️ hello@example.org</p>
+    </div>
+    <form class="card form" id="cform">
+      <input required data-ph="cName"><input required type="email" data-ph="cEmail"><textarea required data-ph="cMsg"></textarea>
+      <button class="btn" type="submit" data-t="cSend"></button>
+    </form>
+  </div></section>
+</main>
+
+<footer><div class="wrap">
+  <div><a class="brand" href="#top"><svg viewBox="0 0 120 120" class="logo"></svg><span><b style="color:#9DBBFF">HomeLearn</b> <i>Bridge</i></span></a><p style="max-width:34ch;margin-top:10px" data-t="fAbout"></p></div>
+  <div><a href="#about" data-t="nAbout"></a><a href="#news" data-t="nNews"></a><a href="#events" data-t="nEvents"></a><a href="#contact" data-t="nContact"></a></div>
+  <div><a href="#" data-toast="privacy" data-t="privacy"></a><a href="#" data-toast="privacy" data-t="safeguarding"></a><a href="admin/" data-t="staff"></a></div>
+</div><div class="wrap"><small data-t="funded"></small></div></footer>
+
+<!-- SIGN IN -->
+<div class="modal" id="m-signin"><div class="box">
+  <button class="x" data-close aria-label="Close">✕</button>
+  <h2 style="font-size:28px" data-t="signIn"></h2>
+  <div class="tabs"><button data-role="parent" class="on">👪 <span data-t="parent"></span></button><button data-role="coach">🧑‍🏫 <span data-t="coach"></span></button></div>
+  <div id="r-parent">
+    <div id="pStep1"><label class="lbl" data-t="phone"></label><input class="field" value="07700 900123" inputmode="tel" style="direction:ltr">
+      <button class="btn" style="width:100%" id="sendCode" data-t="sendCode"></button>
+      <p class="small muted" style="margin-top:12px">🔒 <span data-t="noPass"></span></p></div>
+    <div id="pStep2" hidden><p class="lbl" style="text-align:center" data-t="typeCode"></p><div class="code"><span>4</span><span>8</span><span>2</span><span>6</span></div>
+      <button class="btn" style="width:100%" id="pGo" data-t="signIn"></button>
+      <p style="text-align:center;margin-top:12px"><button class="linkbtn small" data-toast="code" data-t="resend"></button></p></div>
+  </div>
+  <div id="r-coach" hidden>
+    <label class="lbl" data-t="email"></label><input class="field" value="sara@homelearnbridge.example" style="direction:ltr">
+    <label class="lbl" data-t="password"></label><input class="field" type="password" value="prototype" style="direction:ltr">
+    <button class="btn" style="width:100%" id="cGo" data-t="signIn"></button>
+    <p style="margin-top:12px"><button class="linkbtn small" data-toast="reset" data-t="forgot"></button></p>
+  </div>
+  <p class="small muted" style="margin-top:16px;text-align:center" data-t="noAccount"></p>
+</div></div>
+
+<!-- POST -->
+<div class="modal" id="m-post"><div class="box wide" id="postBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="shared/posts.js"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const LOGO=`<rect x="2" y="2" width="116" height="116" rx="30" fill="#FFF7E6"/><circle cx="95" cy="24" r="10" fill="#FFC83D"/><path d="M18 56 L60 20 L102 56" fill="none" stroke="#2F6FED" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 60 C49 53 35 53 26 57 L26 87 C35 83 49 83 60 90 Z" fill="#FF8A3D"/><path d="M60 60 C71 53 85 53 94 57 L94 87 C85 83 71 83 60 90 Z" fill="#3CC37A"/><path d="M20 106 Q60 84 100 106" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/>`;
+$$('svg.logo').forEach(s=>s.innerHTML=LOGO);
+
+// Website text. Dari and Pashto are first drafts: check with a native speaker.
+// News posts are written in the admin dashboard (in English in this prototype).
+const T={
+en:{proto:"Prototype · concept for discussion · names and events are examples",nAbout:"About",nApp:"Children's app",nNews:"News & activities",nEvents:"Events",nContact:"Contact",signIn:"Sign in",signInBtn:"Parents & coaches: sign in",
+ heroKicker:"Learning that keeps going",heroA:"Learning that moves",heroB:"with your child.",heroLead:"HomeLearn Bridge helps children keep learning when housing or school changes, with a simple app, support for parents and friendly learning coaches.",
+ getApp:"Get the children's app",offline:"Works offline",fl1:"12 stars this week",fl3:"Coach Sara replied",
+ aboutKicker:"What we offer",aboutTitle:"Support for the whole family",aboutLead:"Families told us what makes learning at home hard. HomeLearn Bridge is built around what they need.",
+ offer:[["🧒","c-blue","For children","Games, stories, videos and homework help in English, Dari and Pashto. Progress is saved, even after a move."],["👪","c-pink","For parents","See your child's progress and get simple guides with audio in your own language."],["🧑‍🏫","c-green","Learning coaches","Friendly coaches visit families, help with homework and run study sessions."],["🎒","c-yellow","HomeLearn Kits","Tablets, headphones, books and stationery for families who need them."]],
+ appKicker:"For children",appTitle:"The HomeLearn Bridge app",appLead:"Free for children aged 5 to 16. One phone or tablet, a profile for every child.",
+ appList:["✅ English, maths and science games","✅ Stories and videos, read aloud","✅ Homework help in small steps","✅ Works without internet"],
+ dlOn:"Download on the",getOn:"Get it on",getFor:"Get it for",storeToast:"In the real app this opens {s}. For now it opens the app prototype.",
+ newsKicker:"Latest",newsTitle:"News & activities",all:"All",activities:"Activities",updates:"Updates",eventsC:"Events",readMore:"Read more",example:"Example",noPosts:"No posts here yet.",
+ evKicker:"Coming up",evTitle:"Events for families",
+ howKicker:"How it works",howTitle:"Three simple steps",
+ steps:[["Join","Meet us at a family session or ask your learning coach. We'll send you a sign-in code by text."],["Get the app and kit","Download the children's app. If you need a tablet or headphones, we can lend you a HomeLearn Kit."],["Learn and stay in touch","Children learn at their own pace. Parents follow progress and message their coach."]],
+ cKicker:"Contact",cTitle:"Get in touch",cLead:"Questions about HomeLearn Bridge, or want to join? Send us a message and we'll reply in English, Dari or Pashto.",
+ cName:"Your name",cEmail:"Your email",cMsg:"Your message",cSend:"Send message",cSent:"✅ Thank you! We'll reply soon.",
+ fAbout:"Helping children keep learning when housing or school changes.",privacy:"Privacy",safeguarding:"Safeguarding",staff:"Staff login",
+ funded:"A UK Research and Innovation-funded project · © 2026 HomeLearn Bridge",privacyToast:"The privacy and safeguarding policies would open here.",
+ parent:"Parent",coach:"Learning coach",phone:"Your phone number",sendCode:"Send me a code",noPass:"No password to remember. We text you a new code each time.",typeCode:"Type the 4-number code we sent you",resend:"Send a new code",
+ email:"Email",password:"Password",forgot:"Forgot your password?",noAccount:"New family? Your learning coach will set up your account.",codeToast:"📲 A new code was sent by text.",resetToast:"📧 We sent a password reset link to your email."},
+fa:{proto:"نمونهٔ اولیه · برای گفتگو · نام‌ها و برنامه‌ها مثال هستند",nAbout:"دربارهٔ ما",nApp:"اپ کودکان",nNews:"خبرها و فعالیت‌ها",nEvents:"برنامه‌ها",nContact:"تماس",signIn:"ورود",signInBtn:"والدین و مربیان: ورود",
+ heroKicker:"یادگیری که ادامه دارد",heroA:"یادگیری که همراه",heroB:"فرزندتان می‌رود.",heroLead:"HomeLearn Bridge کمک می‌کند کودکان وقتی خانه یا مکتب عوض می‌شود، یادگیری را ادامه دهند؛ با یک اپ ساده، کمک برای والدین و مربیان مهربان.",
+ getApp:"اپ کودکان را بگیرید",offline:"بدون انترنت کار می‌کند",fl1:"۱۲ ستاره این هفته",fl3:"مربی سارا جواب داد",
+ aboutKicker:"آنچه پیشنهاد می‌کنیم",aboutTitle:"کمک برای تمام خانواده",aboutLead:"خانواده‌ها به ما گفتند چه چیزی یادگیری در خانه را سخت می‌کند. HomeLearn Bridge بر اساس نیازهای آن‌ها ساخته شده است.",
+ offer:[["🧒","c-blue","برای کودکان","بازی، قصه، ویدیو و کمک در کارخانگی به انگلیسی، دری و پشتو. پیشرفت حتی بعد از کوچ هم ذخیره می‌ماند."],["👪","c-pink","برای والدین","پیشرفت فرزندتان را ببینید و رهنماهای ساده با صدا به زبان خودتان بگیرید."],["🧑‍🏫","c-green","مربیان یادگیری","مربیان مهربان به خانواده‌ها سر می‌زنند، در کارخانگی کمک می‌کنند و جلسات درسی دارند."],["🎒","c-yellow","بسته‌های HomeLearn","تبلت، هدفون، کتاب و قرطاسیه برای خانواده‌هایی که نیاز دارند."]],
+ appKicker:"برای کودکان",appTitle:"اپ HomeLearn Bridge",appLead:"رایگان برای کودکان ۵ تا ۱۶ ساله. یک تلفن یا تبلت، یک پروفایل برای هر کودک.",
+ appList:["✅ بازی‌های انگلیسی، ریاضی و ساینس","✅ قصه‌ها و ویدیوها با صدا","✅ کمک در کارخانگی، قدم به قدم","✅ بدون انترنت کار می‌کند"],
+ dlOn:"دانلود از",getOn:"دریافت از",getFor:"دریافت برای",storeToast:"در اپ واقعی، {s} باز می‌شود. فعلاً نمونهٔ اپ باز می‌شود.",
+ newsKicker:"تازه‌ترین",newsTitle:"خبرها و فعالیت‌ها",all:"همه",activities:"فعالیت‌ها",updates:"خبرها",eventsC:"برنامه‌ها",readMore:"بیشتر بخوانید",example:"مثال",noPosts:"هنوز چیزی نیست.",
+ evKicker:"به زودی",evTitle:"برنامه‌ها برای خانواده‌ها",
+ howKicker:"چگونه کار می‌کند",howTitle:"سه قدم ساده",
+ steps:[["عضو شوید","در یک جلسهٔ خانوادگی با ما آشنا شوید یا از مربی بپرسید. کد ورود را با پیامک می‌فرستیم."],["اپ و بسته را بگیرید","اپ کودکان را دانلود کنید. اگر تبلت یا هدفون لازم دارید، بستهٔ HomeLearn را قرض می‌دهیم."],["یاد بگیرید و در تماس بمانید","کودکان به سرعت خودشان یاد می‌گیرند. والدین پیشرفت را می‌بینند و به مربی پیام می‌دهند."]],
+ cKicker:"تماس",cTitle:"با ما در تماس شوید",cLead:"سوالی دربارهٔ HomeLearn Bridge دارید یا می‌خواهید عضو شوید؟ پیام بفرستید؛ به انگلیسی، دری یا پشتو جواب می‌دهیم.",
+ cName:"نام شما",cEmail:"ایمیل شما",cMsg:"پیام شما",cSend:"فرستادن پیام",cSent:"✅ تشکر! زود جواب می‌دهیم.",
+ fAbout:"کمک به کودکان تا وقتی خانه یا مکتب عوض می‌شود، یادگیری را ادامه دهند.",privacy:"حریم خصوصی",safeguarding:"حفاظت از کودکان",staff:"ورود کارمندان",
+ funded:"پروژه‌ای با حمایت UK Research and Innovation · © ۲۰۲۶ HomeLearn Bridge",privacyToast:"اینجا پالیسی حریم خصوصی و حفاظت باز می‌شود.",
+ parent:"والد",coach:"مربی یادگیری",phone:"شمارهٔ تلفن شما",sendCode:"برایم کد بفرستید",noPass:"لازم نیست رمز به یاد داشته باشید. هر بار کد تازه با پیامک می‌فرستیم.",typeCode:"کد ۴ رقمی را بنویسید",resend:"کد تازه بفرست",
+ email:"ایمیل",password:"رمز",forgot:"رمز را فراموش کرده‌اید؟",noAccount:"خانوادهٔ تازه هستید؟ مربی یادگیری حساب شما را می‌سازد.",codeToast:"📲 کد تازه با پیامک فرستاده شد.",resetToast:"📧 لینک تغییر رمز به ایمیل شما فرستاده شد."},
+ps:{proto:"لومړنی نمونه · د بحث لپاره · نومونه او پروګرامونه بېلګې دي",nAbout:"زموږ په اړه",nApp:"د ماشومانو اپ",nNews:"خبرونه او فعالیتونه",nEvents:"پروګرامونه",nContact:"اړیکه",signIn:"ننوتل",signInBtn:"مور او پلار او روزونکي: ننوتل",
+ heroKicker:"زده کړه چې دوام لري",heroA:"زده کړه چې ستاسو",heroB:"له ماشوم سره ځي.",heroLead:"HomeLearn Bridge له ماشومانو سره مرسته کوي چې کله کور یا ښوونځی بدلېږي، زده کړه ته دوام ورکړي؛ له یوه ساده اپ، د مور او پلار مرستې او مهربانو روزونکو سره.",
+ getApp:"د ماشومانو اپ واخلئ",offline:"پرته له انټرنېټه کار کوي",fl1:"دا اونۍ ۱۲ ستوري",fl3:"روزونکې سارا ځواب ورکړ",
+ aboutKicker:"څه وړاندې کوو",aboutTitle:"د ټولې کورنۍ لپاره مرسته",aboutLead:"کورنیو موږ ته وویل چې په کور کې زده کړه څه شی ستونزمنه کوي. HomeLearn Bridge د هغوی د اړتیاوو پر بنسټ جوړ شوی.",
+ offer:[["🧒","c-blue","د ماشومانو لپاره","لوبې، کیسې، ویډیوګانې او د کورني کار مرسته په انګلیسي، دري او پښتو. پرمختګ له کډې وروسته هم خوندي پاتې کېږي."],["👪","c-pink","د مور او پلار لپاره","د خپل ماشوم پرمختګ وګورئ او په خپله ژبه له غږ سره ساده لارښوونې ترلاسه کړئ."],["🧑‍🏫","c-green","د زده کړې روزونکي","مهربان روزونکي کورنیو ته ورځي، په کورني کار کې مرسته کوي او د زده کړې ناستې جوړوي."],["🎒","c-yellow","د HomeLearn کڅوړې","ټابلیټ، هېډفون، کتابونه او قرطاسیه د هغو کورنیو لپاره چې اړتیا لري."]],
+ appKicker:"د ماشومانو لپاره",appTitle:"د HomeLearn Bridge اپ",appLead:"له ۵ تر ۱۶ کلونو ماشومانو لپاره وړیا. یو تلیفون یا ټابلیټ، د هر ماشوم لپاره یو پروفایل.",
+ appList:["✅ د انګلیسي، ریاضي او ساینس لوبې","✅ کیسې او ویډیوګانې له غږ سره","✅ د کورني کار مرسته ګام په ګام","✅ پرته له انټرنېټه کار کوي"],
+ dlOn:"ښکته یې کړئ له",getOn:"ترلاسه یې کړئ له",getFor:"ترلاسه یې کړئ د",storeToast:"په اصلي اپ کې به {s} پرانیستل شي. اوس د اپ نمونه پرانیستل کېږي.",
+ newsKicker:"وروستي",newsTitle:"خبرونه او فعالیتونه",all:"ټول",activities:"فعالیتونه",updates:"خبرونه",eventsC:"پروګرامونه",readMore:"نور ولولئ",example:"بېلګه",noPosts:"لا تر اوسه څه نشته.",
+ evKicker:"ډېر ژر",evTitle:"د کورنیو لپاره پروګرامونه",
+ howKicker:"څنګه کار کوي",howTitle:"درې ساده ګامونه",
+ steps:[["ګډون وکړئ","په یوه کورنۍ ناسته کې له موږ سره ووینئ یا له روزونکي وپوښتئ. د ننوتلو کوډ به په پیغام کې درولېږو."],["اپ او کڅوړه واخلئ","د ماشومانو اپ ښکته کړئ. که ټابلیټ یا هېډفون ته اړتیا لرئ، د HomeLearn کڅوړه درکولی شو."],["زده کړه وکړئ او په اړیکه کې اوسئ","ماشومان په خپل سرعت زده کړه کوي. مور او پلار پرمختګ ګوري او روزونکي ته پیغام لېږي."]],
+ cKicker:"اړیکه",cTitle:"له موږ سره اړیکه ونیسئ",cLead:"د HomeLearn Bridge په اړه پوښتنه لرئ یا غواړئ ګډون وکړئ؟ پیغام راولېږئ؛ په انګلیسي، دري یا پښتو کې ځواب درکوو.",
+ cName:"ستاسو نوم",cEmail:"ستاسو بریښنالیک",cMsg:"ستاسو پیغام",cSend:"پیغام ولېږئ",cSent:"✅ مننه! ژر به ځواب درکړو.",
+ fAbout:"له ماشومانو سره مرسته چې کله کور یا ښوونځی بدلېږي، زده کړې ته دوام ورکړي.",privacy:"محرمیت",safeguarding:"د ماشومانو ساتنه",staff:"د کارکوونکو ننوتل",
+ funded:"د UK Research and Innovation په ملاتړ یوه پروژه · © ۲۰۲۶ HomeLearn Bridge",privacyToast:"دلته به د محرمیت او ساتنې پالیسي پرانیستل شي.",
+ parent:"مور/پلار",coach:"روزونکی",phone:"ستاسو د تلیفون شمېره",sendCode:"ما ته کوډ راولېږئ",noPass:"پټنوم په یاد ساتلو ته اړتیا نشته. هر ځل نوی کوډ درلېږو.",typeCode:"۴ عددي کوډ ولیکئ",resend:"نوی کوډ راولېږه",
+ email:"بریښنالیک",password:"پټنوم",forgot:"پټنوم مو هېر شوی؟",noAccount:"نوې کورنۍ یاست؟ روزونکی به ستاسو حساب جوړ کړي.",codeToast:"📲 نوی کوډ په پیغام کې ولېږل شو.",resetToast:"📧 د پټنوم د بدلولو لینک مو بریښنالیک ته ولېږل شو."}
+};
+let lang='en';
+try{lang=localStorage.getItem('hlb-lang')||'en'}catch(e){}
+const t=k=>T[lang][k]??T.en[k];
+let posts=HLB_POSTS.load(),cat='all';
+const MONTHS={en:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]};
+const fmt=d=>{const x=new Date(d+'T12:00:00');return `${x.getDate()} ${MONTHS.en[x.getMonth()]} ${x.getFullYear()}`};
+const catLabel=c=>({activity:t('activities'),update:t('updates'),event:t('eventsC')}[c]);
+
+function render(){
+  document.documentElement.lang=lang;document.documentElement.dir=lang==='en'?'ltr':'rtl';
+  $$('[data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v});
+  $$('[data-ph]').forEach(e=>e.placeholder=t(e.dataset.ph));
+  $$('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  $('#offer').innerHTML=t('offer').map(([ic,c,h,p])=>`<div class="card"><span class="ic ${c}">${ic}</span><h3>${h}</h3><p>${p}</p></div>`).join('');
+  $('#appList').innerHTML=t('appList').map(x=>`<li>${x}</li>`).join('');
+  $('#steps').innerHTML=t('steps').map(([h,p],i)=>`<div class="card"><span class="n">${i+1}</span><h3>${h}</h3><p>${p}</p></div>`).join('');
+  renderPosts();
+}
+function renderPosts(){
+  const pub=posts.filter(p=>p.status==='published').sort((a,b)=>b.date.localeCompare(a.date));
+  const list=pub.filter(p=>cat==='all'||p.cat===cat);
+  $('#posts').innerHTML=list.map(p=>`<button class="card post" data-post="${p.id}" dir="ltr"><div class="cover c-${p.color}">${p.icon}</div><div class="in">
+    <div class="meta"><span class="pill t-${p.cat}">${catLabel(p.cat)}</span>${p.example?`<span class="pill ex">${t('example')}</span>`:''}<span>${fmt(p.date)}</span></div>
+    <h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p><span style="color:var(--blue);font-weight:800">${t('readMore')} →</span></div></button>`).join('')||`<p class="muted" style="font-weight:800">${t('noPosts')}</p>`;
+  const ev=pub.filter(p=>p.cat==='event').sort((a,b)=>a.date.localeCompare(b.date));
+  $('#eventList').innerHTML=ev.map(p=>{const d=new Date(p.date+'T12:00:00');return `<button class="card event" data-post="${p.id}" dir="ltr" style="text-align:start"><div class="date"><b>${d.getDate()}</b><small>${MONTHS.en[d.getMonth()]}</small></div><div class="tx"><h3>${esc(p.title)}</h3><p class="muted" style="font-weight:700">${esc(p.when||fmt(p.date))}</p></div><span class="btn sm ghost">→</span></button>`}).join('')||`<p class="muted" style="font-weight:800">${t('noPosts')}</p>`;
+}
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function openPost(id){
+  const p=posts.find(x=>x.id===id);if(!p)return;
+  $('#postBox').innerHTML=`<button class="x" data-close aria-label="Close">✕</button><div dir="ltr"><div class="ic c-${p.color}" style="width:72px;height:72px;font-size:38px;margin-bottom:12px">${p.icon}</div>
+    <div class="meta" style="display:flex;gap:8px;flex-wrap:wrap;font-weight:800;font-size:13px;color:var(--muted);margin-bottom:8px"><span class="pill t-${p.cat}">${catLabel(p.cat)}</span>${p.example?`<span class="pill ex">${t('example')}</span>`:''}<span>${fmt(p.date)}</span></div>
+    <h2 style="font-size:28px;margin-bottom:8px">${esc(p.title)}</h2>${p.when?`<p style="font-weight:800;color:var(--orange);margin-bottom:8px">📅 ${esc(p.when)}</p>`:''}
+    <p style="font-weight:700;color:var(--muted);font-size:17px">${esc(p.body)}</p></div>`;
+  $('#m-post').classList.add('on');
+}
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2800)}
+function close(){$$('.modal').forEach(m=>m.classList.remove('on'))}
+
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('modal')){close();return}
+  const el=e.target.closest('button,a');if(!el)return;const d=el.dataset;
+  if(d.lang){lang=d.lang;try{localStorage.setItem('hlb-lang',lang)}catch(e){}render();return}
+  if(d.open){$('#m-'+d.open).classList.add('on');return}
+  if(d.close!==undefined){close();return}
+  if(d.role){$$('[data-role]').forEach(b=>b.classList.toggle('on',b===el));$('#r-parent').hidden=d.role!=='parent';$('#r-coach').hidden=d.role!=='coach';return}
+  if(d.cat){cat=d.cat;$$('#chips button').forEach(b=>b.classList.toggle('on',b===el));renderPosts();return}
+  if(d.post){openPost(d.post);return}
+  if(d.store){window.open('children/','_blank','noopener');toast(t('storeToast').replace('{s}',d.store));return}
+  if(d.toast){e.preventDefault();toast({privacy:t('privacyToast'),code:t('codeToast'),reset:t('resetToast')}[d.toast]);return}
+  if(el.id==='menu'){$('#links').classList.toggle('open');return}
+  if(el.closest('#links'))$('#links').classList.remove('open');
+});
+$('#sendCode').onclick=()=>{$('#pStep1').hidden=true;$('#pStep2').hidden=false};
+$('#pGo').onclick=()=>location.href='platform/#parent';
+$('#cGo').onclick=()=>location.href='platform/#coach';
+$('#cform').addEventListener('submit',e=>{e.preventDefault();toast(t('cSent'));e.target.reset()});
+addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+addEventListener('storage',e=>{if(e.key==='hlb-posts-v1'){posts=HLB_POSTS.load();renderPosts()}});
+render();
+</script>
+</body>
+</html>
