@@ -1,0 +1,788 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#E4F0FF">
+<title>HomeLearn Bridge — Parent, Coach &amp; Admin Prototype</title>
+<meta name="description" content="Clickable prototype of the HomeLearn Bridge parent dashboard, learning coach dashboard and admin panel. Concept for discussion.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&family=Vazirmatn:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2463EB;--blue-d:#1A4BC0;--blue-l:#E3EDFF;--green:#22A95B;--green-d:#178245;--green-l:#DFF5E7;
+  --orange:#FF8A3D;--orange-l:#FFEBDC;--yellow:#FFC83D;--yellow-l:#FFF6D8;--purple:#7C4DEB;--purple-l:#EEE7FF;
+  --pink:#F0508A;--pink-l:#FFE4EE;--teal:#14A3B8;--teal-l:#DDF5F8;--red:#E5484D;--red-l:#FDE8E8;
+  --ink:#16244A;--muted:#66708C;--line:#E3EAF5;--card:#FFFFFF;--bg1:#E4F0FF;--bg2:#F6FAFF;
+  --font:"Nunito","Vazirmatn",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Baloo 2","Vazirmatn",system-ui,sans-serif;
+}
+[dir=rtl]{--font:"Vazirmatn","Nunito",system-ui,sans-serif;--display:"Vazirmatn","Baloo 2",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--ink);background:linear-gradient(180deg,var(--bg1),var(--bg2) 60%);display:flex;flex-direction:column;overflow:hidden}
+button,input,select,textarea{font:inherit;color:inherit;border:none;background:none}
+button{cursor:pointer}
+h1,h2,h3{font-family:var(--display);line-height:1.15}
+[hidden]{display:none!important}
+.flip{display:inline-block}[dir=rtl] .flip{transform:scaleX(-1)}
+
+/* ---------- part switcher (prototype chrome) ---------- */
+.top{flex-shrink:0;display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;border-bottom:1px solid var(--line);flex-wrap:wrap;direction:ltr}
+.brand{display:flex;align-items:center;gap:8px;font-family:"Baloo 2",sans-serif;font-weight:800;font-size:18px;line-height:1}
+.brand svg{width:34px;height:34px}
+.brand small{font-family:"Nunito",sans-serif;font-size:11px;font-weight:800;background:var(--yellow);padding:3px 8px;border-radius:99px;letter-spacing:.05em}
+.parts{display:flex;gap:4px;background:var(--bg1);padding:4px;border-radius:99px;margin-inline-start:auto}
+.parts button{padding:8px 14px;border-radius:99px;font-weight:800;font-size:14px;color:var(--muted);white-space:nowrap}
+.parts button.on{background:var(--blue);color:#fff}
+.kidlink{font-weight:800;font-size:14px;color:var(--blue);text-decoration:none;padding:8px 10px}
+
+/* ---------- shell ---------- */
+.part{display:none;flex:1;min-height:0}
+.part.on{display:flex}
+.nav{flex-shrink:0;width:230px;background:#fff;border-inline-end:1px solid var(--line);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+.nav .who{display:flex;align-items:center;gap:10px;padding:6px 10px 16px;font-weight:800}
+.nav .who .av{width:40px;height:40px;font-size:20px}
+.nav .who small{display:block;color:var(--muted);font-size:12px;font-weight:700}
+.nav button{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;font-weight:800;color:var(--muted);text-align:start}
+.nav button .i{font-size:20px;width:24px;text-align:center}
+.nav button.on{background:var(--blue-l);color:var(--blue)}
+.nav .badge{margin-inline-start:auto;background:var(--pink);color:#fff;font-size:11px;padding:1px 7px;border-radius:99px}
+.main{flex:1;overflow-y:auto;min-width:0}
+.wrap{max-width:1080px;margin:0 auto;padding:22px 24px 40px}
+.screen{display:none;animation:in .25s}
+.screen.on{display:block}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+
+/* ---------- common bits ---------- */
+.head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.head h2{font-size:28px}
+.head p{color:var(--muted);font-weight:700}
+.head .sp{flex:1}
+.back{width:42px;height:42px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:20px;box-shadow:0 2px 8px rgba(22,36,74,.08);flex-shrink:0}
+.card{background:var(--card);border-radius:20px;box-shadow:0 4px 16px rgba(22,36,74,.06);padding:16px}
+.sec{font-family:var(--display);font-size:19px;font-weight:800;margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.sec .more{margin-inline-start:auto;font-family:var(--font);font-size:14px;color:var(--blue)}
+.grid{display:grid;gap:12px}
+.grid>*{min-width:0}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.row{display:flex;align-items:center;gap:12px}
+.av{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:24px;flex-shrink:0}
+.ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:23px;flex-shrink:0}
+.muted{color:var(--muted)}.small{font-size:13px}.b{font-weight:800}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:12.5px;font-weight:800;white-space:nowrap}
+.p-green{background:var(--green-l);color:var(--green-d)}.p-orange{background:var(--orange-l);color:#B65A14}.p-red{background:var(--red-l);color:#B42318}.p-blue{background:var(--blue-l);color:var(--blue)}.p-purple{background:var(--purple-l);color:var(--purple)}.p-grey{background:#EEF1F7;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:99px;font-family:var(--display);font-size:18px;font-weight:800;color:#fff;background:var(--blue);box-shadow:0 4px 0 var(--blue-d)}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--blue-d)}
+.btn.ghost{background:#fff;color:var(--blue);box-shadow:inset 0 0 0 2px var(--blue-l)}
+.btn.sm{padding:7px 14px;font-size:15px;box-shadow:none}
+.btn.wide{width:100%}
+.listen{display:inline-flex;align-items:center;gap:6px;background:var(--orange);color:#fff;font-weight:800;font-size:13px;padding:5px 12px;border-radius:99px}
+.bar{height:10px;background:var(--bg1);border-radius:10px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:10px;background:var(--blue)}
+.lrow{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line);width:100%;text-align:start}
+.lrow:last-child{border-bottom:none}
+.lrow .tx{flex:1;min-width:0}
+.lrow b{display:block}
+.lrow small{color:var(--muted);font-weight:700}
+.chev{color:var(--muted);font-size:20px}
+.stat b{display:block;font-family:var(--display);font-size:30px;line-height:1.1}
+.stat small{color:var(--muted);font-weight:700;font-size:13px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chips button{padding:6px 14px;border-radius:99px;background:#fff;font-weight:800;font-size:14px;color:var(--muted);box-shadow:0 1px 4px rgba(22,36,74,.06)}
+.chips button.on{background:var(--ink);color:#fff}
+.search{width:100%;background:#fff;border-radius:14px;padding:12px 16px;font-weight:700;box-shadow:0 1px 4px rgba(22,36,74,.06);margin-bottom:12px}
+.note{font-size:12.5px;color:var(--muted);font-weight:700;text-align:center;margin-top:18px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:start;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line)}
+td{padding:11px 10px;border-bottom:1px solid var(--line);font-weight:700}
+tr:last-child td{border-bottom:none}
+.tscroll{overflow-x:auto}
+
+/* chat */
+.thread{display:flex;flex-direction:column;gap:8px;padding:6px 0}
+.msg{max-width:78%;padding:10px 14px;border-radius:18px;font-weight:700;line-height:1.4}
+.msg.them{background:#fff;align-self:flex-start;border-end-start-radius:4px;box-shadow:0 1px 4px rgba(22,36,74,.06)}
+.msg.me{background:var(--blue);color:#fff;align-self:flex-end;border-end-end-radius:4px}
+.msg small{display:block;font-size:11px;opacity:.7;margin-top:2px}
+.composer{display:flex;gap:8px;margin-top:10px}
+.composer input{flex:1;background:#fff;border-radius:99px;padding:12px 16px;font-weight:700;box-shadow:0 1px 4px rgba(22,36,74,.06)}
+.composer button{width:46px;height:46px;border-radius:50%;background:var(--blue);color:#fff;font-size:18px}
+
+/* modal + toast */
+.modal{position:fixed;inset:0;background:rgba(22,36,74,.45);display:none;align-items:center;justify-content:center;padding:16px;z-index:40}
+.modal.on{display:flex}
+.modal .box{background:#fff;border-radius:24px;padding:22px;width:min(520px,100%);max-height:88vh;overflow-y:auto;animation:in .2s}
+.modal h3{font-size:24px;margin-bottom:6px}
+.modal ul{padding-inline-start:20px;margin:12px 0;line-height:1.6;font-weight:700}
+.modal label{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--bg2);margin:6px 0;font-weight:800}
+.modal input[type=checkbox],.modal input[type=radio]{width:20px;height:20px;accent-color:var(--blue)}
+.modal textarea{width:100%;background:var(--bg2);border-radius:14px;padding:12px;font-weight:700;min-height:80px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 20px;border-radius:99px;font-weight:800;opacity:0;transition:.25s;pointer-events:none;z-index:50;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+/* ---------- parent ---------- */
+.signin{max-width:440px;margin:0 auto;padding:30px 20px;text-align:center}
+.signin .logo{width:88px;height:88px;margin:0 auto 10px}
+.signin h1{font-size:34px;color:var(--blue)}
+.langs{display:flex;gap:8px;justify-content:center;margin:18px 0}
+.langs button{padding:10px 18px;border-radius:99px;background:#fff;font-weight:800;box-shadow:0 1px 4px rgba(22,36,74,.08)}
+.langs button.on{background:var(--ink);color:#fff}
+.field{width:100%;background:#fff;border-radius:16px;padding:15px 18px;font-weight:800;font-size:20px;text-align:center;letter-spacing:.06em;box-shadow:0 1px 6px rgba(22,36,74,.08);margin:10px 0 14px;direction:ltr}
+.code{display:flex;gap:10px;justify-content:center;margin:14px 0;direction:ltr}
+.code span{width:56px;height:64px;border-radius:16px;background:#fff;display:grid;place-items:center;font-family:"Baloo 2";font-size:32px;font-weight:800;box-shadow:0 1px 6px rgba(22,36,74,.08)}
+.hello{background:linear-gradient(135deg,var(--blue),#4C83F2);color:#fff;border-radius:24px;padding:20px;display:flex;align-items:center;gap:14px}
+.hello h2{font-size:26px}
+.kidcard{display:block;width:100%;text-align:start;border:3px solid transparent}
+.kidcard:hover{border-color:var(--blue-l)}
+.kidcard .nums{display:flex;gap:14px;margin-top:12px;font-weight:800;font-size:14px;flex-wrap:wrap}
+.subj{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;text-align:center}
+.subj .ic{margin:0 auto 6px}
+.dots{display:flex;gap:3px;justify-content:center;margin-top:4px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}
+.dots i.f{background:var(--green)}
+.guide{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:start;min-height:150px}
+.guide .ic{width:54px;height:54px;font-size:28px}
+.guide b{font-family:var(--display);font-size:18px;line-height:1.15}
+
+/* ---------- coach & admin ---------- */
+.flag{border-inline-start:5px solid var(--orange)}
+.flag.red{border-inline-start-color:var(--red)}
+.visit{display:flex;align-items:center;gap:12px}
+.visit .time{font-family:var(--display);font-weight:800;font-size:20px;width:60px;text-align:center}
+.check label{display:flex;align-items:center;gap:10px;font-weight:800;padding:8px 0}
+.check input{width:20px;height:20px;accent-color:var(--green)}
+.chart{display:flex;align-items:flex-end;gap:12px;height:170px;padding:8px 4px 0}
+.chart div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;font-size:12.5px;font-weight:800;color:var(--muted);text-align:center}
+.chart span{width:100%;max-width:56px;border-radius:10px 10px 4px 4px}
+.hbar{display:grid;grid-template-columns:110px 1fr 40px;gap:10px;align-items:center;font-weight:800;font-size:14px;margin:8px 0}
+.measure{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.measure:last-child{border:none}
+.measure .tx{flex:1}
+.measure b.n{font-family:var(--display);font-size:22px;width:56px;text-align:end}
+.example{display:inline-block;background:var(--yellow-l);color:#8A6200;font-weight:800;font-size:12px;padding:3px 10px;border-radius:99px;margin-inline-start:8px;vertical-align:middle}
+
+/* ---------- mobile ---------- */
+@media (max-width:900px){
+  .part.on{flex-direction:column-reverse}
+  .nav{width:100%;flex-direction:row;padding:6px 6px 10px;border-inline-end:none;border-top:1px solid var(--line);justify-content:space-around;gap:0}
+  .nav .who{display:none}
+  .nav button{flex-direction:column;gap:2px;font-size:11.5px;padding:6px 4px;flex:1}
+  .nav .badge{position:absolute;margin:0;transform:translate(14px,-4px)}
+  .nav button{position:relative}
+  .g3,.g4{grid-template-columns:repeat(2,1fr)}
+  .wrap{padding:16px 14px 30px}
+  .head h2{font-size:24px}
+  .brand span.t{display:none}
+  .parts{margin-inline-start:0;flex:1;justify-content:space-between}
+  .parts button{padding:7px 10px;font-size:13px}
+  .kidlink{display:none}
+}
+@media (max-width:560px){
+  .g2,#kidCards{grid-template-columns:1fr}
+  .subj{grid-template-columns:repeat(5,1fr);gap:4px}
+  .subj .ic{width:40px;height:40px;font-size:20px}
+  .hbar{grid-template-columns:90px 1fr 34px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><svg viewBox="0 0 120 120" class="logo"></svg><span class="t">HomeLearn Bridge</span><small>PROTOTYPE</small></div>
+  <div class="parts" role="group" aria-label="Choose a part">
+    <button data-part="parent" class="on">👪 Parent</button>
+    <button data-part="coach">🧑‍🏫 Learning Coach</button>
+    <button data-part="admin">🛠️ Admin</button>
+  </div>
+  <a class="kidlink" href="../children/" target="_blank" rel="noopener">🧒 Children's app ↗</a>
+</header>
+
+<!-- ======================= PARENT ======================= -->
+<section class="part on" id="part-parent">
+  <nav class="nav" id="pnav" hidden>
+    <div class="who"><span class="av" style="background:var(--pink-l)">👩🏻</span><div>Fatima<small data-t="parentOf"></small></div></div>
+    <button data-pgo="home" class="on"><span class="i">🏠</span><span data-t="nHome"></span></button>
+    <button data-pgo="guides"><span class="i">📘</span><span data-t="nGuides"></span></button>
+    <button data-pgo="msgs"><span class="i">💬</span><span data-t="nMsgs"></span><span class="badge">1</span></button>
+    <button data-pgo="help"><span class="i">🛟</span><span data-t="nHelp"></span></button>
+  </nav>
+  <div class="main"><div class="wrap">
+
+    <!-- sign in -->
+    <div class="screen on" id="ps-signin"><div class="signin">
+      <svg viewBox="0 0 120 120" class="logo"></svg>
+      <h1>HomeLearn Bridge</h1>
+      <p class="muted b" data-t="forParents"></p>
+      <div class="langs" id="plangs">
+        <button data-lang="en" class="on">English</button><button data-lang="fa">دری / فارسی</button><button data-lang="ps">پښتو</button>
+      </div>
+      <div id="step1">
+        <p class="b" data-t="phoneQ"></p>
+        <input class="field" value="07700 900123" aria-label="Phone number" inputmode="tel">
+        <button class="btn wide" id="sendCode"><span data-t="sendCode"></span></button>
+        <p class="muted small b" style="margin-top:14px">🔒 <span data-t="noPassword"></span></p>
+      </div>
+      <div id="step2" hidden>
+        <p class="b" data-t="codeQ"></p>
+        <div class="code"><span>4</span><span>8</span><span>2</span><span>6</span></div>
+        <button class="btn wide" id="signIn"><span data-t="signIn"></span></button>
+        <p style="margin-top:14px"><button class="b" style="color:var(--blue)" id="resend" data-t="resend"></button></p>
+      </div>
+      <p style="margin-top:22px"><button class="listen" data-say="signinSay">🔊 <span data-t="listen"></span></button></p>
+      <p class="note" data-t="needHelpLogin"></p>
+    </div></div>
+
+    <!-- home -->
+    <div class="screen" id="ps-home">
+      <div class="hello"><span class="av" style="background:#fff;width:58px;height:58px;font-size:30px">👩🏻</span><div style="flex:1"><h2 data-t="hello"></h2><p class="b" style="opacity:.9" data-t="helloSub"></p></div><button class="listen" style="background:rgba(255,255,255,.22)" data-say="homeSay">🔊</button></div>
+      <div class="sec">👧🧒 <span data-t="myChildren"></span></div>
+      <div class="grid g3" id="kidCards"></div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card row"><span class="av" style="background:var(--teal-l)">👩🏽‍🏫</span><div style="flex:1"><b data-t="coachName"></b><div class="muted small b" data-t="nextVisit"></div></div><button class="btn sm" data-pgo="msgs" data-t="message"></button></div>
+        <div class="card row"><span class="ic" style="background:var(--yellow-l)">📅</span><div style="flex:1"><b data-t="workshop"></b><div class="muted small b" data-t="workshopWhen"></div></div><button class="btn sm ghost" data-toast="booked" data-t="join"></button></div>
+      </div>
+    </div>
+
+    <!-- child detail -->
+    <div class="screen" id="ps-child">
+      <div class="head"><button class="back" data-pgo="home"><span class="flip">‹</span></button><span class="av" id="cAv"></span><div class="sp"><h2 id="cName"></h2><p id="cYear"></p></div><button class="listen" data-say="childSay">🔊</button></div>
+      <div class="card"><div class="row" style="justify-content:space-between;margin-bottom:12px"><b data-t="thisWeek"></b><span class="pill" id="cStatus"></span></div><div class="subj" id="cSubj"></div></div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card"><b>✅ <span data-t="learned"></span></b><ul style="padding-inline-start:20px;margin-top:8px;line-height:1.7;font-weight:700" id="cLearned"></ul></div>
+        <div class="card"><b>📝 <span data-t="homework"></span></b><p class="b" style="margin-top:8px" data-t="hwName"></p><div class="bar" style="margin:8px 0"><span style="width:50%;background:var(--green)"></span></div><p class="muted small b" data-t="hwSteps"></p></div>
+      </div>
+      <div class="sec">💡 <span data-t="helpHome"></span></div>
+      <div class="grid g2" id="cTips"></div>
+      <div class="card row" style="margin-top:12px;background:var(--yellow-l)"><span style="font-size:30px">🎒</span><p class="b small" data-t="moves"></p></div>
+    </div>
+
+    <!-- guides -->
+    <div class="screen" id="ps-guides">
+      <div class="head"><div class="sp"><h2 data-t="nGuides"></h2><p data-t="guidesSub"></p></div></div>
+      <div class="grid g3" id="guideCards"></div>
+      <div class="sec">📅 <span data-t="events"></span></div>
+      <div class="card" id="events"></div>
+    </div>
+
+    <!-- messages -->
+    <div class="screen" id="ps-msgs">
+      <div class="head"><div class="sp"><h2 data-t="nMsgs"></h2></div></div>
+      <div class="chips"><button class="on" data-thread="coach" data-t="withCoach"></button><button data-thread="kid" data-t="kidMsgs"></button></div>
+      <div class="card"><div class="thread" id="pThread"></div>
+        <div class="composer" id="pComposer"><input id="pInp"><button id="pSend"><span class="flip">➤</span></button></div>
+        <p class="muted small b" id="viewOnly" hidden>👀 <span data-t="viewOnly"></span></p>
+      </div>
+    </div>
+
+    <!-- help -->
+    <div class="screen" id="ps-help">
+      <div class="head"><div class="sp"><h2 data-t="nHelp"></h2></div></div>
+      <div class="card">
+        <button class="lrow" data-modal="kit"><span class="ic" style="background:var(--blue-l)">💻</span><span class="tx"><b data-t="kitT"></b><small data-t="kitS"></small></span><span class="chev flip">›</span></button>
+        <button class="lrow" data-toast="places"><span class="ic" style="background:var(--green-l)">📍</span><span class="tx"><b data-t="placesT"></b><small data-t="placesS"></small></span><span class="chev flip">›</span></button>
+        <button class="lrow" data-modal="login"><span class="ic" style="background:var(--purple-l)">🔑</span><span class="tx"><b data-t="loginT"></b><small data-t="loginS"></small></span><span class="chev flip">›</span></button>
+        <button class="lrow" data-modal="worried"><span class="ic" style="background:var(--red-l)">🛡️</span><span class="tx"><b data-t="worriedT"></b><small data-t="worriedS"></small></span><span class="chev flip">›</span></button>
+      </div>
+      <div class="sec">🌐 <span data-t="language"></span></div>
+      <div class="langs" style="justify-content:flex-start;margin:0" id="plangs2">
+        <button data-lang="en">English</button><button data-lang="fa">دری / فارسی</button><button data-lang="ps">پښتو</button>
+      </div>
+      <p style="margin-top:22px"><button class="btn ghost" id="signOut" data-t="signOut"></button></p>
+    </div>
+
+  </div></div>
+</section>
+
+<!-- ======================= COACH ======================= -->
+<section class="part" id="part-coach">
+  <nav class="nav">
+    <div class="who"><span class="av" style="background:var(--teal-l)">👩🏽‍🏫</span><div>Sara Ahmadi<small>Learning coach</small></div></div>
+    <button data-cgo="today" class="on"><span class="i">📋</span><span>Today</span></button>
+    <button data-cgo="families"><span class="i">👪</span><span>Families</span></button>
+    <button data-cgo="msgs"><span class="i">💬</span><span>Messages</span><span class="badge">2</span></button>
+    <button data-cgo="kits"><span class="i">📦</span><span>Kits</span></button>
+  </nav>
+  <div class="main"><div class="wrap">
+
+    <div class="screen on" id="cs-today">
+      <div class="head"><div class="sp"><h2>Good morning, Sara 👋</h2><p>Saturday · 3 visits and 1 hub session today</p></div></div>
+      <div class="grid g4">
+        <div class="card stat"><b style="color:var(--blue)">12</b><small>My families</small></div>
+        <div class="card stat"><b style="color:var(--green)">27</b><small>Children</small></div>
+        <div class="card stat"><b style="color:var(--purple)">19</b><small>Active this week</small></div>
+        <div class="card stat"><b style="color:var(--orange)">4</b><small>Need attention</small></div>
+      </div>
+      <div class="grid g2" style="margin-top:4px">
+        <div>
+          <div class="sec">⚠️ Needs attention</div>
+          <div class="card flag" style="margin-bottom:10px"><div class="row"><span class="av" style="background:var(--blue-l)">🚀</span><div style="flex:1"><b>Yusuf (Year 6)</b><div class="muted small b">Not active for 6 days</div></div><button class="btn sm" data-cgo="msgs">Message</button></div></div>
+          <div class="card flag" style="margin-bottom:10px"><div class="row"><span class="av" style="background:var(--orange-l)">🏠</span><div style="flex:1"><b>Family F-07</b><div class="muted small b">Moved to Hillingdon · needs a new school place</div></div><button class="btn sm ghost" data-family="1">Open</button></div></div>
+          <div class="card flag" style="margin-bottom:10px"><div class="row"><span class="av" style="background:var(--yellow-l)">💻</span><div style="flex:1"><b>Family F-12</b><div class="muted small b">No device · kit requested</div></div><button class="btn sm ghost" data-cgo="kits">Kits</button></div></div>
+          <div class="card flag red"><div class="row"><span class="av" style="background:var(--red-l)">💛</span><div style="flex:1"><b>Child in family F-03</b><div class="muted small b">Chose “worried” 3 times this week</div></div><button class="btn sm" style="background:var(--red);box-shadow:none" data-modal="safeguard">Follow up</button></div></div>
+        </div>
+        <div>
+          <div class="sec">🗓️ Today's visits</div>
+          <div class="card">
+            <div class="lrow visit"><span class="time">10:00</span><span class="tx"><b>Family F-01 · Ahmed, Maryam, Yusuf</b><small>Home visit · Hounslow · Dari</small></span><button class="btn sm" data-modal="visit">Start</button></div>
+            <div class="lrow visit"><span class="time">12:30</span><span class="tx"><b>Family F-09 · 2 children</b><small>Home visit · Ealing · Farsi</small></span><button class="btn sm ghost" data-modal="visit">Start</button></div>
+            <div class="lrow visit"><span class="time">15:00</span><span class="tx"><b>Study hub session</b><small>Hounslow library · 8 children booked</small></span><button class="btn sm ghost" data-toast="attend">Register</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="cs-families">
+      <div class="head"><div class="sp"><h2>Families</h2><p>12 families · 27 children</p></div></div>
+      <input class="search" placeholder="🔍 Search by family or child">
+      <div class="chips" id="famChips"><button class="on" data-ff="all">All</button><button data-ff="att">Needs attention</button><button data-ff="moved">Moved recently</button><button data-ff="nodev">No device</button></div>
+      <div class="card" id="famList"></div>
+    </div>
+
+    <div class="screen" id="cs-family">
+      <div class="head"><button class="back" data-cgo="families"><span class="flip">‹</span></button><div class="sp"><h2 id="fName"></h2><p id="fMeta"></p></div></div>
+      <div class="grid g2">
+        <div>
+          <div class="card" id="fKids"></div>
+          <div class="row" style="gap:8px;margin-top:12px;flex-wrap:wrap"><button class="btn" data-modal="assign">📚 Set catch-up activities</button><button class="btn ghost" data-modal="note">📝 Add note</button></div>
+        </div>
+        <div>
+          <div class="card"><b>Family details</b>
+            <div class="lrow"><span class="tx"><small>Language</small><b id="fLang"></b></span></div>
+            <div class="lrow"><span class="tx"><small>Housing</small><b id="fHouse"></b></span></div>
+            <div class="lrow"><span class="tx"><small>HomeLearn Kit</small><b id="fKit"></b></span></div>
+            <div class="lrow"><span class="tx"><small>Preferred contact</small><b>WhatsApp · weekends</b></span></div>
+          </div>
+          <div class="sec">📝 Session notes</div>
+          <div class="card" id="fNotes"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="cs-msgs">
+      <div class="head"><div class="sp"><h2>Messages</h2><p>Parents can see every message their child sends and receives.</p></div></div>
+      <div class="grid g2">
+        <div class="card">
+          <button class="lrow" data-cthread="0"><span class="av" style="background:var(--pink-l)">👩🏻</span><span class="tx"><b>Fatima (F-01, parent)</b><small>Thank you! See you Saturday.</small></span><span class="pill p-blue">New</span></button>
+          <button class="lrow" data-cthread="1"><span class="av" style="background:var(--blue-l)">🚀</span><span class="tx"><b>Yusuf (F-01, child)</b><small>I finished my homework ✅</small></span><span class="pill p-blue">New</span></button>
+          <button class="lrow" data-cthread="2"><span class="av" style="background:var(--green-l)">👨🏽</span><span class="tx"><b>Parent, F-09</b><small>Can you help with the school letter?</small></span></button>
+        </div>
+        <div class="card"><b id="ctName"></b><div class="thread" id="cThread"></div><div class="composer"><input id="cInp" placeholder="Type a message…"><button id="cSend">➤</button></div></div>
+      </div>
+    </div>
+
+    <div class="screen" id="cs-kits">
+      <div class="head"><div class="sp"><h2>HomeLearn Kits</h2><p>Devices and learning materials for families</p></div><button class="btn" data-modal="kitReq">＋ Request kit</button></div>
+      <div class="card tscroll"><table>
+        <tr><th>Family</th><th>Items</th><th>Status</th><th></th></tr>
+        <tr><td>F-12</td><td>Tablet, headphones, stationery</td><td><span class="pill p-orange">Requested</span></td><td class="muted small">2 days ago</td></tr>
+        <tr><td>F-07</td><td>Books (Year 2–4)</td><td><span class="pill p-blue">Approved</span></td><td class="muted small">Delivery Tue</td></tr>
+        <tr><td>F-01</td><td>2 tablets, 3 headphones</td><td><span class="pill p-green">Delivered</span></td><td class="muted small">Working ✓</td></tr>
+        <tr><td>F-05</td><td>Tablet charger</td><td><span class="pill p-red">Problem reported</span></td><td><button class="btn sm ghost" data-toast="fixed">Mark fixed</button></td></tr>
+      </table></div>
+    </div>
+
+  </div></div>
+</section>
+
+<!-- ======================= ADMIN ======================= -->
+<section class="part" id="part-admin">
+  <nav class="nav">
+    <div class="who"><span class="av" style="background:var(--purple-l)">🛠️</span><div>Project team<small>Admin</small></div></div>
+    <button data-ago="overview" class="on"><span class="i">📊</span><span>Overview</span></button>
+    <button data-ago="families"><span class="i">👪</span><span>Families</span></button>
+    <button data-ago="kits"><span class="i">📦</span><span>Kits</span></button>
+    <button data-ago="library"><span class="i">📚</span><span>Library</span></button>
+    <button data-ago="reports"><span class="i">📄</span><span>Reports</span></button>
+  </nav>
+  <div class="main"><div class="wrap">
+
+    <div class="screen on" id="as-overview">
+      <div class="head"><div class="sp"><h2>Overview <span class="example">Example data</span></h2><p>This month · all boroughs</p></div></div>
+      <div class="grid g4">
+        <div class="card stat"><b style="color:var(--blue)">30</b><small>Families registered</small></div>
+        <div class="card stat"><b style="color:var(--green)">58</b><small>Children active</small></div>
+        <div class="card stat"><b style="color:var(--purple)">1,240</b><small>Activities completed</small></div>
+        <div class="card stat"><b style="color:var(--orange)">16</b><small>Kits given out</small></div>
+      </div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card"><b>Activities by subject</b>
+          <div class="chart">
+            <div><span style="height:85%;background:var(--blue)"></span>English</div>
+            <div><span style="height:78%;background:var(--green)"></span>Maths</div>
+            <div><span style="height:42%;background:var(--teal)"></span>Science</div>
+            <div><span style="height:66%;background:var(--purple)"></span>Videos</div>
+            <div><span style="height:55%;background:var(--orange)"></span>Stories</div>
+            <div><span style="height:38%;background:var(--pink)"></span>Homework</div>
+          </div>
+        </div>
+        <div class="card"><b>Platform checks</b> <span class="muted small b">(from the forum's evaluation measures)</span>
+          <div class="measure"><span class="ic" style="background:var(--blue-l)">🔑</span><span class="tx b">Signed in without help</span><b class="n">86%</b></div>
+          <div class="measure"><span class="ic" style="background:var(--purple-l)">📲</span><span class="tx b">Got back in with a new code</span><b class="n">97%</b></div>
+          <div class="measure"><span class="ic" style="background:var(--green-l)">↩️</span><span class="tx b">Carried on after a break</span><b class="n">74%</b></div>
+          <div class="measure"><span class="ic" style="background:var(--yellow-l)">📶</span><span class="tx b">Used offline this week</span><b class="n">41%</b></div>
+        </div>
+      </div>
+      <div class="grid g2" style="margin-top:12px">
+        <div class="card"><b>Parent language</b>
+          <div class="hbar"><span>Dari / Farsi</span><div class="bar"><span style="width:72%;background:var(--purple)"></span></div><span>72%</span></div>
+          <div class="hbar"><span>English</span><div class="bar"><span style="width:21%"></span></div><span>21%</span></div>
+          <div class="hbar"><span>Pashto</span><div class="bar"><span style="width:7%;background:var(--orange)"></span></div><span>7%</span></div>
+        </div>
+        <div class="card"><b>Families by borough</b>
+          <div class="hbar"><span>Hounslow</span><div class="bar"><span style="width:60%;background:var(--teal)"></span></div><span>18</span></div>
+          <div class="hbar"><span>Ealing</span><div class="bar"><span style="width:13%;background:var(--teal)"></span></div><span>4</span></div>
+          <div class="hbar"><span>Hillingdon</span><div class="bar"><span style="width:10%;background:var(--teal)"></span></div><span>3</span></div>
+          <div class="hbar"><span>Other</span><div class="bar"><span style="width:17%;background:var(--teal)"></span></div><span>5</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen" id="as-families">
+      <div class="head"><div class="sp"><h2>Families &amp; users</h2><p>Only staff who need it can see family details.</p></div><button class="btn" data-modal="addFam">＋ Add family</button></div>
+      <div class="card tscroll"><table>
+        <tr><th>Family</th><th>Borough</th><th>Language</th><th>Children</th><th>Coach</th><th>Kit</th><th></th></tr>
+        <tr><td>F-01</td><td>Hounslow</td><td>Dari</td><td>3</td><td>Sara</td><td><span class="pill p-green">Yes</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
+        <tr><td>F-03</td><td>Hounslow</td><td>Farsi</td><td>2</td><td>Sara</td><td><span class="pill p-green">Yes</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
+        <tr><td>F-07</td><td>Hillingdon</td><td>Dari</td><td>4</td><td>Sara</td><td><span class="pill p-blue">Books</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
+        <tr><td>F-09</td><td>Ealing</td><td>Farsi</td><td>2</td><td>Ali</td><td><span class="pill p-grey">No</span></td><td><button class="btn sm ghost" data-toast="reset">Send new code</button></td></tr>
+        <tr><td>F-12</td><td>Harrow</td><td>Pashto</td><td>2</td><td><span class="pill p-orange">Not assigned</span></td><td><span class="pill p-orange">Requested</span></td><td><button class="btn sm" data-toast="assigned">Assign coach</button></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen" id="as-kits">
+      <div class="head"><div class="sp"><h2>HomeLearn Kits</h2><p>Stock and requests</p></div></div>
+      <div class="grid g4">
+        <div class="card stat"><b>20 <span class="small muted">/ 32</span></b><small>💻 Tablets given out</small></div>
+        <div class="card stat"><b>27 <span class="small muted">/ 50</span></b><small>🎧 Headphones</small></div>
+        <div class="card stat"><b>18 <span class="small muted">/ 40</span></b><small>✏️ Stationery packs</small></div>
+        <div class="card stat"><b>35 <span class="small muted">/ 120</span></b><small>📚 Books</small></div>
+      </div>
+      <div class="sec">📥 Requests waiting</div>
+      <div class="card" id="kitReqs">
+        <div class="lrow"><span class="ic" style="background:var(--blue-l)">💻</span><span class="tx"><b>F-12 · tablet, headphones, stationery</b><small>Requested by Sara · 2 days ago</small></span><button class="btn sm" data-approve>Approve</button></div>
+        <div class="lrow"><span class="ic" style="background:var(--orange-l)">🔌</span><span class="tx"><b>F-05 · replacement charger</b><small>Requested by Ali · today</small></span><button class="btn sm" data-approve>Approve</button></div>
+      </div>
+    </div>
+
+    <div class="screen" id="as-library">
+      <div class="head"><div class="sp"><h2>Learning library</h2><p>Organised by subject, age and language</p></div><button class="btn" data-modal="addRes">＋ Add resource</button></div>
+      <div class="chips" id="libChips"><button class="on" data-lf="all">All</button><button data-lf="English">English</button><button data-lf="Maths">Maths</button><button data-lf="Science">Science</button><button data-lf="Videos">Videos</button><button data-lf="Stories">Books &amp; stories</button><button data-lf="Homework">Homework help</button><button data-lf="Parents">Parent guides</button></div>
+      <div class="card tscroll"><table id="libTable"></table></div>
+    </div>
+
+    <div class="screen" id="as-reports">
+      <div class="head"><div class="sp"><h2>Reports</h2><p>For the project team and the funder</p></div></div>
+      <div class="grid g2">
+        <div class="card"><button class="lrow" data-toast="download"><span class="ic" style="background:var(--blue-l)">📄</span><span class="tx"><b>Monthly progress report</b><small>Families, activity, kits · PDF</small></span><span class="chev">⬇</span></button>
+          <button class="lrow" data-toast="download"><span class="ic" style="background:var(--green-l)">🏛️</span><span class="tx"><b>UKRI / Innovate UK report</b><small>Evaluation measures · PDF</small></span><span class="chev">⬇</span></button>
+          <button class="lrow" data-toast="download"><span class="ic" style="background:var(--purple-l)">📊</span><span class="tx"><b>Anonymous data export</b><small>No names or contact details · CSV</small></span><span class="chev">⬇</span></button></div>
+        <div class="card"><b>🛡️ Safeguarding &amp; privacy</b>
+          <div class="lrow"><span class="tx"><b>Open safeguarding follow-ups</b><small>Handled by the safeguarding lead</small></span><span class="pill p-red">1</span></div>
+          <div class="lrow"><span class="tx"><b>Families with consent recorded</b><small>Needed before any data is used</small></span><span class="pill p-green">30 / 30</span></div>
+          <div class="lrow"><span class="tx"><b>Staff with DBS check</b></span><span class="pill p-green">5 / 5</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div></div>
+</section>
+
+<!-- ======================= MODALS ======================= -->
+<div class="modal" id="modal"><div class="box" id="modalBox"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const LOGO=`<rect x="2" y="2" width="116" height="116" rx="30" fill="#FFF7E6"/><circle cx="95" cy="24" r="10" fill="#FFC83D"/><path d="M18 56 L60 20 L102 56" fill="none" stroke="#2F6FED" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/><path d="M60 60 C49 53 35 53 26 57 L26 87 C35 83 49 83 60 90 Z" fill="#FF8A3D"/><path d="M60 60 C71 53 85 53 94 57 L94 87 C85 83 71 83 60 90 Z" fill="#3CC37A"/><path d="M20 106 Q60 84 100 106" fill="none" stroke="#8B5CF6" stroke-width="8" stroke-linecap="round"/>`;
+$$('svg.logo').forEach(s=>s.innerHTML=LOGO);
+let tt;function toast(m){const e=$('#toast');e.textContent=m;e.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>e.classList.remove('show'),2600)}
+function modal(html){$('#modalBox').innerHTML=html+`<div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px" class="mfoot"></div>`;$('#modal').classList.add('on')}
+function closeModal(){$('#modal').classList.remove('on')}
+
+/* =================================================================
+   PARENT — English, Dari/Farsi and Pashto.
+   Dari and Pashto are first drafts: check with a native speaker.
+   ================================================================= */
+const T={
+en:{forParents:"For parents and carers",phoneQ:"Your phone number",sendCode:"Send me a code",noPassword:"No password to remember. We send a new code by text each time.",codeQ:"Type the 4-number code we sent you",signIn:"Sign in",resend:"Send a new code",listen:"Listen",needHelpLogin:"Need help? Ask your learning coach.",
+ signinSay:"Welcome to HomeLearn Bridge. Type your phone number and we will send you a code.",
+ parentOf:"Parent",nHome:"Home",nGuides:"Guides",nMsgs:"Messages",nHelp:"Help",
+ hello:"Salaam, Fatima!",helloSub:"Here is how your children are learning this week.",homeSay:"Here is how your children are learning this week. Tap a child to see more.",
+ myChildren:"My children",stars:"stars",acts:"activities",good:"Doing well",help:"Needs a little help",
+ lastToday:"Learned today",lastYest:"Learned yesterday",last6:"Not learned for 6 days",
+ coachName:"Sara · Learning coach",nextVisit:"Next visit: Saturday 10:00",message:"Message",workshop:"Family workshop",workshopWhen:"Saturday 11:00 · Hounslow library",join:"Join",booked:"✅ You're booked. We'll send a reminder.",
+ year:"Year",thisWeek:"This week",learned:"What they learned",homework:"Homework",hwName:"Science: plant diary · due Friday",hwSteps:"2 of 4 steps done",helpHome:"How you can help at home",
+ childSay:"This week your child practised English, maths and stories. Here are simple ways you can help at home.",
+ subj:["English","Maths","Science","Stories","Videos"],
+ learnedL:["Letter sounds a to m","Counting to 20","Parts of a plant"],
+ tips:[["🗣️","Talk in your language","Ask about their day in Dari. Strong home language helps English too."],["⏰","Short and often","10 minutes a day is better than one long session."]],
+ moves:"If you move home or change school, all progress is saved. Learning moves with your child.",
+ guidesSub:"Simple guides with audio, in your language",
+ guides:[["🏫","How UK schools work","Ages, school years and terms",["Children start school at age 4 or 5 in Reception.","Primary school is Year 1 to Year 6. Secondary school is Year 7 to Year 11.","The school year has 3 terms, with short holidays called half-term."]],
+  ["📖","School words explained","Reception, half-term, parents' evening…",["Reception: the first year of school, age 4–5.","Half-term: a one-week holiday in the middle of each term.","Parents' evening: a short meeting with your child's teacher."]],
+  ["📝","Helping with homework","Even if you don't speak English",["Ask your child to explain the task to you in your language.","Use the 🔊 button in the children's app to hear instructions.","If you are not sure, message your learning coach."]],
+  ["🏠","School place after moving","What to do and who to ask",["Apply to your new local council for a school place.","Your learning coach can help you fill in the form.","While you wait, your child can keep learning on HomeLearn Bridge."]],
+  ["🧑‍🎓","Classes for parents","English classes and workshops",["Free English classes for adults run in many local libraries.","Family workshops show you how to support learning at home.","See the dates below."]],
+  ["🤝","Housing & other services","Where to get help",["Your local council housing team can help with housing problems.","Citizens Advice gives free advice on many problems.","Ask your coach if you are not sure where to go."]]],
+ events:"Coming up",ev:[["Family workshop","Sat 11:00 · Hounslow library"],["English for parents","Tue 13:00 · Online"],["Q&A in Dari: school places","Thu 18:00 · Online"]],
+ withCoach:"Coach Sara",kidMsgs:"Ahmed's messages",viewOnly:"You can read all your child's messages.",typeMsg:"Type a message…",
+ cMsgs:[["them","Hello Fatima! Ahmed did very well in maths this week ⭐"],["me","Thank you! He enjoys the counting games."],["them","See you on Saturday at 10:00 😊"]],
+ kMsgs:[["them","Hi Ahmed! Well done on your maths today ⭐"],["me","Thank you Ms Sara!"]],
+ reply:"Thank you, I will reply soon.",
+ kitT:"Request a HomeLearn Kit",kitS:"Tablet, headphones, books or stationery",placesT:"Quiet places to study",placesS:"Libraries and study hubs near you",places:"A map of quiet study places near you would open here.",
+ loginT:"Problems signing in",loginS:"Get a new code or ask for help",worriedT:"Worried about a child?",worriedS:"Who to contact",
+ language:"Language",signOut:"Sign out",
+ kitQ:"What does your family need?",kitItems:["Tablet","Headphones","Books","Stationery"],send:"Send request",cancel:"Close",kitSent:"✅ Request sent to your learning coach.",
+ loginHelp:["You don't need a password. Tap “Send me a code” and type the code from the text message.","Changed your phone number? Ask your learning coach to update it.","Still stuck? Your coach can sign you in at the next visit."],
+ worriedHelp:["If a child is in danger now, call 999.","Talk to your learning coach or your child's school.","NSPCC helpline: 0808 800 5000 (free).","Children can call Childline: 0800 1111 (free)."]},
+fa:{forParents:"برای والدین و سرپرستان",phoneQ:"شمارهٔ تلفن شما",sendCode:"برایم کد بفرستید",noPassword:"لازم نیست رمز را به یاد داشته باشید. هر بار یک کد تازه با پیامک می‌فرستیم.",codeQ:"کد ۴ رقمی را که فرستادیم بنویسید",signIn:"ورود",resend:"کد تازه بفرست",listen:"گوش کنید",needHelpLogin:"کمک لازم دارید؟ از مربی یادگیری بپرسید.",
+ signinSay:"به HomeLearn Bridge خوش آمدید. شمارهٔ تلفن خود را بنویسید تا برایتان کد بفرستیم.",
+ parentOf:"والد",nHome:"خانه",nGuides:"رهنماها",nMsgs:"پیام‌ها",nHelp:"کمک",
+ hello:"سلام فاطمه!",helloSub:"یادگیری فرزندانتان در این هفته.",homeSay:"یادگیری فرزندانتان در این هفته. برای دیدن بیشتر، روی یک فرزند بزنید.",
+ myChildren:"فرزندان من",stars:"ستاره",acts:"فعالیت",good:"خوب پیش می‌رود",help:"کمی کمک لازم دارد",
+ lastToday:"امروز درس خوانده",lastYest:"دیروز درس خوانده",last6:"۶ روز است درس نخوانده",
+ coachName:"سارا · مربی یادگیری",nextVisit:"دیدار بعدی: شنبه ساعت ۱۰",message:"پیام",workshop:"کارگاه خانوادگی",workshopWhen:"شنبه ساعت ۱۱ · کتابخانهٔ هانسلو",join:"شرکت",booked:"✅ نام شما ثبت شد. به شما یادآوری می‌کنیم.",
+ year:"صنف",thisWeek:"این هفته",learned:"چه یاد گرفت",homework:"کارخانگی",hwName:"ساینس: دفترچهٔ نبات · تا جمعه",hwSteps:"۲ از ۴ مرحله انجام شده",helpHome:"چگونه در خانه کمک کنید",
+ childSay:"این هفته فرزند شما انگلیسی، ریاضی و قصه تمرین کرد. این‌ها راه‌های ساده برای کمک در خانه هستند.",
+ subj:["انگلیسی","ریاضی","ساینس","قصه‌ها","ویدیوها"],
+ learnedL:["صداهای حروف a تا m","شمردن تا ۲۰","بخش‌های نبات"],
+ tips:[["🗣️","به زبان خودتان صحبت کنید","از روزش به دری بپرسید. زبان مادری قوی به انگلیسی هم کمک می‌کند."],["⏰","کوتاه و هر روز","روزی ۱۰ دقیقه بهتر از یک بار طولانی است."]],
+ moves:"اگر خانه یا مکتب را عوض کنید، همهٔ پیشرفت ذخیره می‌ماند. یادگیری همراه فرزندتان است.",
+ guidesSub:"رهنماهای ساده با صدا، به زبان شما",
+ guides:[["🏫","مکتب‌های بریتانیا چطور کار می‌کنند","سن، صنف‌ها و ترم‌ها",["کودکان در ۴ یا ۵ سالگی در صنف Reception شروع می‌کنند.","مکتب ابتدایی از صنف ۱ تا ۶ است. متوسطه از صنف ۷ تا ۱۱.","سال تعلیمی ۳ ترم دارد و رخصتی‌های کوتاه به نام half-term."]],
+  ["📖","کلمات مکتب به زبان ساده","Reception، half-term، parents' evening…",["Reception: سال اول مکتب، سن ۴ تا ۵.","Half-term: یک هفته رخصتی در وسط هر ترم.","Parents' evening: یک دیدار کوتاه با معلم فرزندتان."]],
+  ["📝","کمک در کارخانگی","حتی اگر انگلیسی نمی‌دانید",["از فرزندتان بخواهید کار را به زبان خودتان توضیح دهد.","در اپ کودکان دکمهٔ 🔊 را بزنید تا دستور را بشنوید.","اگر مطمئن نیستید، به مربی یادگیری پیام بدهید."]],
+  ["🏠","جای مکتب بعد از کوچ","چه کنید و از چه کسی بپرسید",["از شاروالی (council) محل تازه درخواست جای مکتب کنید.","مربی یادگیری می‌تواند در پر کردن فورم کمک کند.","تا آن زمان، فرزندتان می‌تواند در HomeLearn Bridge درس بخواند."]],
+  ["🧑‍🎓","کلاس‌ها برای والدین","کلاس انگلیسی و کارگاه‌ها",["کلاس‌های رایگان انگلیسی برای بزرگسالان در بسیاری از کتابخانه‌ها برگزار می‌شود.","کارگاه‌های خانوادگی یاد می‌دهند چطور در خانه کمک کنید.","تاریخ‌ها را در پایین ببینید."]],
+  ["🤝","مسکن و خدمات دیگر","کجا کمک بگیرید",["بخش مسکن شاروالی در مشکلات مسکن کمک می‌کند.","Citizens Advice مشورهٔ رایگان می‌دهد.","اگر مطمئن نیستید، از مربی بپرسید."]]],
+ events:"برنامه‌های پیش رو",ev:[["کارگاه خانوادگی","شنبه ۱۱:۰۰ · کتابخانهٔ هانسلو"],["انگلیسی برای والدین","سه‌شنبه ۱۳:۰۰ · آنلاین"],["پرسش و پاسخ به دری: جای مکتب","پنجشنبه ۱۸:۰۰ · آنلاین"]],
+ withCoach:"مربی سارا",kidMsgs:"پیام‌های احمد",viewOnly:"شما همهٔ پیام‌های فرزندتان را می‌توانید بخوانید.",typeMsg:"پیام بنویسید…",
+ cMsgs:[["them","سلام فاطمه جان! احمد این هفته در ریاضی خیلی خوب بود ⭐"],["me","تشکر! او بازی‌های شمارش را دوست دارد."],["them","شنبه ساعت ۱۰ می‌بینمتان 😊"]],
+ kMsgs:[["them","سلام احمد! ریاضی امروزت عالی بود ⭐"],["me","تشکر خانم سارا!"]],
+ reply:"تشکر، زود جواب می‌دهم.",
+ kitT:"درخواست بستهٔ HomeLearn",kitS:"تبلت، هدفون، کتاب یا قرطاسیه",placesT:"جاهای آرام برای درس",placesS:"کتابخانه‌ها و مراکز درسی نزدیک شما",places:"اینجا نقشهٔ جاهای آرام درس نزدیک شما باز می‌شود.",
+ loginT:"مشکل در ورود",loginS:"کد تازه بگیرید یا کمک بخواهید",worriedT:"نگران یک کودک هستید؟",worriedS:"با چه کسی تماس بگیرید",
+ language:"زبان",signOut:"خروج",
+ kitQ:"خانوادهٔ شما به چه نیاز دارد؟",kitItems:["تبلت","هدفون","کتاب","قرطاسیه"],send:"فرستادن درخواست",cancel:"بستن",kitSent:"✅ درخواست به مربی یادگیری فرستاده شد.",
+ loginHelp:["به رمز نیاز ندارید. «برایم کد بفرستید» را بزنید و کد پیامک را بنویسید.","شمارهٔ تلفن را عوض کرده‌اید؟ از مربی بخواهید آن را تازه کند.","باز هم مشکل دارید؟ مربی در دیدار بعدی کمک می‌کند."],
+ worriedHelp:["اگر کودکی همین حالا در خطر است، به ۹۹۹ زنگ بزنید.","با مربی یادگیری یا مکتب فرزندتان صحبت کنید.","خط کمک NSPCC: ‎0808 800 5000 (رایگان).","کودکان می‌توانند به Childline زنگ بزنند: ‎0800 1111 (رایگان)."]},
+ps:{forParents:"د مور او پلار او پالونکو لپاره",phoneQ:"ستاسو د تلیفون شمېره",sendCode:"ما ته کوډ راولېږئ",noPassword:"پټنوم په یاد ساتلو ته اړتیا نشته. هر ځل یو نوی کوډ په پیغام کې درلېږو.",codeQ:"هغه ۴ عددي کوډ ولیکئ چې مو درولېږه",signIn:"ننوتل",resend:"نوی کوډ راولېږه",listen:"واورئ",needHelpLogin:"مرستې ته اړتیا لرئ؟ له خپل روزونکي وپوښتئ.",
+ signinSay:"HomeLearn Bridge ته ښه راغلاست. خپل د تلیفون شمېره ولیکئ او موږ به تاسو ته کوډ درولېږو.",
+ parentOf:"مور/پلار",nHome:"کور",nGuides:"لارښوونې",nMsgs:"پیغامونه",nHelp:"مرسته",
+ hello:"سلام فاطمې!",helloSub:"دا اونۍ ستاسو ماشومان څنګه زده کړه کوي.",homeSay:"دا اونۍ ستاسو ماشومان څنګه زده کړه کوي. د نورو لیدلو لپاره پر یو ماشوم کېکاږئ.",
+ myChildren:"زما ماشومان",stars:"ستوري",acts:"فعالیتونه",good:"ښه روان دی",help:"لږې مرستې ته اړتیا لري",
+ lastToday:"نن یې زده کړه کړې",lastYest:"پرون یې زده کړه کړې",last6:"۶ ورځې یې زده کړه نه ده کړې",
+ coachName:"سارا · د زده کړې روزونکې",nextVisit:"راتلونکې لیدنه: شنبه ۱۰:۰۰",message:"پیغام",workshop:"کورنۍ ورکشاپ",workshopWhen:"شنبه ۱۱:۰۰ · د هانسلو کتابتون",join:"ګډون",booked:"✅ نوم مو ثبت شو. یادونه به درته ولېږو.",
+ year:"ټولګی",thisWeek:"دا اونۍ",learned:"څه یې زده کړل",homework:"کورنی کار",hwName:"ساینس: د بوټي ورځپاڼه · تر جمعې",hwSteps:"له ۴ ګامونو ۲ بشپړ شوي",helpHome:"په کور کې څنګه مرسته وکړئ",
+ childSay:"دا اونۍ ستاسو ماشوم انګلیسي، ریاضي او کیسې تمرین کړې. دلته په کور کې د مرستې اسانه لارې دي.",
+ subj:["انګلیسي","ریاضي","ساینس","کیسې","ویډیوګانې"],
+ learnedL:["د a تر m پورې د تورو غږونه","تر ۲۰ پورې شمېرل","د بوټي برخې"],
+ tips:[["🗣️","په خپله ژبه خبرې وکړئ","د ورځې په اړه یې په پښتو کې وپوښتئ. قوي مورنۍ ژبه له انګلیسي سره هم مرسته کوي."],["⏰","لنډ او هره ورځ","هره ورځ ۱۰ دقیقې له یوې اوږدې غونډې ښه دي."]],
+ moves:"که کور یا ښوونځی بدل کړئ، ټول پرمختګ خوندي پاتې کېږي. زده کړه له ماشوم سره ځي.",
+ guidesSub:"ساده لارښوونې له غږ سره، ستاسو په ژبه",
+ guides:[["🏫","د بریتانیا ښوونځي څنګه کار کوي","عمر، ټولګي او ترمونه",["ماشومان په ۴ یا ۵ کلنۍ کې په Reception کې پیل کوي.","لومړنی ښوونځی له ۱ تر ۶ ټولګي دی. منځنی له ۷ تر ۱۱.","تعلیمي کال ۳ ترمونه لري او لنډې رخصتۍ چې half-term بلل کېږي."]],
+  ["📖","د ښوونځي کلمې په ساده ژبه","Reception، half-term، parents' evening…",["Reception: د ښوونځي لومړی کال، ۴–۵ کلن.","Half-term: د هر ترم په منځ کې یوه اونۍ رخصتي.","Parents' evening: د ماشوم له ښوونکي سره لنډه کتنه."]],
+  ["📝","په کورني کار کې مرسته","که انګلیسي نه پوهېږئ هم",["له ماشوم وغواړئ چې دنده په خپله ژبه درته تشریح کړي.","د ماشومانو په اپ کې 🔊 کېکاږئ چې لارښوونه واورئ.","که ډاډه نه یاست، خپل روزونکي ته پیغام ولېږئ."]],
+  ["🏠","له کډې وروسته د ښوونځي ځای","څه وکړئ او له چا وپوښتئ",["د نوې سیمې ښاروالۍ (council) ته د ښوونځي ځای لپاره غوښتنه وکړئ.","روزونکی کولی شي د فورمې په ډکولو کې مرسته وکړي.","تر هغه وخته ماشوم کولی شي په HomeLearn Bridge کې زده کړه وکړي."]],
+  ["🧑‍🎓","د مور او پلار لپاره ټولګي","د انګلیسي ټولګي او ورکشاپونه",["د لویانو لپاره وړیا انګلیسي ټولګي په ډېرو کتابتونونو کې کېږي.","کورنۍ ورکشاپونه ښيي چې په کور کې څنګه مرسته وکړئ.","نېټې لاندې وګورئ."]],
+  ["🤝","استوګنځی او نور خدمات","له کومه مرسته واخلئ",["د ښاروالۍ د استوګنې څانګه د کور په ستونزو کې مرسته کوي.","Citizens Advice وړیا مشوره ورکوي.","که ډاډه نه یاست، له روزونکي وپوښتئ."]]],
+ events:"راتلونکي پروګرامونه",ev:[["کورنۍ ورکشاپ","شنبه ۱۱:۰۰ · د هانسلو کتابتون"],["انګلیسي د مور او پلار لپاره","درېشنبه ۱۳:۰۰ · آنلاین"],["پوښتنې او ځوابونه: د ښوونځي ځای","پنجشنبه ۱۸:۰۰ · آنلاین"]],
+ withCoach:"روزونکې سارا",kidMsgs:"د احمد پیغامونه",viewOnly:"تاسو د خپل ماشوم ټول پیغامونه لوستلی شئ.",typeMsg:"پیغام ولیکئ…",
+ cMsgs:[["them","سلام فاطمې! احمد دا اونۍ په ریاضي کې ډېر ښه و ⭐"],["me","مننه! هغه د شمېرلو لوبې خوښوي."],["them","د شنبې په ۱۰ بجو به سره ووینو 😊"]],
+ kMsgs:[["them","سلام احمده! نن دې ریاضي ډېره ښه وه ⭐"],["me","مننه مېرمن سارا!"]],
+ reply:"مننه، ژر به ځواب درکړم.",
+ kitT:"د HomeLearn کڅوړې غوښتنه",kitS:"ټابلیټ، هېډفون، کتابونه یا قرطاسیه",placesT:"د زده کړې ارام ځایونه",placesS:"تاسو ته نږدې کتابتونونه او مرکزونه",places:"دلته به تاسو ته نږدې د زده کړې د ارامو ځایونو نقشه پرانیستل شي.",
+ loginT:"د ننوتلو ستونزې",loginS:"نوی کوډ واخلئ یا مرسته وغواړئ",worriedT:"د یو ماشوم په اړه اندېښمن یاست؟",worriedS:"له چا سره اړیکه ونیسئ",
+ language:"ژبه",signOut:"وتل",
+ kitQ:"ستاسو کورنۍ څه ته اړتیا لري؟",kitItems:["ټابلیټ","هېډفون","کتابونه","قرطاسیه"],send:"غوښتنه ولېږئ",cancel:"بندول",kitSent:"✅ غوښتنه روزونکي ته ولېږل شوه.",
+ loginHelp:["پټنوم ته اړتیا نشته. «ما ته کوډ راولېږئ» کېکاږئ او د پیغام کوډ ولیکئ.","د تلیفون شمېره مو بدله کړې؟ له روزونکي وغواړئ چې تازه یې کړي.","بیا هم ستونزه لرئ؟ روزونکی به په راتلونکې لیدنه کې مرسته وکړي."],
+ worriedHelp:["که یو ماشوم همدا اوس په خطر کې وي، ۹۹۹ ته زنګ ووهئ.","له خپل روزونکي یا د ماشوم له ښوونځي سره خبرې وکړئ.","د NSPCC د مرستې کرښه: ‎0808 800 5000 (وړیا).","ماشومان Childline ته زنګ وهلی شي: ‎0800 1111 (وړیا)."]}
+};
+let lang='en';const t=k=>T[lang][k]??T.en[k];
+const KIDS=[{name:"Ahmed",face:"🦁",bg:"#FFE9C7",yr:3,stars:12,acts:5,last:"lastToday",ok:true,subj:[4,3,1,2,2]},
+            {name:"Maryam",face:"🦋",bg:"#DFF5E7",yr:1,stars:7,acts:3,last:"lastYest",ok:true,subj:[3,2,0,3,1]},
+            {name:"Yusuf",face:"🚀",bg:"#E3EDFF",yr:6,stars:2,acts:2,last:"last6",ok:false,subj:[1,0,0,0,1]}];
+const SUBJ_IC=[["🔤","var(--blue-l)"],["🔢","var(--green-l)"],["🔬","var(--teal-l)"],["📚","var(--purple-l)"],["🎬","var(--orange-l)"]];
+let curKid=0,pthread='coach';
+const pmsgs={coach:null,kid:null};
+
+function applyLang(){
+  document.documentElement.dir=lang==='en'?'ltr':'rtl';document.documentElement.lang=lang;
+  $$('#part-parent [data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v});
+  $$('[data-lang]').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
+  $('#pInp').placeholder=t('typeMsg');
+  pmsgs.coach=t('cMsgs').map(x=>[...x]);pmsgs.kid=t('kMsgs').map(x=>[...x]);
+  renderParent();
+}
+function renderParent(){
+  $('#kidCards').innerHTML=KIDS.map((k,i)=>`<button class="card kidcard" data-kid="${i}">
+    <div class="row"><span class="av" style="background:${k.bg}">${k.face}</span><div style="flex:1"><b style="font-size:18px">${k.name}</b><div class="muted small b">${t('year')} ${k.yr}</div></div><span class="chev flip">›</span></div>
+    <div class="nums"><span>⭐ ${k.stars} ${t('stars')}</span><span>✅ ${k.acts} ${t('acts')}</span></div>
+    <div style="margin-top:10px"><span class="pill ${k.ok?'p-green':'p-orange'}">${k.ok?'😊 '+t('good'):'🤝 '+t('help')}</span> <span class="muted small b">${t(k.last)}</span></div></button>`).join('');
+  const k=KIDS[curKid];
+  $('#cAv').textContent=k.face;$('#cAv').style.background=k.bg;$('#cName').textContent=k.name;$('#cYear').textContent=`${t('year')} ${k.yr} · ⭐ ${k.stars} ${t('stars')}`;
+  $('#cStatus').className='pill '+(k.ok?'p-green':'p-orange');$('#cStatus').textContent=k.ok?'😊 '+t('good'):'🤝 '+t('help');
+  $('#cSubj').innerHTML=t('subj').map((s,i)=>`<div><span class="ic" style="background:${SUBJ_IC[i][1]}">${SUBJ_IC[i][0]}</span><b class="small">${s}</b><div class="dots">${[0,1,2,3,4].map(d=>`<i class="${d<k.subj[i]?'f':''}"></i>`).join('')}</div></div>`).join('');
+  $('#cLearned').innerHTML=t('learnedL').map(x=>`<li>${x}</li>`).join('');
+  $('#cTips').innerHTML=t('tips').map(([ic,h,p])=>`<div class="card row" style="align-items:flex-start"><span class="ic" style="background:var(--yellow-l)">${ic}</span><div><b>${h}</b><p class="muted small b">${p}</p></div></div>`).join('');
+  $('#guideCards').innerHTML=t('guides').map(([ic,h,s],i)=>`<button class="card guide" data-guide="${i}"><span class="ic" style="background:${['var(--blue-l)','var(--purple-l)','var(--green-l)','var(--orange-l)','var(--yellow-l)','var(--teal-l)'][i]}">${ic}</span><b>${h}</b><span class="muted small b">${s}</span><span class="listen">🔊 ${t('listen')}</span></button>`).join('');
+  $('#events').innerHTML=t('ev').map(([h,w])=>`<div class="lrow"><span class="ic" style="background:var(--yellow-l)">📅</span><span class="tx"><b>${h}</b><small>${w}</small></span><button class="btn sm ghost" data-toast="booked">${t('join')}</button></div>`).join('');
+  renderPThread();
+}
+function renderPThread(){
+  const list=pmsgs[pthread];
+  $('#pThread').innerHTML=list.map(([f,m])=>`<div class="msg ${f}">${m}</div>`).join('');
+  $('#pComposer').hidden=pthread==='kid';$('#viewOnly').hidden=pthread!=='kid';
+  $$('[data-thread]').forEach(b=>b.classList.toggle('on',b.dataset.thread===pthread));
+}
+function pgo(s){
+  $$('#part-parent .screen').forEach(x=>x.classList.toggle('on',x.id==='ps-'+s));
+  $('#pnav').hidden=s==='signin';
+  const tab=s==='child'?'home':s;
+  $$('[data-pgo]').forEach(b=>{if(b.closest('.nav'))b.classList.toggle('on',b.dataset.pgo===tab)});
+  $('#part-parent .main').scrollTop=0;stopSay();
+}
+$('#sendCode').onclick=()=>{$('#step1').hidden=true;$('#step2').hidden=false};
+$('#resend').onclick=()=>toast('📲 '+t('sendCode')+' ✓');
+$('#signIn').onclick=()=>pgo('home');
+$('#signOut').onclick=()=>{$('#step1').hidden=false;$('#step2').hidden=true;pgo('signin')};
+$('#pSend').onclick=()=>{const v=$('#pInp').value.trim();if(!v)return;$('#pInp').value='';pmsgs.coach.push(['me',v]);renderPThread();setTimeout(()=>{pmsgs.coach.push(['them',t('reply')]);renderPThread()},900)};
+$('#pInp').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pSend').click()});
+
+/* speech */
+function stopSay(){if('speechSynthesis' in window)speechSynthesis.cancel()}
+function say(text){
+  if(!('speechSynthesis' in window))return toast('🔊');
+  stopSay();const code={en:'en',fa:'fa',ps:'ps'}[lang];
+  const v=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(code));
+  if(!v&&lang!=='en')return toast(lang==='fa'?'در اپ واقعی، صدای ضبط‌شده پخش می‌شود.':'په اصلي اپ کې به ثبت شوی غږ غږېږي.');
+  const u=new SpeechSynthesisUtterance(text.replace(/[^\p{L}\p{N}\s.,!?؟،']/gu,''));if(v)u.voice=v;u.lang=v?v.lang:'en-GB';u.rate=.92;speechSynthesis.speak(u);
+}
+
+/* =================================================================
+   COACH
+   ================================================================= */
+const FAMS=[
+ {id:"F-01",kids:[["Ahmed","🦁",3,70],["Maryam","🦋",1,55],["Yusuf","🚀",6,15]],lang:"Dari",house:"Temporary accommodation · Hounslow",kit:"2 tablets, headphones ✓",tags:["att"],
+  notes:[["12 Oct","Home visit. Ahmed reading well. Yusuf finds maths hard: set catch-up pack."],["5 Oct","Kit delivered and set up. Mum shown how to use the parent app."]]},
+ {id:"F-07",kids:[["Child A","🌻",2,40],["Child B","🐢",4,35],["Child C","⚽",5,30],["Child D","🌙",8,20]],lang:"Dari",house:"Moved to Hillingdon last week",kit:"Books approved",tags:["att","moved"],
+  notes:[["20 Oct","Family moved boroughs. Helping mum apply for school places."]]},
+ {id:"F-09",kids:[["Child A","🐱",4,60],["Child B","🎈",7,50]],lang:"Farsi",house:"Private rented · Ealing",kit:"No kit yet",tags:["nodev"],notes:[["18 Oct","Uses mum's phone. Asked about the school letter."]]},
+ {id:"F-12",kids:[["Child A","🌈",5,10],["Child B","🐟",9,5]],lang:"Pashto",house:"Hostel · Harrow",kit:"Requested",tags:["att","nodev","moved"],notes:[["21 Oct","First meeting at the forum. No device at home."]]},
+];
+let curFam=0,ff='all';
+function renderFams(){
+  $('#famList').innerHTML=FAMS.map((f,i)=>({f,i})).filter(({f})=>ff==='all'||f.tags.includes(ff)).map(({f,i})=>`
+    <button class="lrow" data-family="${i}"><span class="av" style="background:var(--blue-l)">👪</span><span class="tx"><b>Family ${f.id} · ${f.kids.length} children</b><small>${f.lang} · ${f.house}</small></span>
+    ${f.tags.includes('att')?'<span class="pill p-orange">Needs attention</span>':'<span class="pill p-green">On track</span>'}<span class="chev">›</span></button>`).join('')||'<p class="muted b" style="padding:12px">No families here.</p>';
+}
+function openFam(i){
+  curFam=i;const f=FAMS[i];
+  $('#fName').textContent='Family '+f.id;$('#fMeta').textContent=`${f.kids.length} children · ${f.lang}`;
+  $('#fLang').textContent=f.lang;$('#fHouse').textContent=f.house;$('#fKit').textContent=f.kit;
+  $('#fKids').innerHTML='<b>Children</b>'+f.kids.map(([n,ic,y,p])=>`<div class="lrow"><span class="av" style="background:var(--yellow-l)">${ic}</span><span class="tx"><b>${n} · Year ${y}</b><div class="bar" style="margin-top:6px"><span style="width:${p}%;background:${p<30?'var(--orange)':'var(--green)'}"></span></div><small>${p<30?'Needs catch-up':'Progressing'} · ${p}% of this term's activities</small></span></div>`).join('');
+  $('#fNotes').innerHTML=f.notes.map(([d,n])=>`<div class="lrow"><span class="pill p-grey">${d}</span><span class="tx b small">${n}</span></div>`).join('');
+  cgo('family');
+}
+function cgo(s){
+  $$('#part-coach .screen').forEach(x=>x.classList.toggle('on',x.id==='cs-'+s));
+  const tab=s==='family'?'families':s;
+  $$('#part-coach .nav [data-cgo]').forEach(b=>b.classList.toggle('on',b.dataset.cgo===tab));
+  $('#part-coach .main').scrollTop=0;
+}
+const CT=[{n:"Fatima (F-01, parent)",m:[["them","Hello Sara, thank you for the visit."],["me","You're welcome! Ahmed did very well in maths ⭐"],["them","Thank you! See you Saturday."]]},
+          {n:"Yusuf (F-01, child) · parent can see",m:[["me","Hi Yusuf, how is your homework going?"],["them","I finished my homework ✅"]]},
+          {n:"Parent, F-09",m:[["them","Can you help with the school letter?"]]}];
+let cth=0;
+function renderCT(){$('#ctName').textContent=CT[cth].n;$('#cThread').innerHTML=CT[cth].m.map(([f,m])=>`<div class="msg ${f}">${m}</div>`).join('')}
+$('#cSend').onclick=()=>{const v=$('#cInp').value.trim();if(!v)return;$('#cInp').value='';CT[cth].m.push(['me',v]);renderCT()};
+$('#cInp').addEventListener('keydown',e=>{if(e.key==='Enter')$('#cSend').click()});
+
+/* =================================================================
+   ADMIN
+   ================================================================= */
+const LIB=[["Letter sounds a–m","English","5–7","EN · Dari","Game"],["Counting to 20","Maths","5–7","EN · Dari · Pashto","Game"],["Times tables","Maths","8–11","EN","Game"],
+ ["Parts of a plant","Science","5–9","EN · Dari","Video"],["The water cycle","Videos","8–11","EN · Farsi captions","Cartoon"],["The little bird","Stories","5–7","EN · Dari · Pashto","Book"],
+ ["Writing a diary","Homework","7–11","EN","Help sheet"],["How UK schools work","Parents","Parents","EN · Dari · Pashto","Guide + audio"],["Catch-up: Year 4 maths","Maths","8–9","EN","Revision pack"]];
+let lf='all';
+function renderLib(){
+  $('#libTable').innerHTML='<tr><th>Resource</th><th>Category</th><th>Age</th><th>Languages</th><th>Type</th><th>Offline</th></tr>'+
+    LIB.filter(r=>lf==='all'||r[1]===lf).map(r=>`<tr><td>${r[0]}</td><td><span class="pill p-blue">${r[1]}</span></td><td>${r[2]}</td><td class="small">${r[3]}</td><td class="small">${r[4]}</td><td>✅</td></tr>`).join('');
+}
+function ago(s){
+  $$('#part-admin .screen').forEach(x=>x.classList.toggle('on',x.id==='as-'+s));
+  $$('#part-admin .nav [data-ago]').forEach(b=>b.classList.toggle('on',b.dataset.ago===s));
+  $('#part-admin .main').scrollTop=0;
+}
+
+/* =================================================================
+   MODALS
+   ================================================================= */
+const close=lbl=>`<button class="btn ghost sm" data-close>${lbl||'Close'}</button>`;
+const MODALS={
+  kit:()=>`<h3>💻 ${t('kitT')}</h3><p class="muted b">${t('kitQ')}</p>${t('kitItems').map(x=>`<label><input type="checkbox"> ${x}</label>`).join('')}
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close(t('cancel'))}<button class="btn sm" data-done="${t('kitSent')}">${t('send')}</button></div>`,
+  login:()=>`<h3>🔑 ${t('loginT')}</h3><ul>${t('loginHelp').map(x=>`<li>${x}</li>`).join('')}</ul><div style="text-align:end">${close(t('cancel'))}</div>`,
+  worried:()=>`<h3>🛡️ ${t('worriedT')}</h3><ul>${t('worriedHelp').map(x=>`<li>${x}</li>`).join('')}</ul><div style="text-align:end">${close(t('cancel'))}</div>`,
+  guide:i=>{const [ic,h,,pts]=t('guides')[i];return `<h3>${ic} ${h}</h3><p><button class="listen" data-saytext="${i}">🔊 ${t('listen')}</button></p><ul>${pts.map(x=>`<li>${x}</li>`).join('')}</ul><div style="text-align:end">${close(t('cancel'))}</div>`},
+  visit:()=>`<h3>🏠 Home visit checklist</h3><p class="muted b">Family F-01 · tick as you go</p><div class="check">
+    <label><input type="checkbox" checked> Tablets charged and working</label><label><input type="checkbox"> Headphones OK</label><label><input type="checkbox"> Progress saved (synced)</label>
+    <label><input type="checkbox"> Talked with parent about homework</label><label><input type="checkbox"> Any worries about the child's wellbeing?</label></div>
+    <textarea placeholder="Visit notes…"></textarea><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" data-done="✅ Visit saved">Save visit</button></div>`,
+  safeguard:()=>`<h3>🛡️ Safeguarding follow-up</h3><ul><li>Talk to the child and parent calmly.</li><li>Record what you saw and heard.</li><li>Tell the safeguarding lead today.</li><li>If a child is in danger now, call 999.</li></ul>
+    <textarea placeholder="What happened…"></textarea><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" style="background:var(--red);box-shadow:none" data-done="✅ Sent to the safeguarding lead">Send to safeguarding lead</button></div>`,
+  assign:()=>`<h3>📚 Set catch-up activities</h3><p class="muted b">Family ${FAMS[curFam].id} · they appear in the child's app</p>
+    ${['🔢 Maths catch-up · 5 short games','🔤 Reading practice · 4 stories','🔬 Science revision · 3 videos','📝 Homework support · help sheet'].map(x=>`<label><input type="checkbox"> ${x}</label>`).join('')}
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" data-done="✅ Activities sent to the child's app">Send</button></div>`,
+  note:()=>`<h3>📝 Add session note</h3><textarea placeholder="What did you do? What's next?"></textarea><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" data-done="✅ Note saved">Save</button></div>`,
+  kitReq:()=>`<h3>📦 Request a kit</h3><label>Family <select style="margin-inline-start:auto;font-weight:800">${FAMS.map(f=>`<option>${f.id}</option>`)}</select></label>
+    ${['💻 Tablet','🎧 Headphones','📚 Books','✏️ Stationery','🔌 Charger'].map(x=>`<label><input type="checkbox"> ${x}</label>`).join('')}
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" data-done="✅ Request sent to the project team">Send request</button></div>`,
+  addFam:()=>`<h3>👪 Add a family</h3><p class="muted b">Only what's needed. Consent is recorded first.</p>
+    <label>Borough <select style="margin-inline-start:auto;font-weight:800"><option>Hounslow</option><option>Ealing</option><option>Hillingdon</option><option>Harrow</option><option>Other</option></select></label>
+    <label>Parent language <select style="margin-inline-start:auto;font-weight:800"><option>Dari / Farsi</option><option>Pashto</option><option>English</option></select></label>
+    <label><input type="checkbox"> Consent form signed</label><div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" data-done="✅ Family added. A sign-in code was sent by text.">Add family</button></div>`,
+  addRes:()=>`<h3>📚 Add a resource</h3>
+    <label>Category <select style="margin-inline-start:auto;font-weight:800"><option>English</option><option>Maths</option><option>Science</option><option>Videos</option><option>Books &amp; stories</option><option>Homework help</option><option>Parent guides</option></select></label>
+    <label>Age <select style="margin-inline-start:auto;font-weight:800"><option>5–7</option><option>8–11</option><option>12–16</option><option>Parents</option></select></label>
+    <label><input type="checkbox" checked> Available offline</label><label><input type="checkbox"> Has audio / captions</label>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">${close()}<button class="btn sm" data-done="✅ Resource added to the library">Add</button></div>`,
+};
+const TOASTS={places:()=>t('places'),booked:()=>t('booked'),attend:"📋 Attendance register opened",fixed:"✅ Marked as fixed",reset:"📲 New sign-in code sent by text",assigned:"✅ Coach assigned",download:"⬇️ The report would download here"};
+
+/* =================================================================
+   CLICKS
+   ================================================================= */
+document.addEventListener('click',e=>{
+  if(e.target.id==='modal'){closeModal();return}
+  const el=e.target.closest('button,a');if(!el)return;const d=el.dataset;
+  if(d.part){$$('.part').forEach(p=>p.classList.toggle('on',p.id==='part-'+d.part));$$('[data-part]').forEach(b=>b.classList.toggle('on',b===el));
+    document.documentElement.dir=d.part==='parent'&&lang!=='en'?'rtl':'ltr';stopSay();return}
+  if(d.lang){lang=d.lang;applyLang();return}
+  if(d.pgo){pgo(d.pgo);return}
+  if(d.kid!==undefined){curKid=+d.kid;renderParent();pgo('child');return}
+  if(d.thread){pthread=d.thread;renderPThread();return}
+  if(d.guide!==undefined){modal(MODALS.guide(+d.guide));return}
+  if(d.saytext!==undefined){const g=t('guides')[+d.saytext];say(g[1]+'. '+g[3].join(' '));return}
+  if(d.say){say(t(d.say));return}
+  if(d.cgo){cgo(d.cgo);if(d.cgo==='msgs')renderCT();return}
+  if(d.family!==undefined){openFam(+d.family);return}
+  if(d.ff){ff=d.ff;$$('#famChips button').forEach(b=>b.classList.toggle('on',b===el));renderFams();return}
+  if(d.cthread!==undefined){cth=+d.cthread;renderCT();return}
+  if(d.ago){ago(d.ago);return}
+  if(d.lf){lf=d.lf;$$('#libChips button').forEach(b=>b.classList.toggle('on',b===el));renderLib();return}
+  if(d.approve!==undefined){el.outerHTML='<span class="pill p-green">Approved ✓</span>';toast('✅ Approved. The coach has been told.');return}
+  if(d.modal){$('#modalBox').innerHTML=MODALS[d.modal]();$('#modal').classList.add('on');return}
+  if(d.close!==undefined){closeModal();return}
+  if(d.done){closeModal();toast(d.done);return}
+  if(d.toast){const v=TOASTS[d.toast];toast(typeof v==='function'?v():v);return}
+});
+
+applyLang();renderFams();renderCT();renderLib();
+if('speechSynthesis' in window)speechSynthesis.getVoices();
+</script>
+</body>
+</html>
