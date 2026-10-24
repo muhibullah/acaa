@@ -37,6 +37,8 @@ h1,h2,h3{font-family:var(--display);line-height:1.15}
 .parts button{padding:8px 14px;border-radius:99px;font-weight:800;font-size:14px;color:var(--muted);white-space:nowrap}
 .parts button.on{background:var(--blue);color:#fff}
 .kidlink{font-weight:800;font-size:14px;color:var(--blue);text-decoration:none;padding:8px 10px}
+.out{font-weight:800;font-size:14px;color:var(--blue);text-decoration:none;padding:8px 10px;margin-inline-start:auto}
+.kidlink+.out{margin-inline-start:0}
 
 /* ---------- shell ---------- */
 .part{display:none;flex:1;min-height:0}
@@ -178,6 +180,7 @@ tr:last-child td{border-bottom:none}
   .parts{margin-inline-start:0;flex:1;justify-content:space-between}
   .parts button{padding:7px 10px;font-size:13px}
   .kidlink{display:none}
+  .kidlink+.out{margin-inline-start:auto}
 }
 @media (max-width:560px){
   .g2,#kidCards{grid-template-columns:1fr}
@@ -193,7 +196,7 @@ tr:last-child td{border-bottom:none}
 <header class="top">
   <a class="brand" href="../" style="text-decoration:none;color:inherit"><svg viewBox="0 0 120 120" class="logo"></svg><span class="t">HomeLearn Bridge</span><small>PROTOTYPE</small></a>
   <span class="kidlink" style="margin-inline-start:auto;color:var(--muted)" id="whoTop"></span>
-  <a class="kidlink" href="../" id="signOutTop">Sign out</a>
+  <a class="out" href="../" id="signOutTop">Sign out</a>
 </header>
 
 <!-- ======================= PARENT ======================= -->
