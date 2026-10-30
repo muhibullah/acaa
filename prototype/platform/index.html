@@ -551,12 +551,31 @@ $('#pInp').addEventListener('keydown',e=>{if(e.key==='Enter')$('#pSend').click()
 
 /* speech */
 function stopSay(){if('speechSynthesis' in window)speechSynthesis.cancel()}
+// Phones load voices late and only allow speech after the first tap, so voices are
+// reloaded when they arrive and a silent line is spoken on the first touch.
+let voices=[];
+const loadVoices=()=>{if('speechSynthesis' in window)voices=speechSynthesis.getVoices()};
+if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+let speechReady=false;
+document.addEventListener('pointerdown',()=>{
+  if(speechReady||!('speechSynthesis' in window))return;speechReady=true;
+  const u=new SpeechSynthesisUtterance(' ');u.volume=0;speechSynthesis.speak(u);
+},true);
+function pickVoice(){
+  if(!voices.length)loadVoices();
+  // No phone ships a Pashto voice yet, so Pashto falls back to a Persian voice.
+  const want=lang==='en'?['en-gb','en']:lang==='fa'?['fa','prs']:['ps','fa','prs'];
+  for(const w of want){const v=voices.find(v=>v.lang.toLowerCase().replace('_','-').startsWith(w));if(v)return v}
+  return null;
+}
 function say(text){
   if(!('speechSynthesis' in window))return toast('🔊');
-  stopSay();const code={en:'en',fa:'fa',ps:'ps'}[lang];
-  const v=speechSynthesis.getVoices().find(v=>v.lang.toLowerCase().startsWith(code));
+  const v=pickVoice();
   if(!v&&lang!=='en')return toast(lang==='fa'?'در اپ واقعی، صدای ضبط‌شده پخش می‌شود.':'په اصلي اپ کې به ثبت شوی غږ غږېږي.');
-  const u=new SpeechSynthesisUtterance(text.replace(/[^\p{L}\p{N}\s.,!?؟،']/gu,''));if(v)u.voice=v;u.lang=v?v.lang:'en-GB';u.rate=.92;speechSynthesis.speak(u);
+  if(speechSynthesis.speaking||speechSynthesis.pending)stopSay();
+  const u=new SpeechSynthesisUtterance(text.replace(/[^\p{L}\p{N}\s.,!?؟،']/gu,''));
+  if(v){u.voice=v;u.lang=v.lang}else u.lang='en-GB';
+  u.rate=.92;speechSynthesis.resume();speechSynthesis.speak(u);
 }
 
 /* =================================================================
