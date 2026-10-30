@@ -144,6 +144,20 @@ body.nonav .nav{display:none}
 .today .dots{display:flex;gap:8px;margin-top:6px}
 .today .dot{width:44px;height:44px;border-radius:14px;background:#fff;display:grid;place-items:center;font-size:24px;position:relative}
 .today .dot.done::after{content:"✓";position:absolute;inset-inline-end:-5px;bottom:-5px;width:20px;height:20px;border-radius:50%;background:var(--green);color:#fff;font-size:12px;font-weight:900;display:grid;place-items:center;border:2px solid #fff}
+#cont .row{margin-top:14px}
+.recs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.recs .rc{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;text-align:center;border:2px solid #DCCFFF}
+.recs .rc .ic{font-size:32px;line-height:1}
+.recs .rc b{font-family:var(--display);font-size:15px;line-height:1.15}
+.recs .rc small{font-size:12px;color:var(--muted);font-weight:700}
+.vscreen{position:relative;aspect-ratio:16/9;width:100%;max-width:760px;margin:6px auto 0;border-radius:24px;background:#16244A;display:grid;place-items:center;font-size:72px;overflow:hidden}
+.vcap{position:absolute;inset-inline:12px;bottom:12px;background:rgba(0,0,0,.7);color:#fff;font-size:17px;font-weight:700;line-height:1.35;padding:8px 12px;border-radius:12px;text-align:center}
+.vbar{height:8px;width:100%;max-width:760px;background:#E3E8F3;border-radius:8px;margin:16px auto;overflow:hidden}
+.vbar i{display:block;height:100%;width:0;background:var(--purple);transition:width .4s}
+.vctl{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.vctl .btn{width:auto;padding:12px 30px}
+.vctl .vp{padding:11px 16px;border-radius:14px;background:#fff;font-weight:800;font-size:15px;border:2px solid #DCCFFF;color:var(--muted)}
+.vctl .vp.on{background:var(--purple-l);color:var(--ink)}
 .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:16px}
 @media (min-width:700px){.tiles{grid-template-columns:repeat(4,1fr)}}
 .tile{border-radius:26px;padding:18px 10px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:2px solid transparent;min-height:168px;justify-content:center}
@@ -350,6 +364,9 @@ body.nonav .nav{display:none}
         </div>
         <span class="disp" style="font-size:22px;font-weight:800">2/3</span>
       </div>
+      <div id="cont"></div>
+      <div class="sec" data-t="recL"></div>
+      <div class="recs" id="recs"></div>
       <div class="tiles">
         <button class="tile t-blue" data-go="courses"><span class="ic">📘</span><b data-t="courses"></b><small data-t="coursesSub"></small></button>
         <button class="tile t-green" data-go="games"><span class="ic">🎮</span><b data-t="play"></b><small data-t="playSub"></small></button>
@@ -449,6 +466,20 @@ body.nonav .nav{display:none}
   </div>
 </div></section>
 
+<!-- VIDEOS -->
+<section class="view" id="v-videos"><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="courses"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="cVid"></h2><small data-t="cVidSub"></small></div><button class="ibtn snd" data-say="pick">🔊</button></div>
+  <div class="rows two" id="vidList"></div>
+</div></section>
+
+<!-- WATCH -->
+<section class="view" id="v-watch" data-nonav><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="videos">✕</button><div class="ttl"><h2 id="wTitle"></h2></div><button class="ibtn snd" id="sayCap">🔊</button></div>
+  <div class="vscreen"><span id="wScene"></span><div class="vcap" id="wCap"></div></div>
+  <div class="vbar"><i id="wBar"></i></div>
+  <div class="vctl"><button class="btn purple" id="wPlay">▶</button><button class="vp on" id="wCC">CC <span data-t="cc"></span></button><button class="vp on" id="wLow">📶 <span data-t="low"></span></button></div>
+</div></section>
+
 <!-- STORY -->
 <section class="view" id="v-story" data-nonav><div class="wrap">
   <div class="bar"><button class="ibtn" data-go="read">✕</button><div class="ttl"><h2 data-t="storyTitle"></h2></div><button class="ibtn snd" id="sayPage">🔊</button></div>
@@ -544,6 +575,10 @@ en:{t1:"Learn",t2:"Grow",t3:"Together",start:"Get Started",offline:"Works withou
  pick:"Pick one!",all:"All",
  cMaths:"Maths",cMathsSub:"Count, add and take away",cRead:"Reading",cReadSub:"Stories and books",cPhon:"Phonics",cPhonSub:"Letter sounds and words",
  cSci:"Science",cSciSub:"Explore the world around you",cLang:"Languages",cLangSub:"English, Dari and Pashto",cFeel:"Feelings",cFeelSub:"Calm and happy",
+ cVid:"Videos",cVidSub:"Cartoons and short videos",contL:"Continue learning",pickUp:"Pick up where you left off",recL:"Recommended for my age",vMeta:"3 min · captions · low data",cc:"Captions",low:"Low data",vDone:"Well done! +1 ⭐",
+ v0:"Counting with Mo",v0cap:["Mo the monkey finds a banana.","Now Mo has two bananas!","One, two, three bananas!","Mo counted to three. Well done!"],
+ v1:"How plants grow",v1cap:["A seed goes into the soil.","The seed drinks some water.","The sun helps it grow.","Now it is a flower!"],
+ v2:"Letter sounds song",v2cap:["A is for apple.","B is for ball.","C is for cat.","Sing it again with me!"],
  lEn:"English words",lEnSub:"Match pictures and words",lFa:"Dari letters",lFaSub:"Learn the first letters",lPs:"Pashto letters",lPsSub:"Learn the first letters",
  gCount:"Count",gShape:"Shapes",gLetters:"Letters",gNature:"Animals",
  subCount:"Count the objects",subShape:"Find the shape",subPhon:"Letter sounds",subNature:"Explore",subEn:"English words",subFa:"Dari letters",subPs:"Pashto letters",
@@ -576,6 +611,10 @@ fa:{t1:"یاد بگیر",t2:"رشد کن",t3:"با هم",start:"شروع",offlin
  pick:"یکی را انتخاب کن!",all:"همه",
  cMaths:"ریاضی",cMathsSub:"شمردن، جمع و تفریق",cRead:"خواندن",cReadSub:"قصه‌ها و کتاب‌ها",cPhon:"صدای حروف",cPhonSub:"حروف و کلمات انگلیسی",
  cSci:"ساینس",cSciSub:"دنیای اطرافت را کشف کن",cLang:"زبان‌ها",cLangSub:"انگلیسی، دری و پشتو",cFeel:"احساسات",cFeelSub:"آرام و خوشحال",
+ cVid:"ویدیوها",cVidSub:"کارتون‌ها و ویدیوهای کوتاه",contL:"ادامهٔ یادگیری",pickUp:"از همان جایی که ماندی ادامه بده",recL:"پیشنهاد برای سن من",vMeta:"۳ دقیقه · زیرنویس · دیتای کم",cc:"زیرنویس",low:"دیتای کم",vDone:"آفرین! +۱ ⭐",
+ v0:"شمردن با مو",v0cap:["مو، بوزینهٔ کوچک، یک کیله پیدا می‌کند.","حالا مو دو کیله دارد!","یک، دو، سه کیله!","مو تا سه شمرد. آفرین!"],
+ v1:"نبات‌ها چطور رشد می‌کنند",v1cap:["یک دانه در خاک می‌رود.","دانه کمی آب می‌نوشد.","آفتاب به رشد آن کمک می‌کند.","حالا یک گل شده است!"],
+ v2:"سرود صدای حروف",v2cap:["س برای سیب.","ت برای توپ.","پ برای پشک.","با من دوباره بخوان!"],
  lEn:"کلمات انگلیسی",lEnSub:"عکس و کلمه را جور کن",lFa:"حروف دری",lFaSub:"الف ب پ · حروف اول",lPs:"حروف پشتو",lPsSub:"الف ب پ · حروف اول",
  gCount:"شمارش",gShape:"شکل‌ها",gLetters:"حروف",gNature:"حیوانات",
  subCount:"چیزها را بشمار",subShape:"شکل را پیدا کن",subPhon:"صدای حروف",subNature:"کشف کن",subEn:"کلمات انگلیسی",subFa:"حروف دری",subPs:"حروف پشتو",
@@ -608,6 +647,10 @@ ps:{t1:"زده کړه",t2:"وده",t3:"یوځای",start:"پیل",offline:"بې 
  pick:"یو یې وټاکه!",all:"ټول",
  cMaths:"ریاضي",cMathsSub:"شمېرل، جمع او تفریق",cRead:"لوستل",cReadSub:"کیسې او کتابونه",cPhon:"د تورو غږونه",cPhonSub:"انګلیسي تورې او کلمې",
  cSci:"ساینس",cSciSub:"خپله شاوخوا نړۍ وپلټه",cLang:"ژبې",cLangSub:"انګلیسي، دري او پښتو",cFeel:"احساسات",cFeelSub:"ارام او خوشاله",
+ cVid:"ویډیوګانې",cVidSub:"کارټونونه او لنډې ویډیوګانې",contL:"زده کړې ته دوام ورکړه",pickUp:"له هماغه ځایه پیل کړه چې پاتې شوې وې",recL:"زما د عمر لپاره وړاندیز",vMeta:"۳ دقیقې · لاندې لیک · لږ ډیټا",cc:"لاندې لیک",low:"لږ ډیټا",vDone:"شاباس! +۱ ⭐",
+ v0:"له مو سره شمېرل",v0cap:["مو بیزو یوه کېله پیدا کوي.","اوس مو دوه کېلې لري!","یوه، دوه، درې کېلې!","مو تر درېیو وشمېرل. شاباس!"],
+ v1:"بوټي څنګه وده کوي",v1cap:["یوه دانه په خاوره کې ځي.","دانه لږ اوبه څښي.","لمر یې په ودې کې مرسته کوي.","اوس یو ګل دی!"],
+ v2:"د تورو د غږونو سندره",v2cap:["م د مڼې لپاره.","ت د توپ لپاره.","پ د پیشو لپاره.","له ما سره یې بیا ووایه!"],
  lEn:"انګلیسي کلمې",lEnSub:"انځور او کلمه سره وتړه",lFa:"دري تورې",lFaSub:"الف ب پ · لومړۍ تورې",lPs:"پښتو تورې",lPsSub:"الف ب پ · لومړۍ تورې",
  gCount:"شمېرل",gShape:"شکلونه",gLetters:"تورې",gNature:"حیوانات",
  subCount:"شیان وشمېره",subShape:"شکل پیدا کړه",subPhon:"د تورو غږونه",subNature:"وپلټه",subEn:"انګلیسي کلمې",subFa:"دري تورې",subPs:"پښتو تورې",
@@ -641,6 +684,7 @@ let lang='en',kid=KIDS[0],stars=12,view='splash',hist=[],game='count',qs=[],qi=0
 const earned=new Set(['b0','b1']);
 const SK={count:5,read:3,phonics:4,nature:1,lang:2,feel:1};
 const RECENT=[{ic:'🔢',c:'c-blue',k:'gCount',m:10,s:3},{ic:'📖',c:'c-purple',k:'storyTitle',m:10,s:3},{ic:'🔤',c:'c-yellow',k:'cPhon',m:7,s:2}];
+let last={g:'count'}; // the activity "Continue learning" reopens
 const chats={0:[],1:[]};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const t=k=>T[lang][k]??T.en[k];
@@ -652,7 +696,7 @@ function applyLang(){
   $$('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
   $('#inp').placeholder=t('typeMsg');
   if(!chats[0].length) seedChat();
-  renderAll(); if(view==='act')renderQ(); if(view==='story')renderPage(); if(view==='chat')renderChat();
+  renderAll(); if(view==='act')renderQ(); if(view==='story')renderPage(); if(view==='chat')renderChat(); if(view==='watch')renderWatch();
 }
 function seedChat(){chats[0]=[{f:'them',k:'sara0'},{f:'them',k:'sara1'}];chats[1]=[{f:'them',k:'aliLast'}];}
 function msgText(m){if(m.k){const v=t(m.k);return typeof v==='function'?v(kid.name):v} if(m.q!==undefined)return t('quick')[m.q]; if(m.r!==undefined)return t('replies')[m.r]; return m.txt||''}
@@ -663,13 +707,14 @@ function renderAll(){
   $('#pYear').textContent=`${t('year')} ${kid.yr}`;
   $$('.starN').forEach(e=>e.textContent=stars);
   $('#meter').style.width=Math.min(100,stars/20*100)+'%';
-  renderChips();renderCourses();renderBadges();renderSkills();renderRecent();renderSteps();renderRewards();
+  renderChips();renderCourses();renderBadges();renderSkills();renderRecent();renderSteps();renderRewards();renderVids();renderCont();renderRecs();saveProgress();
   const last=chats[0][chats[0].length-1];$('#lastMsg').textContent=$('#lastMsg2').textContent=last?msgText(last):'';
   [$('#navBadge'),$('#homeBadge'),$('#listBadge')].forEach(e=>{e.textContent=unread;e.style.display=unread?'':'none'});
 }
 const COURSES=[
  {id:'maths',ic:'🔢',c:'blue',k:'cMaths',game:'count'},
  {id:'reading',ic:'📖',c:'green',k:'cRead',go:'read'},
+ {id:'videos',ic:'🎬',c:'purple',k:'cVid',go:'videos',isNew:1},
  {id:'phonics',ic:'🔤',c:'yellow',k:'cPhon',game:'phonics'},
  {id:'science',ic:'🔬',c:'teal',k:'cSci',game:'nature'},
  {id:'lang',ic:'🗣️',c:'orange',k:'cLang',go:'langs',isNew:1},
@@ -713,7 +758,7 @@ function renderSteps(){
 }
 
 /* =============== NAV =============== */
-const TAB={home:'home',courses:'courses',langs:'courses',games:'home',read:'home',story:'home',progress:'progress',msgs:'msgs',chat:'msgs',rewards:'rewards',hw:'home',feel:'home'};
+const TAB={home:'home',courses:'courses',langs:'courses',videos:'courses',watch:'courses',games:'home',read:'home',story:'home',progress:'progress',msgs:'msgs',chat:'msgs',rewards:'rewards',hw:'home',feel:'home'};
 function go(v){
   if(v==='back'){v=hist.pop()||'home'}
   else if(v==='back2'){v=hist.pop()||'home'}
@@ -724,7 +769,8 @@ function go(v){
   const el=$('#v-'+v);el.classList.add('on');el.scrollTop=0;
   document.body.classList.toggle('nonav',el.hasAttribute('data-nonav'));
   $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===TAB[v]));
-  if(v==='story'){page=0;renderPage()}
+  if(v!=='watch')stopVid();
+  if(v==='story'){page=0;renderPage();last={go:'story'};saveProgress()}
   if(v==='chat'){if(chatWho===0){unread=0;renderAll()}renderChat()}
   if(v==='feel')$('#feelMsg').style.opacity=0;
   if('speechSynthesis' in window)speechSynthesis.cancel();
@@ -763,7 +809,7 @@ function makeQs(g){
     return{t:'nature',wa,opts:shuffle([good,THINGS[rnd(THINGS.length)],wa?PLANTS[rnd(PLANTS.length)]:ANIMALS[rnd(ANIMALS.length)]]),ans:good};
   });
 }
-function startGame(g){game=g;qs=makeQs(g);qi=0;firstTry=0;wrong=false;go('act');renderQ();setTimeout(()=>say($('#qText').textContent,1),350)}
+function startGame(g){game=g;last={g};saveProgress();qs=makeQs(g);qi=0;firstTry=0;wrong=false;go('act');renderQ();setTimeout(()=>say($('#qText').textContent,1),350)}
 function qText(q){
   if(q.t==='count')return t('qCount')(t('objs')[q.it]);
   if(q.t==='shape')return t('qShape')(t('shapes')[q.k]);
@@ -842,15 +888,79 @@ let recT=null;
 $('#micBtn').onclick=()=>{const b=$('#micBtn');if(recT){clearTimeout(recT);recT=null;b.classList.remove('rec');b.textContent='🎤';send({f:'me',voice:4},-1);return}b.classList.add('rec');b.textContent='⏹';recT=setTimeout(()=>$('#micBtn').click(),3000)};
 $('#sayLast').onclick=()=>{const m=chats[chatWho].filter(x=>x.f==='them').at(-1);if(m)say(msgText(m))};
 
+/* =============== VIDEOS =============== */
+// Short cartoons shown as a sequence of scenes with captions, standing in for real video files.
+const VIDS=[{ic:'🐵',sc:['🐵🍌','🐵🍌🍌','🐵🍌🍌🍌','🐵🎉']},{ic:'🌱',sc:['🌰','🌰💧','🌱☀️','🌻😊']},{ic:'🎵',sc:['🍎','⚽','🐱','🎵🎤']}];
+let vid=0,vi=0,vt=null,cc=true,lowData=true;
+function renderVids(){
+  $('#vidList').innerHTML=VIDS.map((v,i)=>`<button class="card row b-purple" data-vid="${i}"><span class="icb c-purple" style="width:72px;height:72px;font-size:42px">${v.ic}</span><span class="tx"><b>${t('v'+i)}</b><small>▶ ${t('vMeta')}</small></span><span class="chev flip">›</span></button>`).join('');
+}
+function renderWatch(){
+  const v=VIDS[vid];
+  $('#wTitle').textContent=t('v'+vid);$('#wScene').textContent=v.sc[vi];
+  $('#wCap').textContent=t('v'+vid+'cap')[vi];$('#wCap').style.display=cc?'':'none';
+  $('#wBar').style.width=(vi+1)/v.sc.length*100+'%';
+  $('#wPlay').textContent=vt?'⏸':'▶';
+  $('#wCC').classList.toggle('on',cc);$('#wLow').classList.toggle('on',lowData);
+}
+function stopVid(){clearInterval(vt);vt=null}
+function openVid(i){stopVid();vid=i;vi=0;last={v:i};saveProgress();go('watch');renderWatch()}
+function playVid(){
+  if(vt){stopVid();renderWatch();return}
+  const n=VIDS[vid].sc.length;if(vi>=n-1)vi=0;
+  vt=setInterval(()=>{vi++;renderWatch();say(t('v'+vid+'cap')[vi],1);if(vi>=n-1){stopVid();renderWatch();videoDone()}},2600);
+  renderWatch();say(t('v'+vid+'cap')[vi],1);
+}
+function videoDone(){stars++;SK.read++;RECENT.unshift({ic:VIDS[vid].ic,c:'c-purple',k:'v'+vid,m:3,s:1});renderAll();toast(t('vDone'))}
+
+/* =============== CONTINUE + RECOMMENDED =============== */
+const GIC={count:'🔢',shape:'🔷',phonics:'🔤',nature:'🔬',enword:'🗣️',dari:'🗣️',pashto:'🗣️'};
+const REC=[[{g:'count'},{g:'phonics'},{v:0}],[{g:'enword'},{go:'story'},{v:1}],[{g:'shape'},{g:'nature'},{v:2}]];
+function actInfo(a){
+  if(a.v!==undefined)return{ic:VIDS[a.v].ic,k:'v'+a.v,attr:`data-vid="${a.v}"`};
+  if(a.go==='story')return{ic:'📖',k:'storyTitle',attr:'data-go="story"'};
+  return{ic:GIC[a.g],k:META[a.g][1],attr:`data-game="${a.g}"`};
+}
+function renderCont(){
+  const a=actInfo(last);
+  $('#cont').innerHTML=`<button class="card row b-green" ${a.attr}><span class="icb c-green">${a.ic}</span><span class="tx"><b>${t('contL')}</b><small>${t(a.k)} · ${t('pickUp')}</small></span><span class="chev flip">▶</span></button>`;
+}
+function renderRecs(){
+  const band=kid.age<=6?0:kid.age<=9?1:2;
+  $('#recs').innerHTML=REC[band].map(r=>{const a=actInfo(r);return `<button class="card rc" ${a.attr}><span class="ic">${a.ic}</span><b>${t(a.k)}</b><small>${t('year')} ${kid.yr}</small></button>`}).join('');
+}
+
+/* =============== SAVED PROGRESS =============== */
+// Each child's progress is kept in this browser, so it is still there after closing the app.
+// The real app keeps it on the device and syncs it to the UK database.
+const SAVE_KEY='hlb-kids-progress-v1';
+const START={stars,SK:{...SK},earned:[...earned],recent:RECENT.map(r=>({...r})),acc:null,last:{g:'count'}};
+function saveProgress(){
+  try{const all=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}');all[kid.name]={stars,SK:{...SK},earned:[...earned],recent:RECENT.slice(0,8),acc:kid.acc||null,last};localStorage.setItem(SAVE_KEY,JSON.stringify(all))}catch(e){}
+}
+function loadProgress(k){
+  let s=null;try{s=JSON.parse(localStorage.getItem(SAVE_KEY)||'{}')[k.name]}catch(e){}
+  s=s||START;
+  stars=s.stars;Object.keys(SK).forEach(x=>SK[x]=s.SK[x]??0);
+  earned.clear();s.earned.forEach(b=>earned.add(b));
+  RECENT.length=0;s.recent.forEach(r=>RECENT.push({...r}));
+  k.acc=s.acc||null;last=s.last||{g:'count'};
+}
+
 /* =============== CLICKS =============== */
 document.addEventListener('click',e=>{
   const el=e.target.closest('button');if(!el)return;const d=el.dataset;
   if(d.lang){lang=d.lang;applyLang();return}
   if(el.id==='langBtn'){lang={en:'fa',fa:'ps',ps:'en'}[lang];applyLang();toast({en:'English',fa:'دری',ps:'پښتو'}[lang]);return}
-  if(d.kid!==undefined){kid=KIDS[+d.kid];const band=kid.age<=6?0:kid.age<=9?1:2;$$('#ages button').forEach(b=>b.classList.toggle('on',+b.dataset.age===band));seedChat();renderAll();hist=[];go('home');return}
+  if(d.kid!==undefined){saveProgress();kid=KIDS[+d.kid];loadProgress(kid);const band=kid.age<=6?0:kid.age<=9?1:2;$$('#ages button').forEach(b=>b.classList.toggle('on',+b.dataset.age===band));seedChat();renderAll();hist=[];go('home');return}
   if(d.age!==undefined){$$('#ages button').forEach(b=>b.classList.toggle('on',b===el));return}
   if(d.chip){chip=d.chip;renderChips();renderCourses();return}
   if(d.game){startGame(d.game);return}
+  if(d.vid!==undefined){openVid(+d.vid);return}
+  if(el.id==='wPlay'){playVid();return}
+  if(el.id==='wCC'){cc=!cc;renderWatch();return}
+  if(el.id==='wLow'){lowData=!lowData;renderWatch();return}
+  if(el.id==='sayCap'){say(t('v'+vid+'cap')[vi]);return}
   if(d.quick!==undefined){chatWho=0;go('chat');setTimeout(()=>send({f:'me',q:+d.quick},+d.quick),250);return}
   if(d.qr!==undefined){send({f:'me',q:+d.qr},+d.qr);return}
   if(d.who!==undefined){chatWho=+d.who;go('chat');if(d.rec)setTimeout(()=>$('#micBtn').click(),300);return}
@@ -865,7 +975,7 @@ document.addEventListener('click',e=>{
   if(el.id==='sayQ'){say($('#qText').textContent);return}
   if(el.id==='againBtn'){if(game==='read')go('read');else startGame(game);return}
 });
-seedChat();applyLang();
+loadProgress(kid);seedChat();applyLang();
 if('speechSynthesis' in window)speechSynthesis.getVoices();
 </script>
 </body>
