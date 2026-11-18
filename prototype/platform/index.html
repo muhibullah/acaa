@@ -687,6 +687,8 @@ applyLang();renderFams();renderCT();
 showPart(location.hash==='#coach'?'coach':'parent');
 addEventListener('hashchange',()=>showPart(location.hash==='#coach'?'coach':'parent'));
 if('speechSynthesis' in window)speechSynthesis.getVoices();
+// Offline use: the same service worker as the children's app keeps a copy of this page.
+if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(()=>{});
 </script>
 </body>
 </html>

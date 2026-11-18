@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#EAF4FF">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>HomeLearn Bridge — Kids App</title>
 <meta name="description" content="Clickable prototype of the HomeLearn Bridge children's app in English, Dari and Pashto. Concept for discussion.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect x='2' y='2' width='116' height='116' rx='30' fill='%23FFF7E6'/%3E%3Ccircle cx='95' cy='24' r='10' fill='%23FFC83D'/%3E%3Cpath d='M18 56 L60 20 L102 56' fill='none' stroke='%232F6FED' stroke-width='11' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M60 60 C49 53 35 53 26 57 L26 87 C35 83 49 83 60 90 Z' fill='%23FF8A3D'/%3E%3Cpath d='M60 60 C71 53 85 53 94 57 L94 87 C85 83 71 83 60 90 Z' fill='%233CC37A'/%3E%3Cpath d='M20 106 Q60 84 100 106' fill='none' stroke='%238B5CF6' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
@@ -130,6 +133,22 @@ body.nonav .nav{display:none}
 .kid small{font-size:15px;color:var(--muted);font-weight:700}
 .kid.add{background:transparent;border:3px dashed #B9C8E4;box-shadow:none;color:var(--muted)}
 .kid.add .face{border:3px dashed #B9C8E4;font-size:40px}
+
+/* ---------- picture login ---------- */
+.plog{text-align:center;width:100%;max-width:400px;margin:0 auto}
+.plog .face{width:84px;height:84px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;font-size:48px}
+.plog b{font-family:var(--display);font-size:24px}
+.plog-dots{display:flex;gap:12px;justify-content:center;margin:12px 0 18px}
+.plog-dots i{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid #B9C8E4;transition:background .15s}
+.plog-dots i.on{background:var(--teal);border-color:var(--teal)}
+.plog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.plog-grid button{aspect-ratio:1;font-size:clamp(36px,11vw,50px);background:#fff;border-radius:22px;box-shadow:0 4px 0 var(--line);transition:transform .08s}
+.plog-grid button:active{transform:translateY(3px)}
+.plog-grid.no{animation:shake .35s}
+.plog-msg{min-height:26px;margin-top:14px;font-weight:800;color:var(--pink)}
+.plog-hint{margin-top:10px;font-size:14px;font-weight:700;color:var(--muted)}
+.net{position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:60;background:var(--ink);color:#fff;font-size:14px;font-weight:800;padding:7px 14px;border-radius:999px;display:none;white-space:nowrap}
+body.offline .net{display:block}
 
 /* ---------- home ---------- */
 .hello{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -348,6 +367,18 @@ body.nonav .nav{display:none}
   <div class="kids4" id="kids"></div>
 </div></section>
 
+<!-- PICTURE LOGIN -->
+<section class="view" id="v-pic" data-nonav><div class="wrap">
+  <div class="bar"><button class="ibtn" data-go="who"><span class="flip">‹</span></button><div class="ttl"><h2 data-t="picT"></h2></div><button class="ibtn snd" data-say="picT">🔊</button></div>
+  <div class="plog">
+    <div class="face" id="pFace"></div><b id="pName"></b>
+    <div class="plog-dots" id="pDots"><i></i><i></i><i></i></div>
+    <div class="plog-grid" id="pGrid"></div>
+    <div class="plog-msg" id="pMsg" aria-live="polite"></div>
+    <div class="plog-hint" id="pHint"></div>
+  </div>
+</div></section>
+
 <!-- 2 HOME -->
 <section class="view" id="v-home"><div class="wrap">
   <div class="hello">
@@ -560,6 +591,7 @@ body.nonav .nav{display:none}
 
 </div><!-- main -->
 </div><!-- app -->
+<div class="net" id="net"></div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -568,7 +600,7 @@ document.querySelectorAll('svg.logo').forEach(s=>s.innerHTML=LOGO);
 
 /* =============== WORDS =============== */
 const T={
-en:{t1:"Learn",t2:"Grow",t3:"Together",start:"Get Started",offline:"Works without internet",who:"Who is learning?",add:"Add",year:"Year",
+en:{t1:"Learn",t2:"Grow",t3:"Together",start:"Get Started",offline:"Works without internet",who:"Who is learning?",picT:"Tap your 3 pictures",picNo:"Not quite. Try again!",picHelp:"Ask a grown-up to help you.",picHint:"Prototype hint: ",netOff:"Offline: your learning still works",add:"Add",year:"Year",
  home:"Home",courses:"Courses",progress:"My Progress",messages:"Messages",rwNav:"Rewards",
  hello:"Hello",great2see:"Great to see you today!",todayAct:"Today's activities",
  coursesSub:"Maths, reading, languages and more",play:"Play",playSub:"Fun games and challenges",read:"Read",readSub:"Stories and books",progSub:"See your stars",
@@ -604,7 +636,7 @@ en:{t1:"Learn",t2:"Grow",t3:"Together",start:"Get Started",offline:"Works withou
  voiceMsg:"Voice message",voiceReply:"Thank you for your message! 🎧",typeMsg:"Type a message…",
  rwTitle:"My Rewards",rwSay:"Collect stars to unlock fun things for your character!",chest:"Daily surprise",chestTap:"Tap to open!",chestDone:"+1 ⭐ Come back tomorrow!",unlock:"Unlock with stars",stickers:"My stickers",need:n=>`${n} ⭐`,chosen:"Chosen ✓",tapWear:"Tap to wear",moreStars:n=>`Earn ${n} more ⭐ to unlock this!`,nextAt:(n,i)=>`${n} more ⭐ to unlock ${i}`,allDone:"You unlocked everything! 🎉",items:["Party hat","Cool glasses","Flower","Crown","Hero cape","Rainbow"],
  toasts:{soon:"Coming soon!",photo:"The camera would open here to send homework to school.",photoMsg:"The camera would open here to send a photo.",updates:"Class news would show here.",ideas:"Simple activities to do together at home.",tips:"Short tips in your language.",res:"Worksheets and videos to download.",hub:"A map of quiet study places near you.",add:"A parent can add a child here.",voice:"A recorded voice would read this aloud."}},
-fa:{t1:"یاد بگیر",t2:"رشد کن",t3:"با هم",start:"شروع",offline:"بدون انترنت کار می‌کند",who:"کی درس می‌خواند؟",add:"افزودن",year:"صنف",
+fa:{t1:"یاد بگیر",t2:"رشد کن",t3:"با هم",start:"شروع",offline:"بدون انترنت کار می‌کند",who:"کی درس می‌خواند؟",picT:"۳ عکس خود را لمس کن",picNo:"نه، دوباره کوشش کن!",picHelp:"از یک بزرگ‌تر کمک بخواه.",picHint:"راهنمای نمونه: ",netOff:"بدون انترنت: درس‌هایت کار می‌کند",add:"افزودن",year:"صنف",
  home:"خانه",courses:"کورس‌ها",progress:"پیشرفت من",messages:"پیام‌ها",rwNav:"جایزه‌ها",
  hello:"سلام",great2see:"خوشحالیم که امروز آمدی!",todayAct:"فعالیت‌های امروز",
  coursesSub:"ریاضی، خواندن، زبان‌ها و بیشتر",play:"بازی",playSub:"بازی‌ها و چالش‌های جالب",read:"خواندن",readSub:"قصه‌ها و کتاب‌ها",progSub:"ستاره‌هایت را ببین",
@@ -640,7 +672,7 @@ fa:{t1:"یاد بگیر",t2:"رشد کن",t3:"با هم",start:"شروع",offlin
  voiceMsg:"پیام صوتی",voiceReply:"تشکر از پیامت! 🎧",typeMsg:"پیام بنویس…",
  rwTitle:"جایزه‌های من",rwSay:"ستاره جمع کن تا چیزهای جالب برای شخصیتت باز شود!",chest:"تحفهٔ روزانه",chestTap:"برای باز کردن بزن!",chestDone:"+۱ ⭐ فردا دوباره بیا!",unlock:"با ستاره باز کن",stickers:"استیکرهای من",need:n=>`${n} ⭐`,chosen:"انتخاب شد ✓",tapWear:"بزن تا بپوشی",moreStars:n=>`${n} ستارهٔ دیگر بگیر تا باز شود!`,nextAt:(n,i)=>`${n} ⭐ دیگر تا ${i}`,allDone:"همه را باز کردی! 🎉",items:["کلاه جشن","عینک","گل","تاج","چپن قهرمان","رنگین‌کمان"],
  toasts:{soon:"به زودی!",photo:"اینجا کمره باز می‌شود تا کارخانگی به مکتب فرستاده شود.",photoMsg:"اینجا کمره برای فرستادن عکس باز می‌شود.",updates:"خبرهای صنف اینجا نشان داده می‌شود.",ideas:"فعالیت‌های ساده برای انجام دادن با هم در خانه.",tips:"رهنمایی‌های کوتاه به زبان شما.",res:"ورق‌های کار و ویدیوها برای دانلود.",hub:"نقشهٔ جاهای آرام درسی نزدیک شما.",add:"والدین می‌توانند اینجا کودک اضافه کنند.",voice:"اینجا یک صدای ضبط‌شده متن را می‌خواند."}},
-ps:{t1:"زده کړه",t2:"وده",t3:"یوځای",start:"پیل",offline:"بې انټرنېټه کار کوي",who:"څوک زده کړه کوي؟",add:"زیاتول",year:"ټولګی",
+ps:{t1:"زده کړه",t2:"وده",t3:"یوځای",start:"پیل",offline:"بې انټرنېټه کار کوي",who:"څوک زده کړه کوي؟",picT:"خپل ۳ انځورونه کېکاږه",picNo:"نه، بیا هڅه وکړه!",picHelp:"له یو مشر نه مرسته وغواړه.",picHint:"د نمونې لارښوونه: ",netOff:"بې انټرنېټه: زده کړه دې لا هم کار کوي",add:"زیاتول",year:"ټولګی",
  home:"کور",courses:"کورسونه",progress:"زما پرمختګ",messages:"پیغامونه",rwNav:"انعامونه",
  hello:"سلام",great2see:"خوشاله یو چې نن دې ولیدو!",todayAct:"د نن فعالیتونه",
  coursesSub:"ریاضي، لوستل، ژبې او نور",play:"لوبې",playSub:"په زړه پورې لوبې او ننګونې",read:"لوستل",readSub:"کیسې او کتابونه",progSub:"خپل ستوري وګوره",
@@ -679,7 +711,10 @@ ps:{t1:"زده کړه",t2:"وده",t3:"یوځای",start:"پیل",offline:"بې 
 };
 
 /* =============== STATE =============== */
-const KIDS=[{name:"Ahmed",face:"🦁",bg:"#FFE9C7",age:8,yr:3},{name:"Maryam",face:"🦋",bg:"#DFF5E7",age:5,yr:1},{name:"Yusuf",face:"🚀",bg:"#E3EDFF",age:11,yr:6}];
+const KIDS=[{name:"Ahmed",face:"🦁",bg:"#FFE9C7",age:8,yr:3,pw:[0,2,4]},{name:"Maryam",face:"🦋",bg:"#DFF5E7",age:5,yr:1,pw:[1,7,5]},{name:"Yusuf",face:"🚀",bg:"#E3EDFF",age:11,yr:6,pw:[6,3,8]}];
+// Picture password: each child taps their 3 pictures in order instead of typing.
+const PICS=['🐱','🌳','⭐','🚗','🍎','🐟','🌙','🎈','🐢'];
+let pKid=0,pIn=[],pFails=0;
 let lang='en',kid=KIDS[0],stars=12,view='splash',hist=[],game='count',qs=[],qi=0,firstTry=0,wrong=false,page=0,stepsDone=[0],chip='all',unread=1,chatWho=0;
 const earned=new Set(['b0','b1']);
 const SK={count:5,read:3,phonics:4,nature:1,lang:2,feel:1};
@@ -694,7 +729,7 @@ function applyLang(){
   document.documentElement.dir=lang==='en'?'ltr':'rtl';document.documentElement.lang=lang==='en'?'en':lang;
   $$('[data-t]').forEach(e=>{const v=t(e.dataset.t);if(typeof v==='string')e.textContent=v});
   $$('#langs button').forEach(b=>b.classList.toggle('on',b.dataset.lang===lang));
-  $('#inp').placeholder=t('typeMsg');
+  $('#inp').placeholder=t('typeMsg');$('#net').textContent='📴 '+t('netOff');if(view==='pic')renderPic();
   if(!chats[0].length) seedChat();
   renderAll(); if(view==='act')renderQ(); if(view==='story')renderPage(); if(view==='chat')renderChat(); if(view==='watch')renderWatch();
 }
@@ -757,12 +792,30 @@ function renderSteps(){
   $('#steps').innerHTML=t('steps').map((s,i)=>`<button class="card step ${stepsDone.includes(i)?'on':''}" data-step="${i}"><span class="ck">✓</span><div class="ic">${ic[i]}</div><b>${s}</b></button>`).join('');
 }
 
+/* =============== PICTURE LOGIN =============== */
+function openPic(i){pKid=i;pIn=[];pFails=0;const k=KIDS[i];
+  $('#pFace').textContent=k.face;$('#pFace').style.background=k.bg;$('#pName').textContent=k.name;
+  $('#pGrid').innerHTML=PICS.map((p,j)=>`<button data-pic="${j}" aria-label="${p}">${p}</button>`).join('');
+  $('#pMsg').textContent='';renderPic();go('pic');say(t('picT'),1)}
+function renderPic(){
+  $$('#pDots i').forEach((d,j)=>d.classList.toggle('on',j<pIn.length));
+  $('#pHint').textContent=t('picHint')+KIDS[pKid].pw.map(j=>PICS[j]).join(' ');
+}
+function tapPic(j){
+  pIn.push(j);renderPic();if(pIn.length<3)return;
+  const ok=pIn.every((x,n)=>x===KIDS[pKid].pw[n]);
+  if(ok){enterKid(pKid);return}
+  pFails++;pIn=[];const g=$('#pGrid');g.classList.remove('no');void g.offsetWidth;g.classList.add('no');
+  const m=pFails>=3?t('picHelp'):t('picNo');$('#pMsg').textContent=m;say(m,1);setTimeout(renderPic,350);
+}
+function enterKid(i){saveProgress();kid=KIDS[i];loadProgress(kid);const band=kid.age<=6?0:kid.age<=9?1:2;$$('#ages button').forEach(b=>b.classList.toggle('on',+b.dataset.age===band));seedChat();renderAll();hist=[];go('home')}
+
 /* =============== NAV =============== */
 const TAB={home:'home',courses:'courses',langs:'courses',videos:'courses',watch:'courses',games:'home',read:'home',story:'home',progress:'progress',msgs:'msgs',chat:'msgs',rewards:'rewards',hw:'home',feel:'home'};
 function go(v){
   if(v==='back'){v=hist.pop()||'home'}
   else if(v==='back2'){v=hist.pop()||'home'}
-  else if(!['act','reward','who','splash'].includes(view)&&view!==v) hist.push(view);
+  else if(!['act','reward','who','pic','splash'].includes(view)&&view!==v) hist.push(view);
   if(hist.length>20)hist.shift();
   view=v;
   $$('.view').forEach(x=>x.classList.remove('on'));
@@ -969,7 +1022,8 @@ document.addEventListener('click',e=>{
   const el=e.target.closest('button');if(!el)return;const d=el.dataset;
   if(d.lang){lang=d.lang;applyLang();return}
   if(el.id==='langBtn'){lang={en:'fa',fa:'ps',ps:'en'}[lang];applyLang();toast({en:'English',fa:'دری',ps:'پښتو'}[lang]);return}
-  if(d.kid!==undefined){saveProgress();kid=KIDS[+d.kid];loadProgress(kid);const band=kid.age<=6?0:kid.age<=9?1:2;$$('#ages button').forEach(b=>b.classList.toggle('on',+b.dataset.age===band));seedChat();renderAll();hist=[];go('home');return}
+  if(d.kid!==undefined){openPic(+d.kid);return}
+  if(d.pic!==undefined){tapPic(+d.pic);return}
   if(d.age!==undefined){$$('#ages button').forEach(b=>b.classList.toggle('on',b===el));return}
   if(d.chip){chip=d.chip;renderChips();renderCourses();return}
   if(d.game){startGame(d.game);return}
@@ -993,6 +1047,10 @@ document.addEventListener('click',e=>{
   if(el.id==='againBtn'){if(game==='read')go('read');else startGame(game);return}
 });
 loadProgress(kid);seedChat();applyLang();
+// Offline use: the service worker keeps a copy of the app so it opens without internet.
+if('serviceWorker' in navigator)navigator.serviceWorker.register('../sw.js',{scope:'../'}).catch(()=>{});
+const netState=()=>document.body.classList.toggle('offline',!navigator.onLine);
+addEventListener('online',netState);addEventListener('offline',netState);netState();
 if('speechSynthesis' in window)speechSynthesis.getVoices();
 </script>
 </body>
